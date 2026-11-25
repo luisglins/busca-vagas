@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Paleta "gestão à vista" — ver docs/design-visual.md */
-@theme {
+@theme static {
   --color-grafite: #1e2624;
   --color-grafite-2: #2a3431;
   --color-grafite-3: #4a5753;

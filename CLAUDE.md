@@ -57,6 +57,7 @@ Use as skills `frontend-design` e `anti-slop` ao criar telas.
 
 ## Armadilhas conhecidas
 
-- **Cache Components está ligado** (`next.config.ts`). Página que lê cookie/sessão precisa estar sob o layout `(app)`,
-  que tem `export const instant = false`. Sem isso o `next build` falha com "blocking-prerender-dynamic".
+- **Cache Components está desligado** (`next.config.ts`), de propósito: todas as páginas são privadas e geradas a cada acesso.
+  Ligado, ele exigia `instant = false`/`connection()`/`<Suspense>` em toda página que usa o Supabase. Não religar sem motivo.
+- Tailwind 4: as cores ficam em `@theme static` no `globals.css` (sem `static`, variáveis não usadas em classes somem).
 - Rode `npx next build` antes de dar push: a Vercel falha pelo mesmo motivo.
