@@ -1,11 +1,12 @@
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { EnvioCurriculo } from "./envio";
 import { AcoesCurriculo } from "./item";
+import { LeitorPendentes } from "./leitor-pendentes";
 
 export default async function Curriculos() {
   const supabase = await criarClienteServidor();
   const [{ data: curriculos }, { data: usos }] = await Promise.all([
-    supabase.from("curriculos").select("id, nome_versao, criado_em").order("criado_em", { ascending: false }),
+    supabase.from("curriculos").select("id, nome_versao, criado_em, texto").order("criado_em", { ascending: false }),
     supabase.from("vagas").select("curriculo_id").not("curriculo_id", "is", null),
   ]);
 
@@ -16,7 +17,11 @@ export default async function Curriculos() {
     <section>
       <div className="mb-5">
         <h1 className="titulo-tela">Currículos</h1>
-        <p className="mt-2 text-sm text-aco">Guarde cada versão e veja para quantas vagas ela foi. Os arquivos ficam privados.</p>
+        <p className="mt-2 text-sm text-aco">
+          Guarde cada versão e veja para quantas vagas ela foi. Os arquivos ficam privados. O site lê o texto de cada PDF para indicar,
+          em cada vaga, qual versão combina mais.
+        </p>
+        <LeitorPendentes pendentes={(curriculos ?? []).filter((c) => c.texto === null).length} />
       </div>
 
       <EnvioCurriculo />
@@ -35,6 +40,7 @@ export default async function Curriculos() {
                     <p className="text-sm text-aco">
                       enviado em {new Date(c.criado_em).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })},{" "}
                       {n === 0 ? "ainda não usado" : `usado em ${n} ${n === 1 ? "vaga" : "vagas"}`}
+                      {c.texto === "" && ", sem texto legível (PDF de imagem): não entra na comparação"}
                     </p>
                   </div>
                   <AcoesCurriculo id={c.id} nome={c.nome_versao} />

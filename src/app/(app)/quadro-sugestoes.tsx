@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useTransition } from "react";
+import { createContext, useContext, useMemo, useState, useTransition } from "react";
+import { compararCurriculos } from "@/lib/curriculo";
+import type { Perfil } from "@/lib/tipos";
 import { composicaoDaNota, marcarPalavras, separarSecoes } from "@/lib/descricao";
 import { faixaDaNota, type Faixa } from "@/lib/vagas";
 import { adicionarSugestao, bloquearEmpresa, buscarAgora, descartarSugestao } from "./sugestoes-acoes";
@@ -24,9 +26,59 @@ export interface Sugestao {
   area: "processos" | "ia" | null;
 }
 
+export interface CurriculoComparavel {
+  id: string;
+  nome: string;
+  texto: string | null;
+}
+
+// Currículos e perfil ficam num contexto para o "Veja mais" de qualquer vaga poder usar.
+const ContextoCurriculos = createContext<{ curriculos: CurriculoComparavel[]; perfil: Perfil | null }>({
+  curriculos: [],
+  perfil: null,
+});
+
+/** Bloco "Currículo indicado" do Veja mais: o mais aderente e as palavras da vaga que faltam nele. */
+function CurriculoIndicado({ s }: { s: Sugestao }) {
+  const { curriculos, perfil } = useContext(ContextoCurriculos);
+  if (!perfil) return null;
+  if (curriculos.length === 0) {
+    return (
+      <p className="text-[13px] text-aco">
+        <Link href="/curriculos" className="underline">Envie seus currículos</Link> para ver qual combina mais com esta vaga.
+      </p>
+    );
+  }
+  const ranking = compararCurriculos(curriculos, { cargo: s.cargo, descricao: s.descricao }, perfil);
+  if (ranking.length === 0) return <p className="text-[13px] text-aco">Esta vaga não tem palavras do seu perfil para comparar com os currículos.</p>;
+  const melhor = ranking[0];
+  return (
+    <div className="rounded-lg border border-junta bg-concreto/60 p-3">
+      <p className="text-[13px] text-aco">Currículo indicado</p>
+      <p className="font-titulo text-lg leading-tight font-bold">{melhor.nome}</p>
+      <p className="text-[13px] text-aco">
+        tem {melhor.encontradas.length} de {melhor.encontradas.length + melhor.faltando.length} palavras da vaga ({melhor.cobertura}%)
+      </p>
+      {melhor.faltando.length > 0 && (
+        <p className="mt-1.5 text-[13px]">
+          <span className="text-aco">Faltam: </span>
+          {melhor.faltando.join(", ")}
+        </p>
+      )}
+      {ranking.length > 1 && (
+        <p className="mt-1.5 text-[12px] text-aco">
+          Depois: {ranking.slice(1).map((r) => `${r.nome} ${r.cobertura}%`).join(", ")}
+        </p>
+      )}
+    </div>
+  );
+}
+
 interface Props {
   sugestoes: Sugestao[];
   palavras: string[];
+  curriculos: CurriculoComparavel[];
+  perfil: Perfil;
   textoUltimaBusca: string;
   falhas: string[];
   eliminadas: number;
@@ -144,7 +196,7 @@ function Detalhes({ s, palavras, id, agora }: { s: Sugestao; palavras: string[];
   const prazoPerto = prazo && prazo.getTime() - agora < 3 * 86_400_000;
 
   return (
-    <div id={id} className="col-span-full mt-3 grid gap-6 border-t border-dashed border-junta pt-4 text-sm md:grid-cols-[1fr_1fr_220px]">
+    <div id={id} className="col-span-full mt-3 grid gap-6 border-t border-dashed border-junta pt-4 text-sm md:grid-cols-[1fr_1fr_260px]">
       {mostrar.length === 0 ? (
         <p className="text-aco md:col-span-2">Esta vaga não trouxe descrição. Abra o anúncio original para ler os detalhes.</p>
       ) : (
@@ -167,6 +219,8 @@ function Detalhes({ s, palavras, id, agora }: { s: Sugestao; palavras: string[];
           <p className="text-[13px] text-aco md:col-span-2">Em destaque: palavras que batem com o seu perfil.</p>
         </div>
       )}
+      <div className="flex flex-col gap-4">
+      <CurriculoIndicado s={s} />
       <dl className="grid grid-cols-[auto_1fr] content-start gap-x-3 gap-y-1.5">
         <dt className="text-aco">Salário</dt>
         <dd>{s.salario ?? "não informado"}</dd>
@@ -193,6 +247,7 @@ function Detalhes({ s, palavras, id, agora }: { s: Sugestao; palavras: string[];
         <dt className="text-aco">Site</dt>
         <dd>{FONTES.find((f) => f.id === s.fonte)?.nome ?? s.fonte}</dd>
       </dl>
+      </div>
       {s.link && (
         <p className="text-[13px] text-aco md:col-span-3">
           Para se candidatar:{" "}
@@ -281,7 +336,7 @@ function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: s
   );
 }
 
-export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas, eliminadas, agora }: Props) {
+export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, textoUltimaBusca, falhas, eliminadas, agora }: Props) {
   const [faixasLigadas, setFaixas] = useState<Set<Faixa>>(new Set(["verde", "amarela", "cinza"]));
   const [areas, setAreas] = useState<Set<string>>(new Set());
   const [fontes, setFontes] = useState<Set<string>>(new Set());
@@ -311,6 +366,7 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
   const mostrando = FAIXAS.reduce((t, f) => t + (faixasLigadas.has(f.id) ? porFaixa[f.id].length : 0), 0);
 
   return (
+    <ContextoCurriculos.Provider value={{ curriculos, perfil }}>
     <section>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -419,6 +475,7 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
         )}
       </div>
     </section>
+    </ContextoCurriculos.Provider>
   );
 }
 

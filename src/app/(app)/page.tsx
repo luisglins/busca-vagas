@@ -10,7 +10,7 @@ export default async function Sugestoes() {
   const agora = agoraMs();
   const desde = isoDiasAtras(30, agora);
 
-  const [{ data }, { count: eliminadas }, { data: execucoes }, perfil] = await Promise.all([
+  const [{ data }, { count: eliminadas }, { data: execucoes }, perfil, { data: curriculos }] = await Promise.all([
     supabase
       .from("sugestoes")
       .select("id, fonte, empresa, cargo, link, local, cidade, modalidade, descricao, salario, publicada_em, prazo_inscricao, nota, motivos, area")
@@ -21,6 +21,7 @@ export default async function Sugestoes() {
     supabase.from("sugestoes").select("id", { count: "exact", head: true }).eq("estado", "eliminada").gte("criado_em", desde),
     supabase.from("execucoes_busca").select("data, fonte, erro").order("data", { ascending: false }).limit(10),
     carregarPerfil(supabase),
+    supabase.from("curriculos").select("id, nome_versao, texto").order("criado_em", { ascending: false }),
   ]);
 
   // Última busca = execuções gravadas até 5 min depois da mais recente.
@@ -37,6 +38,8 @@ export default async function Sugestoes() {
     <QuadroSugestoes
       sugestoes={(data ?? []) as Sugestao[]}
       palavras={palavras}
+      curriculos={(curriculos ?? []).map((c) => ({ id: c.id, nome: c.nome_versao, texto: c.texto }))}
+      perfil={perfil}
       textoUltimaBusca={textoUltimaBusca}
       falhas={falhas}
       eliminadas={eliminadas ?? 0}

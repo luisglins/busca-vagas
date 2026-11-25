@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { carregarPerfil } from "@/lib/busca-supabase";
+import { compararCurriculos } from "@/lib/curriculo";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { COR_DA_FAIXA, STATUS, dataCurta, faixaDaNota, marcaDaNota, type Vaga } from "@/lib/vagas";
 import { SeletorStatus } from "../seletor-status";
@@ -11,12 +13,18 @@ export default async function DetalheVaga({ params }: PageProps<"/vagas/[id]">) 
   const { id } = await params;
   const supabase = await criarClienteServidor();
 
-  const [{ data: vaga }, { data: historico }, { data: curriculos }] = await Promise.all([
+  const [{ data: vaga }, { data: historico }, { data: curriculos }, perfil] = await Promise.all([
     supabase.from("vagas").select("*").eq("id", id).maybeSingle<Vaga>(),
     supabase.from("historico_status").select("*").eq("vaga_id", id).order("data", { ascending: false }),
-    supabase.from("curriculos").select("id, nome_versao").order("criado_em", { ascending: false }),
+    supabase.from("curriculos").select("id, nome_versao, texto").order("criado_em", { ascending: false }),
+    carregarPerfil(supabase),
   ]);
   if (!vaga) notFound();
+  const ranking = compararCurriculos(
+    (curriculos ?? []).map((c) => ({ id: c.id, nome: c.nome_versao, texto: c.texto })),
+    { cargo: vaga.cargo, descricao: vaga.descricao },
+    perfil,
+  );
 
   return (
     <section>
@@ -66,6 +74,39 @@ export default async function DetalheVaga({ params }: PageProps<"/vagas/[id]">) 
                       </li>
                     ))}
                   </ul>
+                )}
+              </>
+            )}
+          </div>
+
+          <div className="painel p-5">
+            <h2 className="font-titulo text-[22px] font-semibold">Qual currículo enviar</h2>
+            {ranking.length === 0 ? (
+              <p className="mt-2 text-sm text-aco">
+                {(curriculos ?? []).length === 0
+                  ? "Envie seus currículos na tela Currículos para ver qual combina mais."
+                  : "Cole a descrição da vaga para comparar com seus currículos."}
+              </p>
+            ) : (
+              <>
+                <ol className="mt-3 flex flex-col gap-2.5">
+                  {ranking.map((r, i) => (
+                    <li key={r.id}>
+                      <div className="flex justify-between gap-2 text-sm">
+                        <span className={i === 0 ? "font-semibold" : undefined}>{r.nome}</span>
+                        <span className="num">{r.cobertura}%</span>
+                      </div>
+                      <div className="mt-1 h-2 overflow-hidden rounded-full bg-concreto">
+                        <div className={`h-full rounded-full ${i === 0 ? "bg-verde" : "bg-seg-ferr"}`} style={{ width: `${r.cobertura}%` }} />
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                {ranking[0].faltando.length > 0 && (
+                  <p className="mt-3 text-[13px]">
+                    <span className="text-aco">Palavras da vaga que faltam em {ranking[0].nome}: </span>
+                    {ranking[0].faltando.join(", ")}
+                  </p>
                 )}
               </>
             )}

@@ -33,6 +33,8 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - **Nunca** automatizar acesso ao LinkedIn com a conta do Luís (viola termos, arrisca a conta).
 - Nota de aderência = função pura `pontuar(vaga, perfil)` com motivos explicados; palavras-chave em PT e EN.
 - Adzuna, Careerjet, Remotive descartadas.
+- **Currículo indicado (grátis, sem IA)**: o texto dos PDFs é extraído com `unpdf` no servidor (coluna `curriculos.texto`);
+  `compararCurriculos` mede quantas palavras-chave da vaga aparecem em cada currículo (`src/lib/curriculo.ts`).
 - **Nada pago**: o Luís recusou qualquer serviço pago, mesmo centavos (ex.: IA de currículo pela API). Só planos grátis.
 - Luís pediu menos perguntas (2026-11-25): Claude decide o que é técnico e só pede o que exige conta/senha dele.
   Por isso as etapas 3, 4 e 9 vieram antes da 2, e o SQL foi aplicado direto pelo Claude.
