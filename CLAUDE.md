@@ -15,6 +15,13 @@ o Luís nunca fez um site — explique cada etapa em poucas linhas, em portuguê
 Next.js 16 (App Router) + TypeScript + Tailwind 4 · Supabase (Postgres, Auth, Storage) · Vercel (hospedagem + Cron) · Vitest.
 Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `node_modules/next/dist/docs/` antes de escrever código.
 
+## Infraestrutura
+
+- GitHub: `luisglins/busca-vagas` (público). Cada push em `main` publica na Vercel automaticamente.
+- Vercel: projeto `busca-vagas` (`prj_m6AoUOlKIM5Z7NQwcLlHqAOFsBvA`, conta pessoal `team_iRZKErcFpVdoivc40gLubg3h`).
+- Supabase: projeto `busca-vagas` (`hadklgmaeuohlzaqwvqa`, região sa-east-1). Migrações em `supabase/migrations/`.
+- Sessão de login dura 400 dias (padrão do `@supabase/ssr`), renovada pelo `src/proxy.ts`.
+
 ## Decisões-chave
 
 - Só um usuário (Luís). Login obrigatório, cadastro público desligado, RLS em todas as tabelas, bucket de currículos privado.
@@ -23,6 +30,8 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - **Nunca** automatizar acesso ao LinkedIn com a conta do Luís (viola termos, arrisca a conta).
 - Nota de aderência = função pura `pontuar(vaga, perfil)` com motivos explicados; palavras-chave em PT e EN.
 - Adzuna, Careerjet, Remotive descartadas.
+- Luís pediu menos perguntas (2026-11-25): Claude decide o que é técnico e só pede o que exige conta/senha dele.
+  Por isso as etapas 3, 4 e 9 vieram antes da 2, e o SQL foi aplicado direto pelo Claude.
 
 ## Convenções
 
