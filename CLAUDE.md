@@ -48,3 +48,9 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - `npm run dev` — site em http://localhost:3000
 - `npm test` — testes
 - `npm run build` — build de produção (rodar antes de publicar)
+
+## Armadilhas conhecidas
+
+- **Cache Components está ligado** (`next.config.ts`). Página que lê cookie/sessão precisa estar sob o layout `(app)`,
+  que tem `export const instant = false`. Sem isso o `next build` falha com "blocking-prerender-dynamic".
+- Rode `npx next build` antes de dar push: a Vercel falha pelo mesmo motivo.

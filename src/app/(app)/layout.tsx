@@ -11,6 +11,10 @@ const MENU = [
   { href: "/configuracoes", rotulo: "Configurações" },
 ];
 
+// Páginas logadas leem o cookie de sessão a cada acesso, então são geradas no servidor
+// na hora (não fazem parte do "esqueleto estático" do Cache Components).
+export const instant = false;
+
 // Layout de todas as páginas que exigem login.
 export default async function LayoutLogado({ children }: LayoutProps<"/">) {
   const supabase = await criarClienteServidor();
