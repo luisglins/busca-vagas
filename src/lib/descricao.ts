@@ -11,18 +11,38 @@ export interface Secao {
   itens: string[];
 }
 
-const TITULOS: Record<Exclude<TipoSecao, "outro">, string[]> = {
+// Títulos de seção vistos em anúncios reais (Gupy, Greenhouse, Ashby), já sem acento e minúsculos.
+const TITULOS: Record<TipoSecao, string[]> = {
   atividades: [
-    "responsabilidades", "atribuicoes", "atividades", "o que voce vai fazer", "o que voce fara", "seus desafios",
-    "desafios", "dia a dia", "what you ll do", "what you will do", "responsibilities", "your role", "in this role",
+    "responsabilidades", "suas responsabilidades", "atribuicoes", "atividades", "o que voce vai fazer", "o que voce fara",
+    "seus desafios", "desafios", "sobre o desafio", "sobre a area e o desafio", "dia a dia", "no dia a dia", "no seu dia a dia",
+    "como sera o seu dia a dia", "como sera seu dia a dia", "seu impacto", "a oportunidade", "oportunidade",
+    "what you ll do", "what you will do", "what you will work on", "responsibilities", "responsabilities", "your role",
+    "in this role", "the role", "about the role", "role overview", "the opportunity", "your impact", "job description",
+    "position technical challenges", "here s what you can expect",
   ],
   requisitos: [
-    "requisitos", "qualificacoes", "o que buscamos", "o que estamos buscando", "o que esperamos", "pre requisitos",
-    "requirements", "qualifications", "what we re looking for", "you might thrive", "about you", "you have",
+    "requisitos", "requisitos e qualificacoes", "qualificacoes", "o que buscamos", "o que estamos buscando",
+    "o que esperamos", "o que esperamos de voce", "quem e voce", "pre requisitos", "obrigatorios", "hard skills",
+    "competencias", "requirements", "qualifications", "basic qualifications", "additional requirements",
+    "what we re looking for", "what we are looking for", "what you bring", "what you have", "who you are",
+    "about you", "you have", "you might thrive", "this role may fit if you have",
   ],
-  diferenciais: ["diferenciais", "desejavel", "sera um diferencial", "nice to have", "bonus points", "preferred"],
-  beneficios: ["beneficios", "o que oferecemos", "benefits", "perks", "what we offer"],
-  sobre: ["sobre", "quem somos", "about"],
+  diferenciais: [
+    "diferenciais", "desejavel", "sera um diferencial", "voce sera um diferencial", "o que aumenta as suas chances",
+    "o que aumenta suas chances", "o que aumentam suas chances", "opcionais", "nice to have", "nice to haves",
+    "bonus", "bonus points", "preferred", "preferred skills", "you ll stand out",
+  ],
+  beneficios: [
+    "beneficios", "nossos beneficios", "o que oferecemos", "nosso pacote", "benefits", "our benefits", "perks",
+    "what we offer",
+  ],
+  sobre: ["sobre", "quem somos", "conheca a gente", "about", "get to know us", "why"],
+  outro: [
+    "informacoes adicionais", "additional information", "etapas do processo", "como e nosso processo", "localizacao",
+    "location", "modelo de trabalho", "jornada de trabalho", "importante", "important", "privacidade", "privacy",
+    "diversidade", "diversity", "soft skills", "how we work", "growth potential",
+  ],
 };
 
 function tipoDoTitulo(linha: string): TipoSecao | null {
@@ -39,6 +59,9 @@ export function separarSecoes(texto: string): Secao[] {
   const linhas = texto
     // Gupy às vezes cola títulos: "atribuiçõesO QUE VOCÊ" → quebra antes das maiúsculas.
     .replace(/([a-zà-ÿ])([A-ZÀ-Ý]{2,})/g, "$1\n$2")
+    // ...ou colados num item numerado ("atribuições1-Elaborar") ou num título ("adicionaisDiferenciais").
+    .replace(/([a-zà-ÿ])(\d+\s*[-.)])/g, "$1\n$2")
+    .replace(/([a-zà-ÿ])(Diferenciais|Requisitos|Responsabilidades|Benefícios|Informações|Qualificações)/g, "$1\n$2")
     .split("\n")
     .map((l) => l.trim())
     .filter(Boolean);
@@ -48,8 +71,8 @@ export function separarSecoes(texto: string): Secao[] {
   for (const linha of linhas) {
     const tipo = tipoDoTitulo(linha);
     if (tipo) {
-      // Dois títulos seguidos (ex.: "Responsabilidades" + "O QUE VOCÊ VAI FAZER") viram um só.
-      if (atual && atual.titulo && atual.itens.length === 0) continue;
+      // Dois títulos seguidos do mesmo tipo (ex.: "Responsabilidades" + "O QUE VOCÊ VAI FAZER") viram um só.
+      if (atual && atual.titulo && atual.itens.length === 0 && atual.tipo === tipo) continue;
       atual = { titulo: linha.replace(/:$/, ""), tipo, itens: [] };
       secoes.push(atual);
       continue;

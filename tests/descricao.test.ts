@@ -28,6 +28,20 @@ describe("separarSecoes", () => {
     const s = separarSecoes("What you'll do\nBuild things\nRequirements\nEnglish");
     expect(s.map((x) => x.tipo)).toEqual(["atividades", "requisitos"]);
   });
+  it("reconhece títulos reais vistos na Greenhouse, Ashby e Gupy", () => {
+    const texto = [
+      "Como será o seu dia a dia:", "- Mapear processos",
+      "O Que Esperamos De Você (Requisitos)", "- Excel",
+      "O que aumenta as suas chances", "- Power BI",
+      "What you bring", "- SQL",
+      "Nossos benefícios incluem:", "- Vale refeição",
+    ].join("\n");
+    expect(separarSecoes(texto).map((x) => x.tipo)).toEqual(["atividades", "requisitos", "diferenciais", "requisitos", "beneficios"]);
+  });
+  it("separa título colado em número ou em outro título (Gupy)", () => {
+    const s = separarSecoes("Responsabilidades e atribuições1-Elaborar SIPOCs\nInformações adicionaisDiferenciais\n- Lean");
+    expect(s.map((x) => x.tipo)).toEqual(["atividades", "outro", "diferenciais"]);
+  });
   it("separa título colado no texto (comum na Gupy)", () => {
     const s = separarSecoes("Responsabilidades e atribuiçõesO QUE VOCÊ VAI FAZER\nAcompanhar o PCP");
     expect(s[0].tipo).toBe("atividades");

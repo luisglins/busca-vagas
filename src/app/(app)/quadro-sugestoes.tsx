@@ -134,9 +134,11 @@ const MAX_ITENS = 10;
 
 /** Conteúdo do "Veja mais": seções da descrição + ficha da vaga. */
 function Detalhes({ s, palavras, id, agora }: { s: Sugestao; palavras: string[]; id: string; agora: number }) {
-  const secoes = separarSecoes(s.descricao ?? "");
+  const secoes = separarSecoes(s.descricao ?? "").filter((x) => x.itens.length > 0);
+  // Prioridade: atividades, requisitos e diferenciais. Sem elas, o que não for "sobre a empresa" ou benefícios.
   const principais = secoes.filter((x) => ["atividades", "requisitos", "diferenciais"].includes(x.tipo));
-  const mostrar = (principais.length > 0 ? principais : secoes).slice(0, 4);
+  const alternativas = secoes.filter((x) => !["sobre", "beneficios"].includes(x.tipo));
+  const mostrar = (principais.length > 0 ? principais : alternativas.length > 0 ? alternativas : secoes).slice(0, 4);
   const prazo = s.prazo_inscricao ? new Date(s.prazo_inscricao) : null;
   const prazoPerto = prazo && prazo.getTime() - agora < 3 * 86_400_000;
 
