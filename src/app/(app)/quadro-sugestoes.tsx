@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { createContext, useContext, useMemo, useState, useTransition } from "react";
+import { agruparSugestoes, type Grupo } from "@/lib/agrupar";
 import { compararCurriculos } from "@/lib/curriculo";
 import type { Perfil } from "@/lib/tipos";
 import { composicaoDaNota, marcarPalavras, separarSecoes } from "@/lib/descricao";
@@ -261,7 +262,39 @@ function Detalhes({ s, palavras, id, agora }: { s: Sugestao; palavras: string[];
   );
 }
 
-function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: string[]; faixa: (typeof FAIXAS)[number]; agora: number }) {
+/** Outras vagas do mesmo grupo (ex.: o mesmo programa de trainee em outras cidades). */
+function Variacoes({ membros }: { membros: Sugestao[] }) {
+  const [ocupado, iniciar] = useTransition();
+  return (
+    <div className="col-span-full mt-3 rounded-lg border border-junta bg-concreto/50 p-3 text-sm md:col-[2/4]">
+      <p className="mb-2 font-titulo text-lg font-semibold">{membros.length} vagas neste grupo</p>
+      <ul className="divide-y divide-junta-leve">
+        {membros.map((m) => (
+          <li key={m.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-1.5">
+            <span>
+              <strong className="font-semibold">{m.cargo}</strong>
+              <span className="text-aco"> · {m.cidade ?? m.local ?? "local não informado"} · nota {m.nota}</span>
+            </span>
+            <span className="flex gap-3">
+              {m.link && (
+                <a href={m.link} target="_blank" rel="noreferrer" className="underline">
+                  anúncio
+                </a>
+              )}
+              <button type="button" className="btn-texto py-0 text-grafite underline" disabled={ocupado} onClick={() => iniciar(async () => void (await adicionarSugestao(m.id)))}>
+                adicionar esta
+              </button>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugestao>; palavras: string[]; faixa: (typeof FAIXAS)[number]; agora: number }) {
+  const s = grupo.principal;
+  const outras = grupo.membros.length - 1;
   const [aberto, setAberto] = useState(false);
   const [ocupado, iniciar] = useTransition();
   const [aviso, setAviso] = useState<string | null>(null);
@@ -286,6 +319,12 @@ function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: s
             {s.publicada_em ? `, ${quandoPublicada(s.publicada_em, agora)}` : ""}
           </span>
           {s.area === "ia" && <span className="border-l-[3px] border-aco pl-1.5 text-grafite">IA</span>}
+          {outras > 0 && (
+            <span className="font-medium text-grafite">
+              + {outras} {outras === 1 ? "vaga parecida" : "vagas parecidas"} ({[...new Set(grupo.membros.slice(1).map((m) => m.cidade ?? m.local).filter(Boolean))].slice(0, 3).join(", ")}
+              {grupo.membros.length > 4 ? "…" : ""})
+            </span>
+          )}
         </div>
       </div>
       <div className="col-span-full mt-3 flex flex-wrap gap-2 md:col-auto md:mt-0 md:w-44 md:flex-col md:items-stretch">
@@ -297,8 +336,8 @@ function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: s
         >
           Adicionar à lista
         </button>
-        <button type="button" className="btn" disabled={ocupado} onClick={() => iniciar(() => descartarSugestao(s.id))}>
-          Descartar
+        <button type="button" className="btn" disabled={ocupado} onClick={() => iniciar(() => descartarSugestao(grupo.membros.map((m) => m.id)))}>
+          {outras > 0 ? "Descartar grupo" : "Descartar"}
         </button>
         <button
           type="button"
@@ -331,6 +370,7 @@ function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: s
           ▾
         </span>
       </button>
+      {aberto && outras > 0 && <Variacoes membros={grupo.membros} />}
       {aberto && <Detalhes s={s} palavras={palavras} id={idDetalhes} agora={agora} />}
     </li>
   );
@@ -358,10 +398,17 @@ export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, texto
     const filtradas = ordenadas.filter(
       (s) => (areas.size === 0 || (s.area && areas.has(s.area))) && (fontes.size === 0 || fontes.has(s.fonte)),
     );
-    return Object.fromEntries(FAIXAS.map((f) => [f.id, filtradas.filter((s) => faixaDaNota(s.nota) === f.id)])) as Record<Faixa, Sugestao[]>;
+    // Vagas repetidas (mesmo programa de trainee, mesmo cargo em outra cidade) viram um cartão só.
+    const grupos = agruparSugestoes(filtradas);
+    if (ordem === "data") grupos.sort((a, b) => (b.principal.publicada_em ?? "").localeCompare(a.principal.publicada_em ?? ""));
+    return Object.fromEntries(FAIXAS.map((f) => [f.id, grupos.filter((g) => faixaDaNota(g.principal.nota) === f.id)])) as Record<
+      Faixa,
+      Grupo<Sugestao>[]
+    >;
   }, [sugestoes, areas, fontes, ordem]);
 
-  const totalPorFaixa = (f: Faixa) => sugestoes.filter((s) => faixaDaNota(s.nota) === f).length;
+  const todosGrupos = useMemo(() => agruparSugestoes(sugestoes), [sugestoes]);
+  const totalPorFaixa = (f: Faixa) => todosGrupos.filter((g) => faixaDaNota(g.principal.nota) === f).length;
   const conta = (campo: "area" | "fonte", valor: string) => sugestoes.filter((s) => s[campo] === valor).length;
   const mostrando = FAIXAS.reduce((t, f) => t + (faixasLigadas.has(f.id) ? porFaixa[f.id].length : 0), 0);
 
@@ -444,7 +491,7 @@ export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, texto
             </select>
           </label>
           <p className="ml-auto text-[13px] text-aco-claro" aria-live="polite">
-            Mostrando <strong className="num text-base text-white">{mostrando}</strong> de {sugestoes.length}
+            Mostrando <strong className="num text-base text-white">{mostrando}</strong> de {todosGrupos.length}
           </p>
         </div>
       </div>
@@ -460,8 +507,8 @@ export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, texto
               </small>
             </h2>
             <ol className="flex flex-col gap-2.5 bg-concreto">
-              {porFaixa[f.id].map((s) => (
-                <LinhaSugestao key={s.id} s={s} palavras={palavras} faixa={f} agora={agora} />
+              {porFaixa[f.id].map((g) => (
+                <LinhaSugestao key={g.principal.id} grupo={g} palavras={palavras} faixa={f} agora={agora} />
               ))}
             </ol>
           </section>

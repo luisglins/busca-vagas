@@ -30,9 +30,10 @@ export async function adicionarSugestao(id: string): Promise<string | null> {
   return null;
 }
 
-export async function descartarSugestao(id: string): Promise<void> {
+/** Descarta uma sugestão ou um grupo inteiro (ex.: o mesmo programa de trainee em várias cidades). */
+export async function descartarSugestao(ids: string[]): Promise<void> {
   const supabase = await criarClienteServidor();
-  await supabase.from("sugestoes").update({ estado: "descartada", decidido_em: new Date().toISOString() }).eq("id", id);
+  await supabase.from("sugestoes").update({ estado: "descartada", decidido_em: new Date().toISOString() }).in("id", ids);
   refresh();
 }
 
