@@ -8,17 +8,17 @@
   --color-aco: #51646c;
   --color-aco-claro: #b9c2be;
   /* Tons mais baixos para não ofuscar (pedido do Luís): fundo cinza-esverdeado médio, painéis em off-white. */
-  --color-concreto: #d9ded8;
-  --color-chapa: #eef0eb;
-  --color-junta: #c4cbc5;
-  --color-junta-leve: #dde2dc;
+  --color-concreto: #ccd2cb;
+  --color-chapa: #e6e9e3;
+  --color-junta: #b9c1ba;
+  --color-junta-leve: #d4dad3;
   --color-laranja: #f0a202;
   --color-laranja-forte: #e0960a;
   --color-laranja-escuro: #c46a00;
   --color-laranja-claro: #fde9c2;
   --color-verde: #1f6b43;
   --color-verde-luz: #3fa66b;
-  --color-verde-claro: #d5e6da;
+  --color-verde-claro: #cadfd0;
   --color-vermelho: #b3261e;
   --color-cinza-nota: #7d8a84;
   --color-seg-ferr: #8fa09a;
@@ -88,29 +88,32 @@ body {
   .rotulo { display: flex; flex-direction: column; gap: 4px; font-size: 14px; font-weight: 500; }
   .painel { background: var(--color-chapa); border: 1px solid var(--color-junta); border-radius: 12px; }
 
-  /* Nome da vaga: Bricolage pesada com um traço de marca-texto na cor da faixa da nota.
-     --marca muda por faixa (verde, laranja, cinza); no hover o traço sobe e cobre mais a palavra. */
+  /* Nome da vaga: Bricolage forte, com uma "luz" redonda na cor da faixa da nota antes do nome
+     (verde = vale aplicar, laranja = avalie, cinza = pouco aderente). Sóbrio, sem marca-texto. */
   .titulo-vaga {
-    --marca: var(--color-laranja-claro);
+    --marca: var(--color-laranja);
     font-family: var(--font-titulo);
     font-weight: 700;
     font-size: 21px;
     line-height: 1.25;
     letter-spacing: -0.02em;
     font-variation-settings: "opsz" 48;
-    background-image: linear-gradient(transparent 52%, var(--marca) 52%, var(--marca) 94%, transparent 94%);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    padding: 0 2px;
-    transition: background-image 0.2s;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
   }
-  a.titulo-vaga:hover, .titulo-vaga:hover {
-    background-image: linear-gradient(transparent 30%, var(--marca) 30%, var(--marca) 92%, transparent 92%);
+  .titulo-vaga::before {
+    content: "";
+    display: inline-block;
+    width: 0.42em;
+    height: 0.42em;
+    margin-right: 0.45em;
+    border-radius: 50%;
+    background: var(--marca);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--marca) 22%, transparent);
+    vertical-align: 0.12em;
   }
-  .marca-verde { --marca: #b9dfc6; }
-  .marca-amarela { --marca: #fbd88a; }
-  .marca-cinza { --marca: #dde3df; }
-  @media (prefers-reduced-motion: reduce) { .titulo-vaga { transition: none; } }
+  a.titulo-vaga:hover { text-decoration-line: underline; text-decoration-color: var(--marca); }
+  .marca-verde { --marca: #2f8f57; }
+  .marca-amarela { --marca: #e89a00; }
+  .marca-cinza { --marca: #8c9892; }
 }

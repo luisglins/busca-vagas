@@ -94,8 +94,8 @@ const FONTES = [
 
 const FAIXAS: { id: Faixa; titulo: string; lampada: string; luz: string; cor: string; fundo: string; barra: string; marca: string }[] = [
   { id: "verde", titulo: "Vale aplicar", lampada: "Vale aplicar, nota 70 ou mais", luz: "bg-verde-luz", cor: "text-verde", fundo: "bg-verde-claro", barra: "before:bg-verde", marca: "marca-verde" },
-  { id: "amarela", titulo: "Avalie antes de aplicar", lampada: "Avalie, nota de 40 a 69", luz: "bg-laranja", cor: "text-laranja-escuro", fundo: "bg-[#f2e6cf]", barra: "before:bg-laranja-escuro", marca: "marca-amarela" },
-  { id: "cinza", titulo: "Pouco aderente", lampada: "Pouco aderente, abaixo de 40", luz: "bg-[#9aa6a1]", cor: "text-cinza-nota", fundo: "bg-[#e3e7e2]", barra: "before:bg-cinza-nota", marca: "marca-cinza" },
+  { id: "amarela", titulo: "Avalie antes de aplicar", lampada: "Avalie, nota de 40 a 69", luz: "bg-laranja", cor: "text-laranja-escuro", fundo: "bg-[#eadcc2]", barra: "before:bg-laranja-escuro", marca: "marca-amarela" },
+  { id: "cinza", titulo: "Pouco aderente", lampada: "Pouco aderente, abaixo de 40", luz: "bg-[#9aa6a1]", cor: "text-cinza-nota", fundo: "bg-[#d9ded8]", barra: "before:bg-cinza-nota", marca: "marca-cinza" },
 ];
 
 const MODALIDADE: Record<string, string> = {
@@ -138,7 +138,7 @@ function BarraDaNota({ motivos }: { motivos: string[] }) {
 
   return (
     <div className="col-span-full mt-3 md:col-[2/3]">
-      <div role="img" aria-label={`Composição da nota: ${rotulo}`} className="relative h-3 max-w-[520px] overflow-hidden rounded-sm bg-[repeating-linear-gradient(90deg,#dde2dc_0_9.6%,#cdd4ce_9.6%_10%)]">
+      <div role="img" aria-label={`Composição da nota: ${rotulo}`} className="relative h-3 max-w-[520px] overflow-hidden rounded-sm bg-[repeating-linear-gradient(90deg,#d4dad3_0_9.6%,#c3cbc4_9.6%_10%)]">
         {segmentos.map((s) => (
           <span key={s.nome} className={`absolute inset-y-0 ${corDoSegmento(s.nome)}`} style={{ left: `${Math.min(s.inicio, 100)}%`, width: `${Math.max(0, Math.min(s.pontos, 100 - s.inicio))}%` }} />
         ))}
