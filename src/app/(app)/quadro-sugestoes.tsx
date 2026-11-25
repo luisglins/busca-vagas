@@ -5,7 +5,7 @@ import { createContext, useContext, useMemo, useState, useTransition } from "rea
 import { agruparSugestoes, type Grupo } from "@/lib/agrupar";
 import { compararCurriculos } from "@/lib/curriculo";
 import type { Perfil } from "@/lib/tipos";
-import { composicaoDaNota, marcarPalavras, separarSecoes } from "@/lib/descricao";
+import { marcarPalavras, separarSecoes } from "@/lib/descricao";
 import { faixaDaNota, type Faixa } from "@/lib/vagas";
 import { adicionarSugestao, bloquearEmpresa, buscarAgora, descartarSugestao } from "./sugestoes-acoes";
 
@@ -119,56 +119,6 @@ function quandoPublicada(iso: string | null, agora: number): string {
 
 const dataCurta = (iso: string) =>
   new Date(iso).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit" });
-
-function corDoSegmento(nome: string): string {
-  if (nome === "processos") return "bg-grafite";
-  if (nome.startsWith("IA")) return "bg-aco";
-  if (nome === "ferramentas") return "bg-seg-ferr";
-  return "bg-seg-ctx";
-}
-
-/** Barra de composição da nota: cada categoria é um trecho; penalidades hachuradas em vermelho. */
-function BarraDaNota({ motivos }: { motivos: string[] }) {
-  const c = composicaoDaNota(motivos);
-  // Cada trecho começa onde o anterior terminou.
-  const segmentos = c.positivos.map((p, i) => ({
-    ...p,
-    inicio: c.positivos.slice(0, i).reduce((t, q) => t + q.pontos, 0),
-  }));
-  const x = c.positivos.reduce((t, p) => t + p.pontos, 0);
-  const penalidade = c.negativos.reduce((t, n) => t + n.pontos, 0);
-  const rotulo = [...c.positivos.map((p) => `${p.nome} ${p.pontos}`), ...c.negativos.map((n) => `${n.nome} menos ${n.pontos}`)].join(", ");
-
-  return (
-    <div className="col-span-full mt-3 md:col-[2/3]">
-      <div role="img" aria-label={`Composição da nota: ${rotulo}`} className="relative h-3 max-w-[520px] overflow-hidden rounded-sm bg-[repeating-linear-gradient(90deg,#d4dad3_0_9.6%,#c3cbc4_9.6%_10%)]">
-        {segmentos.map((s) => (
-          <span key={s.nome} className={`absolute inset-y-0 ${corDoSegmento(s.nome)}`} style={{ left: `${Math.min(s.inicio, 100)}%`, width: `${Math.max(0, Math.min(s.pontos, 100 - s.inicio))}%` }} />
-        ))}
-        {penalidade > 0 && (
-          <span
-            className="absolute inset-y-0 bg-[repeating-linear-gradient(135deg,#b3261e_0_3px,#f3d6d3_3px_6px)]"
-            style={{ left: `${Math.max(0, Math.min(x, 100) - penalidade)}%`, width: `${Math.min(penalidade, Math.min(x, 100))}%` }}
-          />
-        )}
-      </div>
-      <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-aco">
-        {c.positivos.map((p) => (
-          <li key={p.nome} className="flex items-center gap-1.5">
-            <span aria-hidden="true" className={`inline-block size-2.5 ${corDoSegmento(p.nome)}`} />
-            {p.nome} {p.pontos}
-          </li>
-        ))}
-        {c.negativos.map((n) => (
-          <li key={n.nome} className="flex items-center gap-1.5 text-vermelho">
-            <span aria-hidden="true" className="inline-block size-2.5 bg-[repeating-linear-gradient(135deg,#b3261e_0_2px,#f3d6d3_2px_4px)]" />
-            {n.nome} −{n.pontos}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 function TextoMarcado({ texto, palavras }: { texto: string; palavras: string[] }) {
   return (
@@ -328,6 +278,18 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
             </span>
           )}
         </div>
+          <button
+            type="button"
+            className="btn-texto mt-2"
+            aria-expanded={aberto}
+            aria-controls={idDetalhes}
+            onClick={() => setAberto(!aberto)}
+          >
+            {aberto ? "Veja menos" : "Veja mais"}{" "}
+            <span aria-hidden="true" className={`inline-block transition-transform motion-reduce:transition-none ${aberto ? "rotate-180" : ""}`}>
+              ▾
+            </span>
+          </button>
       </div>
       <div className="col-span-full mt-3 flex flex-wrap gap-2 md:col-auto md:mt-0 md:w-44 md:flex-col md:items-stretch">
         <button
@@ -359,19 +321,6 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
           </p>
         )}
       </div>
-      {s.motivos && s.motivos.length > 0 && <BarraDaNota motivos={s.motivos} />}
-      <button
-        type="button"
-        className="btn-texto col-span-full justify-self-start md:col-[2/3]"
-        aria-expanded={aberto}
-        aria-controls={idDetalhes}
-        onClick={() => setAberto(!aberto)}
-      >
-        {aberto ? "Veja menos" : "Veja mais"}{" "}
-        <span aria-hidden="true" className={`inline-block transition-transform motion-reduce:transition-none ${aberto ? "rotate-180" : ""}`}>
-          ▾
-        </span>
-      </button>
       {aberto && outras > 0 && <Variacoes membros={grupo.membros} />}
       {aberto && <Detalhes s={s} palavras={palavras} id={idDetalhes} agora={agora} />}
     </li>

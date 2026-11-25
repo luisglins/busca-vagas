@@ -84,3 +84,8 @@ Comparação em `docs/prototipo/identidade.html`. Mistura escolhida:
 - **Nome da vaga:** classe `.titulo-vaga` — Bricolage 700 com marca-texto na cor da faixa da nota
   (`marca-verde`, `marca-amarela`, `marca-cinza`); no hover o marca-texto sobe.
 - Cantos mais arredondados: 12px em painéis, 8px em botões e campos, chaves de filtro em pílula.
+
+## Barra de composição da nota removida (2026-11-25, pedido do Luís)
+
+O Luís achou a barra e a legenda ("processos 40 · IA aplicada 40…") feias e pouco úteis no dia a dia. Os cartões das Sugestões
+mostram só a nota; os motivos detalhados continuam na página de cada vaga. `composicaoDaNota` segue em `src/lib/descricao.ts`.
