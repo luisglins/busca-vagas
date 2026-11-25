@@ -76,6 +76,7 @@ function CurriculoIndicado({ s }: { s: Sugestao }) {
 }
 
 interface Props {
+  modo: "sites" | "email";
   sugestoes: Sugestao[];
   palavras: string[];
   curriculos: CurriculoComparavel[];
@@ -327,7 +328,8 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
   );
 }
 
-export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, textoUltimaBusca, falhas, eliminadas, agora }: Props) {
+export function QuadroSugestoes({ modo, sugestoes, palavras, curriculos, perfil, textoUltimaBusca, falhas, eliminadas, agora }: Props) {
+  const doEmail = modo === "email";
   const [faixasLigadas, setFaixas] = useState<Set<Faixa>>(new Set(["verde", "amarela", "cinza"]));
   const [areas, setAreas] = useState<Set<string>>(new Set());
   const [fontes, setFontes] = useState<Set<string>>(new Set());
@@ -368,7 +370,7 @@ export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, texto
     <section>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="titulo-tela">Sugestões</h1>
+          <h1 className="titulo-tela">{doEmail ? "Do LinkedIn" : "Sugestões"}</h1>
           <p className="mt-2 text-sm text-aco">
             {textoUltimaBusca} {eliminadas > 0 && `${eliminadas} vagas ficaram de fora pelos filtros do seu perfil.`}
           </p>
@@ -381,14 +383,14 @@ export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, texto
           <Link href="/historico" className="btn">
             Histórico
           </Link>
-          <button
+          {!doEmail && <button
             type="button"
             className="btn"
             disabled={buscando}
             onClick={() => iniciarBusca(async () => setResultadoBusca(await buscarAgora()))}
           >
             {buscando ? "Buscando vagas…" : "Buscar agora"}
-          </button>
+          </button>}
           </div>
           {resultadoBusca && !buscando && <p className="text-[13px] text-aco" aria-live="polite">Busca concluída: {resultadoBusca}</p>}
         </div>
@@ -424,12 +426,12 @@ export function QuadroSugestoes({ sugestoes, palavras, curriculos, perfil, texto
               <Chave key={a.id} ligada={areas.has(a.id)} onClick={() => alternar(areas, a.id, setAreas)} rotulo={a.nome} n={conta("area", a.id)} />
             ))}
           </div>
-          <div role="group" aria-label="Site" className="flex flex-wrap items-center gap-1.5">
+          {!doEmail && <div role="group" aria-label="Site" className="flex flex-wrap items-center gap-1.5">
             <span className="mr-1 text-aco-claro">Site</span>
-            {FONTES.map((f) => (
+            {FONTES.filter((f) => f.id !== "linkedin").map((f) => (
               <Chave key={f.id} ligada={fontes.has(f.id)} onClick={() => alternar(fontes, f.id, setFontes)} rotulo={f.nome} n={conta("fonte", f.id)} />
             ))}
-          </div>
+          </div>}
           <label className="flex items-center gap-2">
             <span className="text-aco-claro">Ordenar por</span>
             <select

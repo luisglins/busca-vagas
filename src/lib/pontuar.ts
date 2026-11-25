@@ -10,6 +10,9 @@ const CIDADES_RJ = [
 
 const ESTADO_RJ = ["rio de janeiro", "rj"];
 
+/** Quanto ampliar a nota de vagas que só têm o título (alertas do LinkedIn por e-mail). */
+const FATOR_SO_TITULO = 1.6;
+
 const NOME_CATEGORIA: Record<IdCategoria, string> = {
   processos: "processos",
   ia_alto: "IA aplicada",
@@ -107,6 +110,13 @@ export function pontuar(vaga: VagaBruta, perfil: Perfil): Resultado {
     (pontosPorCategoria.ia_alto ?? 0) + (pontosPorCategoria.ia_medio ?? 0) + (pontosPorCategoria.ia_baixo ?? 0);
   let area: Area | null = null;
   if (processos > 0 || ia > 0) area = processos >= ia ? "processos" : "ia";
+
+  // Vagas do LinkedIn chegam pelo e-mail sem descrição: só o nome da vaga conta,
+  // então a nota é ampliada para ficar na mesma escala das outras fontes.
+  if (vaga.fonte === "linkedin" && !descricao) {
+    total = Math.round(total * FATOR_SO_TITULO);
+    motivos.push("nota pelo nome da vaga");
+  }
 
   return {
     nota: Math.max(0, Math.min(100, total)),

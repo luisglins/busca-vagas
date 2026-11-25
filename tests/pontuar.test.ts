@@ -203,3 +203,19 @@ describe("pontuar — trainee", () => {
     expect(r.eliminada).toBe(true);
   });
 });
+
+describe("pontuar — vagas do LinkedIn (só o nome da vaga)", () => {
+  it("a nota é ampliada porque só o título conta (sem descrição)", () => {
+    const r = pontuar(vaga({ fonte: "linkedin", cargo: "Engenheiro de Produção Júnior", descricao: "" }), perfil);
+    expect(r.nota).toBe(80); // processos 40 + nível 10 = 50, × 1,6
+    expect(r.motivos).toContain("nota pelo nome da vaga");
+  });
+  it("título fora da área continua baixo", () => {
+    const r = pontuar(vaga({ fonte: "linkedin", cargo: "Assistente de Crewing", descricao: "" }), perfil);
+    expect(r.nota).toBeLessThan(40);
+  });
+  it("nunca passa de 100", () => {
+    const r = pontuar(vaga({ fonte: "linkedin", cargo: "Trainee de Engenharia de Processos com IA e Power BI", descricao: "" }), perfil);
+    expect(r.nota).toBe(100);
+  });
+});

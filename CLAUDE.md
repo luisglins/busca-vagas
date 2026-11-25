@@ -31,6 +31,9 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - LinkedIn: alertas de vaga por e-mail → Apps Script no Gmail (`scripts/apps-script/linkedin.gs`) → `POST /api/ingest/linkedin`
   com `INGEST_SECRET` (na Vercel e no `.env.local`). Leitor principal: `extrairVagasDoTexto` (texto puro do e-mail,
   validado com alertas reais anonimizados em `tests/fixtures/linkedin-alerta.txt`); o leitor de HTML é reserva.
+- Aba **LinkedIn** (`/linkedin`) separada das Sugestões (só sites): vagas do e-mail não têm descrição, então a nota usa
+  só o nome da vaga, ampliada ×1,6 (`FATOR_SO_TITULO` em `pontuar.ts`).
+- Candidatura automática foi descartada de propósito: viola os termos do LinkedIn/Gupy e piora a qualidade das candidaturas.
 - Vagas fora do Brasil são descartadas sem gravar; anúncios com mais de 90 dias são eliminados.
 - Sessão de login dura 400 dias (padrão do `@supabase/ssr`), renovada pelo `src/proxy.ts`.
 
