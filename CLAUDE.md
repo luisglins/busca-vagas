@@ -22,6 +22,9 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - Supabase: projeto `busca-vagas` (`hadklgmaeuohlzaqwvqa`, região sa-east-1). Migrações em `supabase/migrations/`.
 - Busca diária: Vercel Cron às 10h UTC (7h Brasília) chama `/api/cron/buscar` com `CRON_SECRET` (já na Vercel);
   a rota usa `SUPABASE_SECRET_KEY` (o Luís precisa copiar do Supabase para a Vercel). Funções na região `gru1` (São Paulo).
+- Trainee vale em qualquer cidade do Brasil (`traineeQualquerCidade`) e soma o grupo "trainee"; "auxiliar" elimina.
+- `completarPerfil` dá ao perfil salvo os campos/grupos novos do padrão (sem apagar edições do Luís).
+- Entradas manuais: formulário, importar CSV (`src/lib/csv.ts`) e o bookmarklet `/salvar` (em Configurações).
 - Vagas fora do Brasil são descartadas sem gravar; anúncios com mais de 90 dias são eliminados.
 - Sessão de login dura 400 dias (padrão do `@supabase/ssr`), renovada pelo `src/proxy.ts`.
 
