@@ -14,9 +14,11 @@
     --concreto: #f3f4f1;
     --chapa: #ffffff;
     --junta: #d6dbd7;
-    --amarelo: #f2b705;
-    --amarelo-claro: #fdf1c7;
-    --verde: #2e7d4f;
+    --amarelo: #f0a202;
+    --amarelo-claro: #fde9c2;
+    --laranja: #c46a00;
+    --verde: #1f6b43;
+    --verde-claro: #e3efe7;
     --vermelho: #b3261e;
     --cinza-nota: #7d8a84;
     --seg-ia: #51646c;
@@ -69,23 +71,57 @@
   .btn-texto { border: 0; background: none; padding: 6px 0; color: var(--aco); font-size: 13px; }
   .btn-texto:hover { color: var(--grafite); text-decoration: underline; }
 
-  /* Filtros */
-  .filtros { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; margin-bottom: 16px; font-size: 14px; }
-  .segmentado { display: inline-flex; border: 1px solid var(--junta); border-radius: 4px; overflow: hidden; background: var(--chapa); }
-  .segmentado button { border: 0; background: none; font: inherit; padding: 7px 14px; cursor: pointer; color: var(--aco); }
-  .segmentado button + button { border-left: 1px solid var(--junta); }
-  .segmentado button[aria-pressed="true"] { background: var(--grafite); color: #fff; }
   select { font: inherit; border: 1px solid var(--junta); border-radius: 4px; padding: 6px 8px; background: var(--chapa); }
-  .rot { color: var(--aco); margin-right: 8px; }
 
-  /* Lista de sugestões */
-  .lista { list-style: none; margin: 0; padding: 0; background: var(--chapa); border: 1px solid var(--junta); border-radius: 6px; }
-  .vaga { display: grid; grid-template-columns: 64px 1fr auto; gap: 4px 20px; padding: 20px; }
-  .vaga + .vaga { border-top: 1px solid var(--junta); }
+  /* Quadro de controle (filtros) — estilo quadro de gestão à vista */
+  .quadro { background: var(--grafite); color: #e9ece9; border-radius: 6px 6px 0 0; padding: 16px 20px 0; }
+  .lampadas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .lampada {
+    display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 2px 12px; text-align: left;
+    background: #2a3431; border: 1px solid #3a4642; border-radius: 4px; padding: 10px 14px; cursor: pointer; color: inherit; font: inherit;
+  }
+  .lampada:hover { border-color: #6b7a75; }
+  .lampada .luz { grid-row: 1 / 3; width: 14px; height: 14px; border-radius: 50%; background: var(--cor); box-shadow: 0 0 0 4px color-mix(in srgb, var(--cor) 25%, transparent); }
+  .lampada .qtd { font-family: var(--cond); font-weight: 600; font-size: 28px; line-height: 1; }
+  .lampada .nome { font-size: 13px; color: #b9c2be; }
+  .lampada[aria-pressed="false"] { opacity: .45; }
+  .lampada[aria-pressed="false"] .luz { box-shadow: none; background: #56625e; }
+  .trilhos { display: flex; flex-wrap: wrap; gap: 12px 28px; padding: 14px 0; font-size: 14px; align-items: center; }
+  .trilho { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .trilho > span { color: #b9c2be; margin-right: 4px; }
+  .chave {
+    font: inherit; font-size: 13px; color: #e9ece9; background: transparent; border: 1px solid #4a5753; border-radius: 4px;
+    padding: 5px 10px; cursor: pointer;
+  }
+  .chave .n { font-family: var(--cond); color: #b9c2be; margin-left: 6px; }
+  .chave:hover { border-color: #8d9a95; }
+  .chave[aria-pressed="true"] { background: var(--amarelo); border-color: var(--amarelo); color: var(--grafite); }
+  .chave[aria-pressed="true"] .n { color: var(--grafite); }
+  .quadro select { background: #2a3431; color: #e9ece9; border-color: #4a5753; }
+  .contagem { margin-left: auto; color: #b9c2be; font-size: 13px; }
+  .contagem strong { color: #fff; font-family: var(--cond); font-size: 16px; }
+
+  /* Lista de sugestões, agrupada por faixa */
+  .lista-wrap { background: var(--chapa); border: 1px solid var(--junta); border-top: 0; border-radius: 0 0 6px 6px; }
+  .faixa h2 { display: flex; align-items: baseline; gap: 10px; margin: 0; padding: 12px 20px; font-family: var(--cond); font-weight: 600; font-size: 18px;
+    background: var(--fundo); border-bottom: 1px solid var(--junta); color: var(--cor); }
+  .faixa h2 small { font: 400 13px "IBM Plex Sans", sans-serif; color: var(--aco); }
+  .faixa + .faixa h2 { border-top: 1px solid var(--junta); }
+  .faixa[hidden] { display: none; }
+  .lista { list-style: none; margin: 0; padding: 0; }
+  .vaga { display: grid; grid-template-columns: 64px 1fr auto; gap: 4px 20px; padding: 20px 20px 20px 26px; position: relative; }
+  .vaga::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--cor); }
+  .vaga + .vaga { border-top: 1px solid #e7eae7; }
+  .vaga[hidden] { display: none; }
+  .sem-resultado { padding: 28px 20px; color: var(--aco); }
+  .sem-resultado[hidden] { display: none; }
+  .faixa-verde { --cor: var(--verde); --fundo: var(--verde-claro); }
+  .faixa-amarela { --cor: var(--laranja); --fundo: #fdf3e1; }
+  .faixa-cinza { --cor: #7d8a84; --fundo: #f1f3f1; }
   .nota { font-family: var(--cond); font-weight: 600; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
   .nota small { display: block; font: 400 12px/1.4 "IBM Plex Sans", sans-serif; color: var(--aco); margin-top: 4px; }
   .nota.verde { color: var(--verde); }
-  .nota.amarela { color: #9a6f00; }
+  .nota.amarela { color: var(--laranja); }
   .nota.amarela::before { content: ""; display: block; width: 28px; height: 4px; background: var(--amarelo); margin-bottom: 6px; }
   .nota.verde::before { content: ""; display: block; width: 28px; height: 4px; background: var(--verde); margin-bottom: 6px; }
   .nota.cinza { color: var(--cinza-nota); }
@@ -119,7 +155,7 @@
   .detalhes { grid-column: 2 / 4; margin-top: 12px; border-top: 1px dashed var(--junta); padding-top: 16px;
     display: grid; grid-template-columns: 1fr 1fr 220px; gap: 24px; font-size: 14px; }
   .detalhes[hidden] { display: none; }
-  .detalhes h3 { font-family: var(--cond); font-weight: 600; font-size: 18px; margin: 0 0 8px; }
+  .detalhes h4 { font-family: var(--cond); font-weight: 600; font-size: 18px; margin: 0 0 8px; }
   .detalhes ul { margin: 0; padding-left: 18px; }
   .detalhes li { margin-bottom: 4px; max-width: 60ch; }
   mark { background: var(--amarelo-claro); color: inherit; padding: 0 2px; border-bottom: 2px solid var(--amarelo); }
@@ -164,6 +200,8 @@
   .cv li { align-items: center; }
 
   @media (max-width: 760px) {
+    .lampadas { grid-template-columns: 1fr; }
+    .contagem { margin-left: 0; }
     .vaga { grid-template-columns: 52px 1fr; }
     .acoes { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; min-width: 0; }
     .comp, .ver-mais { grid-column: 1 / -1; }
@@ -197,178 +235,234 @@
   <div class="cabeca">
     <div>
       <h1>Sugestões</h1>
-      <p class="sub">Busca de hoje às 7h02 em Gupy, Greenhouse e Ashby. 38 vagas ficaram de fora pelos filtros.</p>
+      <p class="sub">Busca de hoje às 7h02 em Gupy, Greenhouse e Ashby. 38 vagas ficaram de fora pelos filtros do seu perfil.</p>
     </div>
     <button class="btn">Buscar agora</button>
   </div>
 
-  <div class="filtros">
-    <span><span class="rot">Área</span>
-      <span class="segmentado" role="group" aria-label="Área">
-        <button aria-pressed="true">Todas</button><button aria-pressed="false">Processos</button><button aria-pressed="false">IA</button>
-      </span>
-    </span>
-    <label><span class="rot">Fonte</span><select><option>Todas</option><option>Gupy</option><option>Greenhouse</option><option>Ashby</option></select></label>
+  <div class="quadro" aria-label="Filtros das sugestões">
+    <div class="lampadas">
+      <button class="lampada faixa-verde" data-faixa="verde" aria-pressed="true" style="--cor:#3fa66b"><span class="luz"></span><span class="qtd" data-conta-faixa="verde">2</span><span class="nome">Vale aplicar, nota 70 ou mais</span></button>
+      <button class="lampada faixa-amarela" data-faixa="amarela" aria-pressed="true" style="--cor:var(--amarelo)"><span class="luz"></span><span class="qtd" data-conta-faixa="amarela">3</span><span class="nome">Avalie, nota de 40 a 69</span></button>
+      <button class="lampada faixa-cinza" data-faixa="cinza" aria-pressed="true" style="--cor:#9aa6a1"><span class="luz"></span><span class="qtd" data-conta-faixa="cinza">1</span><span class="nome">Pouco aderente, abaixo de 40</span></button>
+    </div>
+    <div class="trilhos">
+      <div class="trilho" role="group" aria-label="Área">
+        <span>Área</span>
+        <button class="chave" data-area="processos" aria-pressed="false">Processos<span class="n">4</span></button>
+        <button class="chave" data-area="ia" aria-pressed="false">IA<span class="n">2</span></button>
+      </div>
+      <div class="trilho" role="group" aria-label="Site">
+        <span>Site</span>
+        <button class="chave" data-fonte="gupy" aria-pressed="false">Gupy<span class="n">2</span></button>
+        <button class="chave" data-fonte="greenhouse" aria-pressed="false">Greenhouse<span class="n">2</span></button>
+        <button class="chave" data-fonte="ashby" aria-pressed="false">Ashby<span class="n">2</span></button>
+      </div>
+      <label class="trilho"><span>Ordenar por</span>
+        <select id="ordem"><option value="nota">maior nota</option><option value="data">mais recentes</option></select>
+      </label>
+      <p class="contagem" aria-live="polite">Mostrando <strong id="mostrando">6</strong> de 6</p>
+    </div>
   </div>
 
-  <ol class="lista">
-    <!-- 1 -->
-    <li class="vaga">
-      <div class="nota verde">78<small>de 100</small></div>
-      <div>
-        <h2 class="titulo">Assistente de PCP</h2>
-        <div class="fatos"><span class="empresa">AZZAS 2154</span><span>Rio de Janeiro, híbrido</span><span>Gupy, há 2 dias</span></div>
-      </div>
-      <div class="acoes">
-        <button class="btn btn-principal">Adicionar à lista</button>
-        <button class="btn">Descartar</button>
-        <button class="btn-texto">Não tenho interesse na empresa</button>
-      </div>
-      <div class="comp">
-        <div class="barra" role="img" aria-label="Composição da nota: processos 40, nível de entrada 10, ferramentas 12, contexto 16">
-          <span class="s-proc" style="left:0;width:40%"></span>
-          <span class="s-ctx" style="left:40%;width:10%"></span>
-          <span class="s-ferr" style="left:50%;width:12%"></span>
-          <span class="s-ctx" style="left:62%;width:16%;opacity:.6"></span>
-        </div>
-        <ul class="legenda">
-          <li style="--c:var(--grafite)">processos 40</li>
-          <li style="--c:var(--seg-ferr)">ferramentas 12</li>
-          <li style="--c:var(--seg-ctx)">nível de entrada 10</li>
-          <li style="--c:var(--seg-ctx)">contexto 16</li>
-        </ul>
-      </div>
-      <button class="btn-texto ver-mais" aria-expanded="true" aria-controls="det-1">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
-      <div class="detalhes" id="det-1">
-        <div>
-          <h3>O que você vai fazer</h3>
-          <ul>
-            <li>Montar e acompanhar a programação semanal da produção junto às confecções parceiras</li>
-            <li>Atualizar os <mark>indicadores</mark> de atendimento e atraso em <mark>Excel</mark> e <mark>Power BI</mark></li>
-            <li>Apoiar o time de <mark>operações</mark> na priorização de pedidos</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Requisitos</h3>
-          <ul>
-            <li>Superior em andamento ou completo em <mark>Engenharia de Produção</mark> ou áreas afins</li>
-            <li><mark>Excel</mark> intermediário a avançado</li>
-            <li>Conhecimento de <mark>PCP</mark> e controle de estoque</li>
-            <li>Desejável: experiência com ERP</li>
-          </ul>
-          <p class="dica-marca">Em amarelo: palavras que batem com o seu perfil.</p>
-        </div>
-        <dl class="ficha">
-          <dt>Salário</dt><dd>não informado</dd>
-          <dt>Modalidade</dt><dd>híbrido, 3x na semana</dd>
-          <dt>Local</dt><dd>Rio de Janeiro (Centro)</dd>
-          <dt>Publicada</dt><dd>23/11</dd>
-          <dt>Inscrições até</dt><dd class="atencao">05/12</dd>
-          <dt>Fonte</dt><dd>Gupy</dd>
-        </dl>
-        <p class="original">Para se candidatar: <a href="#">abrir o anúncio na Gupy</a> (abre em nova aba).</p>
-      </div>
-    </li>
+  <div class="lista-wrap">
+    <!-- ===== Faixa verde ===== -->
+    <section class="faixa faixa-verde" data-grupo="verde">
+      <h2>Vale aplicar <small data-conta-grupo>2 vagas</small></h2>
+      <ol class="lista">
+        <li class="vaga" data-area="processos" data-fonte="gupy" data-nota="78" data-dias="2">
+          <div class="nota verde">78<small>de 100</small></div>
+          <div>
+            <h3 class="titulo">Assistente de PCP</h3>
+            <div class="fatos"><span class="empresa">AZZAS 2154</span><span>Rio de Janeiro, híbrido</span><span>Gupy, há 2 dias</span></div>
+          </div>
+          <div class="acoes">
+            <button class="btn btn-principal">Adicionar à lista</button>
+            <button class="btn">Descartar</button>
+            <button class="btn-texto">Não tenho interesse na empresa</button>
+          </div>
+          <div class="comp">
+            <div class="barra" role="img" aria-label="Composição da nota: processos 40, ferramentas 12, nível de entrada 10, contexto 16">
+              <span class="s-proc" style="left:0;width:40%"></span>
+              <span class="s-ferr" style="left:40%;width:12%"></span>
+              <span class="s-ctx" style="left:52%;width:10%"></span>
+              <span class="s-ctx" style="left:62%;width:16%;opacity:.6"></span>
+            </div>
+            <ul class="legenda">
+              <li style="--c:var(--grafite)">processos 40</li>
+              <li style="--c:var(--seg-ferr)">ferramentas 12</li>
+              <li style="--c:var(--seg-ctx)">nível de entrada 10</li>
+              <li style="--c:var(--seg-ctx)">contexto 16</li>
+            </ul>
+          </div>
+          <button class="btn-texto ver-mais" aria-expanded="true" aria-controls="det-1">Veja menos <span class="seta" aria-hidden="true">▾</span></button>
+          <div class="detalhes" id="det-1">
+            <div>
+              <h4>O que você vai fazer</h4>
+              <ul>
+                <li>Montar e acompanhar a programação semanal da produção junto às confecções parceiras</li>
+                <li>Atualizar os <mark>indicadores</mark> de atendimento e atraso em <mark>Excel</mark> e <mark>Power BI</mark></li>
+                <li>Apoiar o time de <mark>operações</mark> na priorização de pedidos</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Requisitos</h4>
+              <ul>
+                <li>Superior em andamento ou completo em <mark>Engenharia de Produção</mark> ou áreas afins</li>
+                <li><mark>Excel</mark> intermediário a avançado</li>
+                <li>Conhecimento de <mark>PCP</mark> e controle de estoque</li>
+                <li>Desejável: experiência com ERP</li>
+              </ul>
+              <p class="dica-marca">Em amarelo: palavras que batem com o seu perfil.</p>
+            </div>
+            <dl class="ficha">
+              <dt>Salário</dt><dd>não informado</dd>
+              <dt>Modalidade</dt><dd>híbrido, 3x na semana</dd>
+              <dt>Local</dt><dd>Rio de Janeiro (Centro)</dd>
+              <dt>Publicada</dt><dd>23/11</dd>
+              <dt>Inscrições até</dt><dd class="atencao">05/12</dd>
+              <dt>Site</dt><dd>Gupy</dd>
+            </dl>
+            <p class="original">Para se candidatar: <a href="#">abrir o anúncio na Gupy</a> (abre em nova aba).</p>
+          </div>
+        </li>
 
-    <!-- 2 -->
-    <li class="vaga">
-      <div class="nota verde">72<small>de 100</small></div>
-      <div>
-        <h2 class="titulo">Analista de Automação de Processos Jr</h2>
-        <div class="fatos"><span class="empresa">Stone</span><span>Remoto (Brasil)</span><span>Greenhouse, hoje</span><span class="tag-ia">IA</span></div>
-      </div>
-      <div class="acoes">
-        <button class="btn btn-principal">Adicionar à lista</button>
-        <button class="btn">Descartar</button>
-        <button class="btn-texto">Não tenho interesse na empresa</button>
-      </div>
-      <div class="comp">
-        <div class="barra" role="img" aria-label="Composição da nota: IA aplicada 40, processos 20, ferramentas 12">
-          <span class="s-ia" style="left:0;width:40%"></span>
-          <span class="s-proc" style="left:40%;width:20%"></span>
-          <span class="s-ferr" style="left:60%;width:12%"></span>
-        </div>
-        <ul class="legenda">
-          <li style="--c:var(--seg-ia)">IA aplicada 40</li>
-          <li style="--c:var(--grafite)">processos 20</li>
-          <li style="--c:var(--seg-ferr)">ferramentas 12</li>
-        </ul>
-      </div>
-      <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-2">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
-      <div class="detalhes" id="det-2" hidden>
-        <div><h3>O que você vai fazer</h3><ul><li>Mapear processos manuais do time de atendimento e propor <mark>automação</mark></li><li>Configurar fluxos em ferramentas <mark>no code</mark> e acompanhar os ganhos</li></ul></div>
-        <div><h3>Requisitos</h3><ul><li>Formação em Engenharia ou áreas afins</li><li>Boa base de <mark>Excel</mark> e <mark>SQL</mark></li></ul></div>
-        <dl class="ficha"><dt>Salário</dt><dd>não informado</dd><dt>Modalidade</dt><dd>remoto, Brasil</dd><dt>Fonte</dt><dd>Greenhouse</dd></dl>
-        <p class="original">Para se candidatar: <a href="#">abrir o anúncio na página da Stone</a> (abre em nova aba).</p>
-      </div>
-    </li>
+        <li class="vaga" data-area="ia" data-fonte="greenhouse" data-nota="72" data-dias="0">
+          <div class="nota verde">72<small>de 100</small></div>
+          <div>
+            <h3 class="titulo">Analista de Automação de Processos Jr</h3>
+            <div class="fatos"><span class="empresa">Stone</span><span>Remoto (Brasil)</span><span>Greenhouse, hoje</span><span class="tag-ia">IA</span></div>
+          </div>
+          <div class="acoes">
+            <button class="btn btn-principal">Adicionar à lista</button>
+            <button class="btn">Descartar</button>
+            <button class="btn-texto">Não tenho interesse na empresa</button>
+          </div>
+          <div class="comp">
+            <div class="barra" role="img" aria-label="Composição da nota: IA aplicada 40, processos 20, ferramentas 12">
+              <span class="s-ia" style="left:0;width:40%"></span>
+              <span class="s-proc" style="left:40%;width:20%"></span>
+              <span class="s-ferr" style="left:60%;width:12%"></span>
+            </div>
+            <ul class="legenda">
+              <li style="--c:var(--seg-ia)">IA aplicada 40</li>
+              <li style="--c:var(--grafite)">processos 20</li>
+              <li style="--c:var(--seg-ferr)">ferramentas 12</li>
+            </ul>
+          </div>
+          <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-2">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
+          <div class="detalhes" id="det-2" hidden>
+            <div><h4>O que você vai fazer</h4><ul><li>Mapear processos manuais do time de atendimento e propor <mark>automação</mark></li><li>Configurar fluxos em ferramentas <mark>no code</mark> e medir os ganhos</li></ul></div>
+            <div><h4>Requisitos</h4><ul><li>Formação em Engenharia ou áreas afins</li><li>Boa base de <mark>Excel</mark> e <mark>SQL</mark></li></ul></div>
+            <dl class="ficha"><dt>Salário</dt><dd>não informado</dd><dt>Modalidade</dt><dd>remoto, Brasil</dd><dt>Site</dt><dd>Greenhouse</dd></dl>
+            <p class="original">Para se candidatar: <a href="#">abrir o anúncio na página da Stone</a> (abre em nova aba).</p>
+          </div>
+        </li>
+      </ol>
+    </section>
 
-    <!-- 3 -->
-    <li class="vaga">
-      <div class="nota amarela">50<small>de 100</small></div>
-      <div>
-        <h2 class="titulo">Analista de Operações de Monitoramento – PCP I</h2>
-        <div class="fatos"><span class="empresa">Light Soluções</span><span>Rio de Janeiro, presencial</span><span>Gupy, há 5 dias</span></div>
-      </div>
-      <div class="acoes">
-        <button class="btn btn-principal">Adicionar à lista</button>
-        <button class="btn">Descartar</button>
-        <button class="btn-texto">Não tenho interesse na empresa</button>
-      </div>
-      <div class="comp">
-        <div class="barra" role="img" aria-label="Composição da nota: processos 40, nível de entrada 10, ferramentas 10, penalidade pede experiência menos 10">
-          <span class="s-proc" style="left:0;width:40%"></span>
-          <span class="s-ctx" style="left:40%;width:10%"></span>
-          <span class="s-ferr" style="left:50%;width:10%"></span>
-          <span class="s-pen" style="left:50%;width:10%"></span>
-        </div>
-        <ul class="legenda">
-          <li style="--c:var(--grafite)">processos 40</li>
-          <li style="--c:var(--seg-ctx)">nível de entrada 10</li>
-          <li style="--c:var(--seg-ferr)">ferramentas 10</li>
-          <li class="pen">pede 3 anos de experiência −10</li>
-        </ul>
-      </div>
-      <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-3">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
-      <div class="detalhes" id="det-3" hidden>
-        <div><h3>O que você vai fazer</h3><ul><li>Acompanhar a programação de equipes de campo</li><li>Gerar relatórios de <mark>indicadores</mark></li></ul></div>
-        <div><h3>Requisitos</h3><ul><li>Experiência de 3 anos em <mark>PCP</mark> ou monitoramento</li><li><mark>Excel</mark> avançado</li></ul></div>
-        <dl class="ficha"><dt>Salário</dt><dd>R$ 3.200</dd><dt>Modalidade</dt><dd>presencial</dd><dt>Fonte</dt><dd>Gupy</dd></dl>
-        <p class="original">Para se candidatar: <a href="#">abrir o anúncio na Gupy</a> (abre em nova aba).</p>
-      </div>
-    </li>
+    <!-- ===== Faixa amarela ===== -->
+    <section class="faixa faixa-amarela" data-grupo="amarela">
+      <h2>Avalie antes de aplicar <small data-conta-grupo>3 vagas</small></h2>
+      <ol class="lista">
+        <li class="vaga" data-area="processos" data-fonte="greenhouse" data-nota="61" data-dias="1">
+          <div class="nota amarela">61<small>de 100</small></div>
+          <div>
+            <h3 class="titulo">Trainee de Supply Chain</h3>
+            <div class="fatos"><span class="empresa">QuintoAndar</span><span>Rio de Janeiro, híbrido</span><span>Greenhouse, ontem</span></div>
+          </div>
+          <div class="acoes"><button class="btn btn-principal">Adicionar à lista</button><button class="btn">Descartar</button><button class="btn-texto">Não tenho interesse na empresa</button></div>
+          <div class="comp">
+            <div class="barra" role="img" aria-label="Composição da nota: processos 40, nível de entrada 10, contexto 11">
+              <span class="s-proc" style="left:0;width:40%"></span><span class="s-ctx" style="left:40%;width:10%"></span><span class="s-ctx" style="left:50%;width:11%;opacity:.6"></span>
+            </div>
+            <ul class="legenda"><li style="--c:var(--grafite)">processos 40</li><li style="--c:var(--seg-ctx)">nível de entrada 10</li><li style="--c:var(--seg-ctx)">contexto 11</li></ul>
+          </div>
+          <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-3">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
+          <div class="detalhes" id="det-3" hidden>
+            <div><h4>O que você vai fazer</h4><ul><li>Rodízio entre planejamento de demanda, compras e <mark>logística</mark></li></ul></div>
+            <div><h4>Requisitos</h4><ul><li>Formado entre 2024 e 2026</li><li><mark>Inglês</mark> intermediário</li></ul></div>
+            <dl class="ficha"><dt>Salário</dt><dd>R$ 6.500</dd><dt>Inscrições até</dt><dd class="atencao">30/11</dd><dt>Site</dt><dd>Greenhouse</dd></dl>
+            <p class="original">Para se candidatar: <a href="#">abrir o anúncio na página do QuintoAndar</a> (abre em nova aba).</p>
+          </div>
+        </li>
 
-    <!-- 4 -->
-    <li class="vaga">
-      <div class="nota cinza">35<small>de 100</small></div>
-      <div>
-        <h2 class="titulo">AI Operations Associate</h2>
-        <div class="fatos"><span class="empresa">Empresa de IA (exemplo)</span><span>Remoto, América Latina</span><span>Ashby, ontem</span><span class="tag-ia">IA, por projeto</span></div>
-      </div>
-      <div class="acoes">
-        <button class="btn btn-principal">Adicionar à lista</button>
-        <button class="btn">Descartar</button>
-        <button class="btn-texto">Não tenho interesse na empresa</button>
-      </div>
-      <div class="comp">
-        <div class="barra" role="img" aria-label="Composição da nota: IA aplicada 40, penalidade remoto internacional menos 5">
-          <span class="s-ia" style="left:0;width:40%"></span>
-          <span class="s-pen" style="left:35%;width:5%"></span>
-        </div>
-        <ul class="legenda">
-          <li style="--c:var(--seg-ia)">IA aplicada 40</li>
-          <li class="pen">remoto internacional −5</li>
-        </ul>
-      </div>
-      <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-4">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
-      <div class="detalhes" id="det-4" hidden>
-        <div><h3>What you'll do</h3><ul><li>Review and improve <mark>AI</mark> workflows used by customer teams</li></ul></div>
-        <div><h3>Requirements</h3><ul><li>Fluent <mark>English</mark></li><li>Contractor role, paid in USD</li></ul></div>
-        <dl class="ficha"><dt>Salário</dt><dd>USD 1.800/mês</dd><dt>Contrato</dt><dd class="atencao">PJ / por projeto</dd><dt>Fonte</dt><dd>Ashby</dd></dl>
-        <p class="original">Para se candidatar: <a href="#">abrir o anúncio na página da empresa</a> (abre em nova aba).</p>
-      </div>
-    </li>
-  </ol>
+        <li class="vaga" data-area="ia" data-fonte="ashby" data-nota="55" data-dias="3">
+          <div class="nota amarela">55<small>de 100</small></div>
+          <div>
+            <h3 class="titulo">Analista de Implantação de IA</h3>
+            <div class="fatos"><span class="empresa">Empresa de IA (exemplo)</span><span>Remoto (Brasil)</span><span>Ashby, há 3 dias</span><span class="tag-ia">IA</span></div>
+          </div>
+          <div class="acoes"><button class="btn btn-principal">Adicionar à lista</button><button class="btn">Descartar</button><button class="btn-texto">Não tenho interesse na empresa</button></div>
+          <div class="comp">
+            <div class="barra" role="img" aria-label="Composição da nota: IA implantação 25, processos 20, ferramentas 10">
+              <span class="s-ia" style="left:0;width:25%"></span><span class="s-proc" style="left:25%;width:20%"></span><span class="s-ferr" style="left:45%;width:10%"></span>
+            </div>
+            <ul class="legenda"><li style="--c:var(--seg-ia)">IA implantação 25</li><li style="--c:var(--grafite)">processos 20</li><li style="--c:var(--seg-ferr)">ferramentas 10</li></ul>
+          </div>
+          <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-4">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
+          <div class="detalhes" id="det-4" hidden>
+            <div><h4>O que você vai fazer</h4><ul><li>Configurar o produto de <mark>IA</mark> para clientes da indústria e treinar os usuários</li></ul></div>
+            <div><h4>Requisitos</h4><ul><li>Vivência com <mark>processos</mark> industriais</li><li>Boa comunicação</li></ul></div>
+            <dl class="ficha"><dt>Salário</dt><dd>não informado</dd><dt>Site</dt><dd>Ashby</dd></dl>
+            <p class="original">Para se candidatar: <a href="#">abrir o anúncio na página da empresa</a> (abre em nova aba).</p>
+          </div>
+        </li>
+
+        <li class="vaga" data-area="processos" data-fonte="gupy" data-nota="50" data-dias="5">
+          <div class="nota amarela">50<small>de 100</small></div>
+          <div>
+            <h3 class="titulo">Analista de Operações de Monitoramento – PCP I</h3>
+            <div class="fatos"><span class="empresa">Light Soluções</span><span>Rio de Janeiro, presencial</span><span>Gupy, há 5 dias</span></div>
+          </div>
+          <div class="acoes"><button class="btn btn-principal">Adicionar à lista</button><button class="btn">Descartar</button><button class="btn-texto">Não tenho interesse na empresa</button></div>
+          <div class="comp">
+            <div class="barra" role="img" aria-label="Composição da nota: processos 40, nível de entrada 10, ferramentas 10, penalidade pede experiência menos 10">
+              <span class="s-proc" style="left:0;width:40%"></span><span class="s-ctx" style="left:40%;width:10%"></span><span class="s-ferr" style="left:50%;width:10%"></span><span class="s-pen" style="left:50%;width:10%"></span>
+            </div>
+            <ul class="legenda"><li style="--c:var(--grafite)">processos 40</li><li style="--c:var(--seg-ctx)">nível de entrada 10</li><li style="--c:var(--seg-ferr)">ferramentas 10</li><li class="pen">pede 3 anos de experiência −10</li></ul>
+          </div>
+          <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-5">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
+          <div class="detalhes" id="det-5" hidden>
+            <div><h4>O que você vai fazer</h4><ul><li>Acompanhar a programação de equipes de campo</li><li>Gerar relatórios de <mark>indicadores</mark></li></ul></div>
+            <div><h4>Requisitos</h4><ul><li>Experiência de 3 anos em <mark>PCP</mark> ou monitoramento</li><li><mark>Excel</mark> avançado</li></ul></div>
+            <dl class="ficha"><dt>Salário</dt><dd>R$ 3.200</dd><dt>Modalidade</dt><dd>presencial</dd><dt>Site</dt><dd>Gupy</dd></dl>
+            <p class="original">Para se candidatar: <a href="#">abrir o anúncio na Gupy</a> (abre em nova aba).</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== Faixa cinza ===== -->
+    <section class="faixa faixa-cinza" data-grupo="cinza">
+      <h2>Pouco aderente <small data-conta-grupo>1 vaga</small></h2>
+      <ol class="lista">
+        <li class="vaga" data-area="ia" data-fonte="ashby" data-nota="35" data-dias="1">
+          <div class="nota cinza">35<small>de 100</small></div>
+          <div>
+            <h3 class="titulo">AI Operations Associate</h3>
+            <div class="fatos"><span class="empresa">Empresa de IA (exemplo)</span><span>Remoto, América Latina</span><span>Ashby, ontem</span><span class="tag-ia">IA, por projeto</span></div>
+          </div>
+          <div class="acoes"><button class="btn btn-principal">Adicionar à lista</button><button class="btn">Descartar</button><button class="btn-texto">Não tenho interesse na empresa</button></div>
+          <div class="comp">
+            <div class="barra" role="img" aria-label="Composição da nota: IA aplicada 40, penalidade remoto internacional menos 5">
+              <span class="s-ia" style="left:0;width:40%"></span><span class="s-pen" style="left:35%;width:5%"></span>
+            </div>
+            <ul class="legenda"><li style="--c:var(--seg-ia)">IA aplicada 40</li><li class="pen">remoto internacional −5</li></ul>
+          </div>
+          <button class="btn-texto ver-mais" aria-expanded="false" aria-controls="det-6">Veja mais <span class="seta" aria-hidden="true">▾</span></button>
+          <div class="detalhes" id="det-6" hidden>
+            <div><h4>What you'll do</h4><ul><li>Review and improve <mark>AI</mark> workflows used by customer teams</li></ul></div>
+            <div><h4>Requirements</h4><ul><li>Fluent <mark>English</mark></li><li>Contractor role, paid in USD</li></ul></div>
+            <dl class="ficha"><dt>Salário</dt><dd>USD 1.800/mês</dd><dt>Contrato</dt><dd class="atencao">PJ / por projeto</dd><dt>Site</dt><dd>Ashby</dd></dl>
+            <p class="original">Para se candidatar: <a href="#">abrir o anúncio na página da empresa</a> (abre em nova aba).</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <p class="sem-resultado" hidden>Nenhuma vaga com esses filtros. Ligue outra faixa de nota ou tire um filtro de área ou site.</p>
+  </div>
   <p class="sub" style="margin-top:16px"><a href="#">Ver as 38 vagas que ficaram de fora</a> e o motivo de cada uma (estágio, sênior, fora do RJ).</p>
 </section>
 
@@ -433,6 +527,7 @@
 </main>
 
 <script>
+  // Troca de tela pelo menu
   const abas = document.querySelectorAll(".aba");
   abas.forEach((aba) =>
     aba.addEventListener("click", () => {
@@ -440,6 +535,8 @@
       document.querySelectorAll("section[data-tela]").forEach((s) => (s.hidden = s.dataset.tela !== aba.dataset.tela));
     }),
   );
+
+  // Veja mais / Veja menos
   document.querySelectorAll(".ver-mais").forEach((b) =>
     b.addEventListener("click", () => {
       const aberto = b.getAttribute("aria-expanded") === "true";
@@ -448,10 +545,42 @@
       b.firstChild.textContent = aberto ? "Veja mais " : "Veja menos ";
     }),
   );
-  document.querySelector('[aria-controls="det-1"]').firstChild.textContent = "Veja menos ";
-  document.querySelectorAll(".segmentado button").forEach((b) =>
-    b.addEventListener("click", () => b.parentElement.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)))),
-  );
+
+  // Filtros: faixas de nota (lâmpadas), área, site e ordenação
+  const estado = { faixas: new Set(["verde", "amarela", "cinza"]), areas: new Set(), fontes: new Set(), ordem: "nota" };
+
+  function alternar(conjunto, valor, botao) {
+    if (conjunto.has(valor)) conjunto.delete(valor); else conjunto.add(valor);
+    botao.setAttribute("aria-pressed", String(conjunto.has(valor)));
+    aplicar();
+  }
+  document.querySelectorAll(".lampada").forEach((b) => b.addEventListener("click", () => alternar(estado.faixas, b.dataset.faixa, b)));
+  document.querySelectorAll(".chave[data-area]").forEach((b) => b.addEventListener("click", () => alternar(estado.areas, b.dataset.area, b)));
+  document.querySelectorAll(".chave[data-fonte]").forEach((b) => b.addEventListener("click", () => alternar(estado.fontes, b.dataset.fonte, b)));
+  document.getElementById("ordem").addEventListener("change", (e) => { estado.ordem = e.target.value; aplicar(); });
+
+  function aplicar() {
+    let total = 0;
+    document.querySelectorAll(".faixa").forEach((grupo) => {
+      const lista = grupo.querySelector(".lista");
+      const vagas = [...lista.children];
+      vagas.sort((a, b) => estado.ordem === "nota" ? b.dataset.nota - a.dataset.nota : a.dataset.dias - b.dataset.dias);
+      vagas.forEach((v) => lista.appendChild(v));
+      let visiveis = 0;
+      vagas.forEach((v) => {
+        const ok = estado.faixas.has(grupo.dataset.grupo)
+          && (estado.areas.size === 0 || estado.areas.has(v.dataset.area))
+          && (estado.fontes.size === 0 || estado.fontes.has(v.dataset.fonte));
+        v.hidden = !ok;
+        if (ok) visiveis++;
+      });
+      grupo.hidden = visiveis === 0;
+      grupo.querySelector("[data-conta-grupo]").textContent = visiveis === 1 ? "1 vaga" : `${visiveis} vagas`;
+      total += visiveis;
+    });
+    document.getElementById("mostrando").textContent = total;
+    document.querySelector(".sem-resultado").hidden = total > 0;
+  }
 </script>
 </body>
 </html>

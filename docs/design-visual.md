@@ -25,8 +25,9 @@ O vocabulário vem do chão de fábrica que o Luís conhece: **quadro de gestão
 | Concreto | `#F3F4F1` | fundo da página |
 | Chapa | `#FFFFFF` | superfícies (listas, tabela) |
 | Junta | `#D6DBD7` | bordas e divisórias |
-| Amarelo segurança | `#F2B705` | botão principal, nota amarela, marca-texto de palavra-chave |
-| Verde andon | `#2E7D4F` | nota verde |
+| Laranja segurança | `#F0A202` | botão principal, lâmpada amarela, marca-texto de palavra-chave |
+| Laranja escuro | `#C46A00` | nota da faixa "avalie" (texto) |
+| Verde escuro | `#1F6B43` | nota e faixa "vale aplicar" |
 | Vermelho parada | `#B3261E` | penalidades, atrasos |
 
 **Tipografia:** IBM Plex Sans (texto, interface — tem origem em engenharia e lê bem em tabelas) + IBM Plex Sans Condensed semibold para **números e títulos de tela** (cara de placa industrial, cabe muito número em pouco espaço). Escala: 13 / 15 / 18 / 24 / 40. Números sempre tabulares.
@@ -63,3 +64,12 @@ Alinhamento à esquerda em tudo; números alinhados à direita nas tabelas.
 - Primeira versão era o "kit SaaS": cartões brancos idênticos, verde-azulado genérico, metadados com pontos. **Trocado** por linhas de lista, paleta de chão de fábrica e campos separados.
 - Fundo creme / acento terracota: evitado (concreto frio + amarelo segurança).
 - Fonte mono para dados: evitada (Plex Condensed para números).
+
+## Filtros: quadro de controle (2026-11-25, pedido do Luís)
+
+- Faixa grafite no topo da lista, como um quadro de gestão à vista: três **lâmpadas** (vale aplicar / avalie / pouco aderente)
+  com a contagem de cada faixa — clicar liga/desliga a faixa.
+- Abaixo, chaves de **Área** e **Site** com contagem, ordenação e "Mostrando N de M".
+- A lista é **agrupada por faixa**, com título colorido e uma barra lateral na cor da faixa em cada vaga
+  (substitui a "caixa branca simples" que o Luís achou sem graça).
+- Sem resultado: mensagem dizendo o que fazer (ligar outra faixa ou tirar um filtro).
