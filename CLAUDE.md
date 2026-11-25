@@ -26,10 +26,11 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - `completarPerfil` dá ao perfil salvo os campos/grupos novos do padrão (sem apagar edições do Luís).
 - Entradas manuais: formulário, importar CSV (`src/lib/csv.ts`) e o bookmarklet `/salvar` (em Configurações).
 - Sugestões repetidas viram um cartão (`src/lib/agrupar.ts`): trainee da mesma empresa, ou mesma empresa + mesmo cargo.
-- Jooble (`src/lib/fontes/jooble.ts`) só entra com `JOOBLE_API_KEY` **brasileira** (br.jooble.org/api/about); a chave atual do Luís é internacional.
+- Jooble (`src/lib/fontes/jooble.ts`) entra com `JOOBLE_API_KEY` brasileira (já configurada na Vercel e no `.env.local`);
+  limite grátis de 100 consultas/dia, por isso usa no máximo 12 termos por busca.
 - LinkedIn: alertas de vaga por e-mail → Apps Script no Gmail (`scripts/apps-script/linkedin.gs`) → `POST /api/ingest/linkedin`
-  com `INGEST_SECRET` (na Vercel e no `.env.local`). Leitor em `src/lib/fontes/linkedin-email.ts`, feito com amostra
-  SINTÉTICA: conferir com o primeiro e-mail real.
+  com `INGEST_SECRET` (na Vercel e no `.env.local`). Leitor principal: `extrairVagasDoTexto` (texto puro do e-mail,
+  validado com alertas reais anonimizados em `tests/fixtures/linkedin-alerta.txt`); o leitor de HTML é reserva.
 - Vagas fora do Brasil são descartadas sem gravar; anúncios com mais de 90 dias são eliminados.
 - Sessão de login dura 400 dias (padrão do `@supabase/ssr`), renovada pelo `src/proxy.ts`.
 

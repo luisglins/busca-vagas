@@ -18,11 +18,14 @@ interface VagaJooble {
   type?: string;
 }
 
+// A chave grátis permite 100 consultas por dia: 12 termos por busca deixam folga para buscas manuais.
+const MAX_TERMOS = 12;
+
 export function criarJooble(chave: string, host = "br.jooble.org"): Adaptador {
   return {
     fonte: "jooble",
     buscar: (perfil, fetchFn = fetch) =>
-      coletar(perfil.termosBusca, async (termo) => {
+      coletar(perfil.termosBusca.slice(0, MAX_TERMOS), async (termo) => {
         // Trainee vale no Brasil todo; o resto, no Rio.
         const location = contemPalavra(normalizarTexto(termo), "trainee") ? "" : "Rio de Janeiro";
         const resposta = await fetchFn(`https://${host}/api/${encodeURIComponent(chave)}`, {

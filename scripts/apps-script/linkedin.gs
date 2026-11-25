@@ -3,8 +3,9 @@
  *
  * Como instalar (uma vez só):
  * 1. Acesse script.google.com > Novo projeto. Apague o conteúdo e cole este arquivo.
- * 2. Engrenagem (Configurações do projeto) > Propriedades do script > Adicionar:
- *      INGEST_SECRET = (o valor de INGEST_SECRET no arquivo .env.local do projeto)
+ * 2. Engrenagem (Configurações do projeto) > Propriedades do script > Adicionar propriedade:
+ *      Propriedade: INGEST_SECRET
+ *      Valor:       só o código depois do "=" na linha INGEST_SECRET do .env.local (sem "INGEST_SECRET=")
  * 3. Rode a função `instalar` uma vez (botão Executar) e autorize o acesso ao Gmail.
  *    Ela cria um gatilho que roda `enviarAlertasLinkedin` de hora em hora.
  *
@@ -15,7 +16,10 @@ const URL_SITE = "https://busca-vagas-livid.vercel.app/api/ingest/linkedin";
 const MARCADOR = "busca-vagas";
 
 function enviarAlertasLinkedin() {
-  const segredo = PropertiesService.getScriptProperties().getProperty("INGEST_SECRET");
+  // Tolera os enganos comuns ao colar: "INGEST_SECRET=..." inteiro, aspas ou espaços.
+  const segredo = (PropertiesService.getScriptProperties().getProperty("INGEST_SECRET") || "")
+    .replace(/^\s*INGEST_SECRET\s*=\s*/, "")
+    .replace(/["'\s]/g, "");
   if (!segredo) throw new Error("Falta a propriedade INGEST_SECRET (veja o passo 2).");
   const rotulo = GmailApp.getUserLabelByName(MARCADOR) || GmailApp.createLabel(MARCADOR);
   const conversas = GmailApp.search(
@@ -29,7 +33,7 @@ function enviarAlertasLinkedin() {
         method: "post",
         contentType: "application/json",
         headers: { Authorization: "Bearer " + segredo },
-        payload: JSON.stringify({ html: mensagem.getBody() }),
+        payload: JSON.stringify({ texto: mensagem.getPlainBody(), html: mensagem.getBody() }),
         muteHttpExceptions: true,
       });
       Logger.log(mensagem.getSubject() + " -> " + resposta.getResponseCode() + " " + resposta.getContentText());

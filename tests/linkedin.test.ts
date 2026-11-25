@@ -31,3 +31,32 @@ describe("extrairVagasDoEmail (alerta do LinkedIn)", () => {
     expect(extrairVagasDoEmail("<p>Olá</p>")).toEqual([]);
   });
 });
+
+describe("extrairVagasDoTexto (texto de alertas reais do LinkedIn, anonimizado)", async () => {
+  const { extrairVagasDoTexto } = await import("@/lib/fontes/linkedin-email");
+  const texto = readFileSync("tests/fixtures/linkedin-alerta.txt", "utf-8");
+  const vagas = extrairVagasDoTexto(texto);
+
+  it("uma vaga por 'Visualizar vaga', sem repetir a que aparece em duas seções", () => {
+    expect(vagas.map((v) => v.idExterno)).toEqual(["4494053448", "4494030900", "4493668692", "4492623551", "4454108472"]);
+  });
+
+  it("cargo, empresa e local certos, ignorando conexões e ex-alunos", () => {
+    expect(vagas[0]).toMatchObject({ cargo: "Assistente Administrativo - Oficina Pneumática", empresa: "MetrôRio", cidade: "Rio de Janeiro" });
+    expect(vagas[1]).toMatchObject({ cargo: "Assistente de Logística - Blume Alimentos", empresa: "Blume Alimentos" });
+  });
+
+  it("títulos de seção não viram cargo e o salário é guardado", () => {
+    expect(vagas[2]).toMatchObject({ cargo: "Auxiliar de Escritório", empresa: "TRB - Transporte & Logística", salario: "R$ 1,9 mil-R$ 2 mil por mês" });
+    expect(vagas[3]).toMatchObject({ cargo: "Assistente técnico de impressoras", empresa: "Alta Impressão" });
+  });
+
+  it("local só 'Brasil' fica sem cidade", () => {
+    expect(vagas[4]).toMatchObject({ empresa: "TPF Engenharia", localTexto: "Brasil" });
+    expect(vagas[4].cidade).toBeUndefined();
+  });
+
+  it("link limpo", () => {
+    expect(vagas[0].link).toBe("https://www.linkedin.com/jobs/view/4494053448/");
+  });
+});

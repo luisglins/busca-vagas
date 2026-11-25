@@ -41,4 +41,15 @@ describe("jooble", () => {
     const recusa = (async () => new Response("", { status: 403 })) as unknown as typeof fetch;
     await expect(criarJooble("K", "br.jooble.org").buscar(PERFIL_PADRAO, recusa)).rejects.toThrow(/br\.jooble\.org\/api\/about/);
   });
+
+  it("usa no máximo 12 termos por busca (a chave grátis permite 100 consultas por dia)", async () => {
+    let chamadas = 0;
+    const contar = (async () => {
+      chamadas++;
+      return new Response(fixture, { status: 200 });
+    }) as unknown as typeof fetch;
+    const termos = Array.from({ length: 20 }, (_, i) => `termo ${i}`);
+    await criarJooble("K", "br.jooble.org").buscar({ ...PERFIL_PADRAO, termosBusca: termos }, contar);
+    expect(chamadas).toBe(12);
+  });
 });

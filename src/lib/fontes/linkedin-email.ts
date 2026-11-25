@@ -80,3 +80,61 @@ export function extrairVagasDoEmail(html: string): VagaBruta[] {
     ];
   });
 }
+
+// Linhas do texto puro do alerta que não são cargo, empresa nem local.
+const RUIDO_TEXTO = [
+  /conex(ão|ões)$/i,
+  /ex-alunos? da instituição/i,
+  /ex-funcionários? da empresa/i,
+  /^candidate-se/i,
+  /^candidatura simplificada$/i,
+  /^easy apply$/i,
+  /^seja um dos primeiros/i,
+  /^h[aá] \d+/i,
+  /^(\d+ )?(connections?|alumni)/i,
+  /</, // títulos de seção vêm com tags (<strong>…)
+  /https?:\/\//,
+];
+
+/**
+ * Lê as vagas do TEXTO PURO do alerta (mais estável que o HTML). Cada vaga vem como:
+ *   Cargo / Empresa / Local / [salário] / [linhas sociais] / "Visualizar vaga: <link>"
+ * Testado com e-mails reais (anonimizados) de alerta e de "vagas semelhantes".
+ */
+export function extrairVagasDoTexto(texto: string): VagaBruta[] {
+  const linhas = texto.split(/\r?\n/).map((l) => l.trim());
+  const vistas = new Set<string>();
+  const vagas: VagaBruta[] = [];
+  let inicioDoBloco = 0;
+
+  linhas.forEach((linha, i) => {
+    if (/^-{5,}$/.test(linha)) {
+      inicioDoBloco = i + 1;
+      return;
+    }
+    const id = /^(visualizar vaga|view job):/i.test(linha) ? linha.match(LINK_VAGA)?.[1] : undefined;
+    if (!id) return;
+    const bloco = linhas.slice(inicioDoBloco, i).filter((l) => l && !RUIDO_TEXTO.some((r) => r.test(l)));
+    inicioDoBloco = i + 1;
+    if (vistas.has(id)) return;
+    vistas.add(id);
+
+    const salario = bloco.find((l) => /^R\$/.test(l));
+    const dados = bloco.filter((l) => l !== salario).slice(-3); // títulos de seção ficam antes: pegamos as 3 últimas
+    if (dados.length < 2) return;
+    const [cargo, empresa, local = ""] = dados.length === 3 ? dados : [dados[0], dados[1], ""];
+    vagas.push({
+      fonte: "linkedin",
+      idExterno: id,
+      empresa,
+      cargo,
+      link: `https://www.linkedin.com/jobs/view/${id}/`,
+      cidade: cidadePorTexto(local),
+      modalidade: modalidadePorTexto(local),
+      localTexto: local,
+      descricao: "",
+      salario,
+    });
+  });
+  return vagas;
+}
