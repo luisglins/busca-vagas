@@ -20,6 +20,9 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - GitHub: `luisglins/busca-vagas` (público). Cada push em `main` publica na Vercel automaticamente.
 - Vercel: projeto `busca-vagas` (`prj_m6AoUOlKIM5Z7NQwcLlHqAOFsBvA`, conta pessoal `team_iRZKErcFpVdoivc40gLubg3h`).
 - Supabase: projeto `busca-vagas` (`hadklgmaeuohlzaqwvqa`, região sa-east-1). Migrações em `supabase/migrations/`.
+- Busca diária: Vercel Cron às 10h UTC (7h Brasília) chama `/api/cron/buscar` com `CRON_SECRET` (já na Vercel);
+  a rota usa `SUPABASE_SECRET_KEY` (o Luís precisa copiar do Supabase para a Vercel). Funções na região `gru1` (São Paulo).
+- Vagas fora do Brasil são descartadas sem gravar; anúncios com mais de 90 dias são eliminados.
 - Sessão de login dura 400 dias (padrão do `@supabase/ssr`), renovada pelo `src/proxy.ts`.
 
 ## Decisões-chave
