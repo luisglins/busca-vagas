@@ -33,6 +33,12 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - Luís pediu menos perguntas (2026-11-25): Claude decide o que é técnico e só pede o que exige conta/senha dele.
   Por isso as etapas 3, 4 e 9 vieram antes da 2, e o SQL foi aplicado direto pelo Claude.
 
+## Visual
+
+Direção "gestão à vista" (chão de fábrica): cores do andon só para informar, barra de composição da nota como elemento marcante,
+IBM Plex Sans + Plex Sans Condensed. Detalhes em [docs/design-visual.md](docs/design-visual.md); referência em `docs/prototipo/index.html`.
+Use as skills `frontend-design` e `anti-slop` ao criar telas.
+
 ## Convenções
 
 - Interface, nomes de domínio no código (vaga, sugestao, curriculo…), commits e explicações em **português**.

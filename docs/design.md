@@ -113,7 +113,7 @@ Salário: mostrado quando a fonte informa; não é filtro. Destaque opcional aba
 ## 8. Telas
 
 1. **Login** — e-mail e senha (Supabase Auth). Cadastro público **desligado**: só a conta do Luís existe.
-2. **Sugestões** (página inicial) — cartões ordenados por nota; filtro por área e fonte; botões **Adicionar à minha lista**, **Descartar**, **Não tenho interesse nessa empresa**. Mostra a última busca diária e se alguma fonte falhou.
+2. **Sugestões** (página inicial) — lista ordenada por nota, com a **barra de composição da nota** e um **"Veja mais"** que abre na própria linha (sem sair da página) os detalhes da vaga: o que vai fazer, requisitos (palavras do perfil marcadas em amarelo), e uma ficha com salário, modalidade, local, data, prazo e fonte; o link do anúncio original fica como ação secundária. Visual definido em `docs/design-visual.md` e `docs/prototipo/index.html`; filtro por área e fonte; botões **Adicionar à minha lista**, **Descartar**, **Não tenho interesse nessa empresa**. Mostra a última busca diária e se alguma fonte falhou.
 3. **Minhas vagas** — tabela: empresa, cargo, link, data, status, nota, currículo enviado, próximo follow-up. Editar inline o status. Botões: Nova vaga, Importar CSV.
 4. **Vaga (detalhe)** — todos os campos, notas, histórico de status (com data), currículo enviado, data de follow-up.
 5. **Currículos** — upload de PDF com nome da versão (ex.: "Processos v3"), lista, abrir/baixar (link temporário), quantas vagas usaram cada versão.

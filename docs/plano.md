@@ -219,6 +219,7 @@ export const gupy: Adaptador; export const greenhouse: Adaptador; export const a
 - Greenhouse: `GET https://boards-api.greenhouse.io/v1/boards/<empresa>/jobs?content=true` para cada `perfil.empresasGreenhouse`; descrição vem em HTML escapado → texto puro.
 - Ashby: `GET https://api.ashbyhq.com/posting-api/job-board/<empresa>` para cada `perfil.empresasAshby`; usar `isRemote`/`location`.
 - Greenhouse/Ashby: modalidade a partir do texto do local — contém "remote"/"remoto" + Brazil/Brasil → `remoto`; "remote" + LatAm/Latin America/Americas/Anywhere/Worldwide → `remoto_internacional`; "remote" + outro país explícito (US, USA, United States, Canada, Europe, UK…) → `exterior`; senão presencial/híbrido com cidade extraída.
+- A descrição precisa vir **completa** (o "Veja mais" das Sugestões mostra atividades e requisitos): se a listagem da Gupy trouxer descrição cortada, buscar o detalhe da vaga; HTML vira texto preservando títulos de seção e listas (para separar "o que vai fazer" de "requisitos").
 - Timeout de 15 s por requisição; uma empresa/termo que falha não derruba o adaptador (registra e segue), mas falha total do adaptador lança erro.
 - Lista inicial de empresas Greenhouse/Ashby em `PERFIL_PADRAO`: Claude monta e **confere cada slug com uma requisição real** antes de incluir.
 
