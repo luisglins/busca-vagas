@@ -3,7 +3,9 @@
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { hojeEmSaoPaulo, proximoFollowup } from "@/lib/followup";
-import { PERFIL_PADRAO } from "@/lib/perfil-padrao";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { carregarPerfil } from "@/lib/busca-supabase";
+import type { VagaDoCsv } from "@/lib/csv";
 import { pontuar } from "@/lib/pontuar";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { chaveDuplicidade } from "@/lib/texto";
@@ -15,11 +17,48 @@ function texto(form: FormData, campo: string): string | null {
   return v === "" ? null : v;
 }
 
-/** Perfil salvo em Configurações, ou o padrão se ainda não existir. */
-async function perfilAtual(): Promise<Perfil> {
-  const supabase = await criarClienteServidor();
-  const { data } = await supabase.from("configuracoes").select("perfil").eq("id", 1).maybeSingle();
-  return (data?.perfil as Perfil | undefined) ?? PERFIL_PADRAO;
+/** Perfil atual, com a vaga manual nunca escondida: ela só ganha a nota. */
+async function perfilParaManual(supabase: SupabaseClient): Promise<Perfil> {
+  const perfil = await carregarPerfil(supabase);
+  return { ...perfil, empresasBloqueadas: [], aceitarOutrasCidades: true };
+}
+
+interface DadosManuais {
+  empresa: string;
+  cargo: string;
+  link?: string | null;
+  descricao?: string | null;
+  notas?: string | null;
+  data_encontrada?: string | null;
+}
+
+/** Linha pronta para gravar em `vagas`, já com nota de aderência e chave de duplicidade. */
+function linhaDeVagaManual(d: DadosManuais, perfil: Perfil) {
+  const resultado = pontuar(
+    {
+      fonte: "manual",
+      idExterno: "",
+      empresa: d.empresa,
+      cargo: d.cargo,
+      link: d.link ?? "",
+      modalidade: "desconhecida",
+      localTexto: "",
+      descricao: d.descricao ?? "",
+    },
+    perfil,
+  );
+  return {
+    empresa: d.empresa,
+    cargo: d.cargo,
+    link: d.link || null,
+    descricao: d.descricao || null,
+    notas: d.notas || null,
+    data_encontrada: d.data_encontrada || hojeEmSaoPaulo(),
+    fonte: "manual",
+    nota_aderencia: resultado.eliminada ? 0 : resultado.nota,
+    motivos: resultado.eliminada ? [resultado.motivoEliminacao] : resultado.motivos,
+    chave_duplicidade: chaveDuplicidade(d.empresa, d.cargo),
+  };
 }
 
 export type EstadoForm = { erro: string | null; ok?: boolean };
@@ -30,38 +69,51 @@ export async function criarVaga(_estado: EstadoForm, form: FormData): Promise<Es
   const cargo = texto(form, "cargo");
   if (!empresa || !cargo) return { erro: "Preencha empresa e cargo." };
 
-  const descricao = texto(form, "descricao") ?? "";
-  const resultado = pontuar(
+  const supabase = await criarClienteServidor();
+  const linha = linhaDeVagaManual(
     {
-      fonte: "manual",
-      idExterno: "",
       empresa,
       cargo,
-      link: texto(form, "link") ?? "",
-      modalidade: "desconhecida",
-      localTexto: "",
-      descricao,
+      link: texto(form, "link"),
+      descricao: texto(form, "descricao"),
+      notas: texto(form, "notas"),
+      data_encontrada: texto(form, "data_encontrada"),
     },
-    // A vaga cadastrada à mão nunca é escondida: só usamos a nota.
-    { ...(await perfilAtual()), empresasBloqueadas: [], aceitarOutrasCidades: true },
+    await perfilParaManual(supabase),
   );
-
-  const supabase = await criarClienteServidor();
-  const { error } = await supabase.from("vagas").insert({
-    empresa,
-    cargo,
-    link: texto(form, "link"),
-    descricao: descricao || null,
-    notas: texto(form, "notas"),
-    data_encontrada: texto(form, "data_encontrada") ?? hojeEmSaoPaulo(),
-    fonte: "manual",
-    nota_aderencia: resultado.eliminada ? 0 : resultado.nota,
-    motivos: resultado.eliminada ? [resultado.motivoEliminacao] : resultado.motivos,
-    chave_duplicidade: chaveDuplicidade(empresa, cargo),
-  });
+  const { error } = await supabase.from("vagas").insert(linha);
   if (error) return { erro: "Não foi possível salvar a vaga. Tente de novo." };
   refresh();
   return { erro: null, ok: true };
+}
+
+/** Importa as vagas lidas de um CSV; pula as que já estão na lista (mesma empresa e cargo). */
+export async function importarVagas(vagas: VagaDoCsv[]): Promise<{ importadas: number; repetidas: number; erro: string | null }> {
+  if (vagas.length === 0) return { importadas: 0, repetidas: 0, erro: "Nenhuma vaga para importar." };
+  if (vagas.length > 500) return { importadas: 0, repetidas: 0, erro: "Importe no máximo 500 vagas por vez." };
+
+  const supabase = await criarClienteServidor();
+  const perfil = await perfilParaManual(supabase);
+  const { data: existentes } = await supabase.from("vagas").select("chave_duplicidade");
+  const chaves = new Set((existentes ?? []).map((v) => v.chave_duplicidade));
+
+  const linhas = [];
+  let repetidas = 0;
+  for (const v of vagas) {
+    const linha = linhaDeVagaManual(v, perfil);
+    if (chaves.has(linha.chave_duplicidade)) {
+      repetidas++;
+      continue;
+    }
+    chaves.add(linha.chave_duplicidade);
+    linhas.push(linha);
+  }
+  if (linhas.length > 0) {
+    const { error } = await supabase.from("vagas").insert(linhas);
+    if (error) return { importadas: 0, repetidas, erro: "Não foi possível importar. Tente de novo." };
+  }
+  refresh();
+  return { importadas: linhas.length, repetidas, erro: null };
 }
 
 /** Muda o status, grava o histórico e recalcula o próximo follow-up. */

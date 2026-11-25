@@ -2,10 +2,13 @@
 
 import { useActionState, useState } from "react";
 import { criarVaga, type EstadoForm } from "./acoes";
+import { ImportarCsv } from "./importar-csv";
 
-/** Cabeçalho da tela com o botão "Nova vaga", que abre o formulário logo abaixo. */
+/** Cabeçalho da tela com "Importar CSV" e "Nova vaga"; cada um abre seu painel logo abaixo. */
 export function CabecalhoComNovaVaga({ hoje, children }: { hoje: string; children: React.ReactNode }) {
-  const [aberto, setAberto] = useState(false);
+  const [painel, setPainel] = useState<"nova" | "csv" | null>(null);
+  const aberto = painel === "nova";
+  const setAberto = (abrir: boolean) => setPainel(abrir ? "nova" : null);
   // Salva no servidor e, se deu certo, fecha o formulário (o React limpa os campos sozinho).
   const [estado, acao, salvando] = useActionState<EstadoForm, FormData>(async (anterior, dados) => {
     const resultado = await criarVaga(anterior, dados);
@@ -17,10 +20,16 @@ export function CabecalhoComNovaVaga({ hoje, children }: { hoje: string; childre
     <div className="mb-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         {children}
-        <button type="button" className="btn btn-principal" aria-expanded={aberto} onClick={() => setAberto(!aberto)}>
-          {aberto ? "Fechar formulário" : "Nova vaga"}
-        </button>
+        <div className="flex gap-2">
+          <button type="button" className="btn" aria-expanded={painel === "csv"} onClick={() => setPainel(painel === "csv" ? null : "csv")}>
+            {painel === "csv" ? "Fechar importação" : "Importar CSV"}
+          </button>
+          <button type="button" className="btn btn-principal" aria-expanded={aberto} onClick={() => setAberto(!aberto)}>
+            {aberto ? "Fechar formulário" : "Nova vaga"}
+          </button>
+        </div>
       </div>
+      {painel === "csv" && <ImportarCsv aoTerminar={() => setPainel(null)} />}
       {aberto && (
         <form
           action={acao}
