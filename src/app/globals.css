@@ -7,17 +7,18 @@
   --color-grafite-3: #4a5753;
   --color-aco: #51646c;
   --color-aco-claro: #b9c2be;
-  --color-concreto: #f3f4f1;
-  --color-chapa: #ffffff;
-  --color-junta: #d6dbd7;
-  --color-junta-leve: #eceeec;
+  /* Tons mais baixos para não ofuscar (pedido do Luís): fundo cinza-esverdeado médio, painéis em off-white. */
+  --color-concreto: #d9ded8;
+  --color-chapa: #eef0eb;
+  --color-junta: #c4cbc5;
+  --color-junta-leve: #dde2dc;
   --color-laranja: #f0a202;
   --color-laranja-forte: #e0960a;
   --color-laranja-escuro: #c46a00;
   --color-laranja-claro: #fde9c2;
   --color-verde: #1f6b43;
   --color-verde-luz: #3fa66b;
-  --color-verde-claro: #e3efe7;
+  --color-verde-claro: #d5e6da;
   --color-vermelho: #b3261e;
   --color-cinza-nota: #7d8a84;
   --color-seg-ferr: #8fa09a;
