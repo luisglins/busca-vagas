@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Busca Vagas — 3 opções de identidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --grafite: #1e2624; --aco: #51646c; --concreto: #f3f4f1; --junta: #d6dbd7;
+    --laranja: #f0a202; --laranja-escuro: #c46a00; --verde: #1f6b43; --verde-luz: #3fa66b; --vermelho: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ebe7; color: var(--grafite); font: 15px/1.5 system-ui, sans-serif; }
+  .topo-pagina { max-width: 1320px; margin: 0 auto; padding: 28px 24px 8px; }
+  .topo-pagina h1 { margin: 0; font-size: 26px; }
+  .topo-pagina p { margin: 6px 0 0; color: var(--aco); }
+  .grade { max-width: 1320px; margin: 0 auto; padding: 16px 24px 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 1100px) { .grade { grid-template-columns: 1fr; } }
+
+  .opcao { background: var(--concreto); border-radius: 14px; overflow: hidden; border: 1px solid #d3d7d2; font-family: var(--fonte-texto); }
+  .rotulo-opcao { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 18px; background: #fff; border-bottom: 1px solid var(--junta); }
+  .rotulo-opcao b { font-size: 17px; }
+  .rotulo-opcao span { color: var(--aco); font-size: 13px; }
+
+  /* Cabeçalho do site */
+  .cab { background: var(--grafite); color: #fff; display: flex; align-items: center; gap: 16px; padding: 0 18px; height: 60px; }
+  .cab nav { display: flex; gap: 14px; font-size: 13px; color: #b9c2be; }
+  .cab nav b { color: #fff; font-weight: 500; border-bottom: 3px solid var(--laranja); padding-bottom: 4px; }
+  .marca { display: flex; align-items: center; gap: 10px; font-family: var(--fonte-titulo); }
+
+  .corpo { padding: 18px; }
+  .titulo-tela { font-family: var(--fonte-titulo); font-size: 34px; line-height: 1; margin: 4px 0 4px; font-weight: var(--peso-titulo); letter-spacing: var(--espaco-titulo); }
+  .sub { color: var(--aco); font-size: 13px; margin: 0 0 14px; }
+
+  .lista { background: #fff; border: 1px solid var(--junta); border-radius: var(--raio); overflow: hidden; }
+  .grupo { padding: 10px 16px; font-family: var(--fonte-titulo); font-weight: 600; color: var(--verde); background: #e3efe7; border-bottom: 1px solid var(--junta); }
+  .vaga { position: relative; display: grid; grid-template-columns: 54px 1fr; gap: 4px 14px; padding: 16px 16px 16px 22px; }
+  .vaga::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--cor, var(--verde)); }
+  .nota { font-family: var(--fonte-titulo); font-weight: 700; font-size: 34px; line-height: 1; color: var(--cor-nota, var(--verde)); font-variant-numeric: tabular-nums; }
+  .nota small { display: block; font: 400 11px var(--fonte-texto); color: var(--aco); margin-top: 4px; }
+  .cargo { font-weight: 600; font-size: 16px; margin: 0; }
+  .fatos { font-size: 13px; color: var(--aco); display: flex; gap: 12px; flex-wrap: wrap; }
+  .fatos b { color: var(--grafite); font-weight: 500; }
+  .acoes { grid-column: 2; display: flex; gap: 8px; margin-top: 10px; }
+  .btn { font: 500 13px var(--fonte-texto); padding: 9px 14px; border-radius: var(--raio-botao); border: 1px solid var(--junta); background: #fff; cursor: pointer; }
+  .btn.p { background: var(--laranja); border-color: #e0960a; }
+  .barra { grid-column: 2; height: 10px; border-radius: 999px; background: #eceeec; overflow: hidden; display: flex; margin-top: 8px; max-width: 320px; }
+  .barra i { display: block; height: 100%; }
+
+  /* Os 3 separadores entre vagas */
+  .sep-a { height: 0; border-top: 2px dashed var(--junta); margin: 0 16px 0 22px; position: relative; }
+  .sep-a::before { content: ""; position: absolute; left: -22px; top: -3px; width: 34px; height: 4px; background: var(--laranja); border-radius: 0 2px 2px 0; }
+  .sep-b { height: 10px; background: var(--concreto); border-top: 1px solid var(--junta); border-bottom: 1px solid var(--junta); }
+  .sep-c { height: 14px; position: relative; }
+  .sep-c::after { content: ""; position: absolute; left: 22px; right: 16px; top: 6px; height: 2px; background: repeating-linear-gradient(90deg, var(--junta) 0 10px, transparent 10px 16px); }
+  .sep-c::before { content: ""; position: absolute; left: 14px; top: 3px; width: 8px; height: 8px; border-radius: 50%; background: #fff; border: 2px solid var(--junta); }
+
+  .login { margin-top: 18px; background: #fff; border: 1px solid var(--junta); border-radius: var(--raio); padding: 18px; display: flex; align-items: center; gap: 14px; }
+  .login .nome { font-family: var(--fonte-titulo); font-size: 24px; font-weight: var(--peso-titulo); letter-spacing: var(--espaco-titulo); line-height: 1.1; }
+  .login .nome small { display: block; font: 400 13px var(--fonte-texto); color: var(--aco); letter-spacing: 0; }
+  .notas { margin: 14px 0 0; font-size: 13px; color: var(--aco); }
+  .notas li { margin-bottom: 4px; }
+
+  /* Opção A — Fluxo */
+  .op-a { --fonte-texto: "Plus Jakarta Sans", sans-serif; --fonte-titulo: "Plus Jakarta Sans", sans-serif; --peso-titulo: 800; --espaco-titulo: -0.03em; --raio: 14px; --raio-botao: 10px; }
+  /* Opção B — Andon */
+  .op-b { --fonte-texto: "Outfit", sans-serif; --fonte-titulo: "Outfit", sans-serif; --peso-titulo: 600; --espaco-titulo: -0.01em; --raio: 18px; --raio-botao: 999px; }
+  /* Opção C — Assinatura */
+  .op-c { --fonte-texto: "DM Sans", sans-serif; --fonte-titulo: "Bricolage Grotesque", sans-serif; --peso-titulo: 800; --espaco-titulo: -0.02em; --raio: 12px; --raio-botao: 8px; }
+</style>
+</head>
+<body>
+<header class="topo-pagina">
+  <h1>Escolha a identidade do Busca Vagas</h1>
+  <p>Mesmas cores e o mesmo conteúdo; muda a fonte, o arredondamento, o logo e o traço que separa as vagas. Pode misturar (ex.: “logo da B com a fonte da A”).</p>
+</header>
+
+<main class="grade">
+
+  <!-- ================= A ================= -->
+  <section class="opcao op-a">
+    <div class="rotulo-opcao"><b>A · Fluxo</b><span>Plus Jakarta Sans</span></div>
+    <div class="cab">
+      <div class="marca">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <rect width="30" height="30" rx="8" fill="#2a3431"/>
+          <rect x="6" y="7" width="18" height="4" rx="2" fill="#3fa66b"/>
+          <rect x="6" y="13" width="13" height="4" rx="2" fill="#f0a202"/>
+          <rect x="6" y="19" width="8" height="4" rx="2" fill="#9aa6a1"/>
+        </svg>
+        <span style="font-weight:800;font-size:17px;letter-spacing:-.02em">busca<span style="color:#f0a202">.</span>vagas</span>
+      </div>
+      <nav><b>Sugestões</b><span>Minhas vagas</span><span>Painel</span></nav>
+    </div>
+    <div class="corpo">
+      <h2 class="titulo-tela">Sugestões</h2>
+      <p class="sub">Busca de hoje às 7h em Gupy, Greenhouse e Ashby.</p>
+      <div class="lista">
+        <div class="grupo">Vale aplicar</div>
+        <div class="vaga">
+          <div class="nota">78<small>de 100</small></div>
+          <div><p class="cargo">Assistente de PCP</p><div class="fatos"><b>AZZAS 2154</b><span>Rio de Janeiro, híbrido</span></div></div>
+          <div class="barra"><i style="width:40%;background:#1e2624"></i><i style="width:12%;background:#8fa09a"></i><i style="width:26%;background:#c3ccc7"></i></div>
+          <div class="acoes"><button class="btn p">Adicionar à lista</button><button class="btn">Descartar</button></div>
+        </div>
+        <div class="sep-a"></div>
+        <div class="vaga">
+          <div class="nota">72<small>de 100</small></div>
+          <div><p class="cargo">Analista de Automação Jr</p><div class="fatos"><b>Stone</b><span>Remoto (Brasil)</span></div></div>
+          <div class="acoes"><button class="btn p">Adicionar à lista</button><button class="btn">Descartar</button></div>
+        </div>
+      </div>
+      <div class="login">
+        <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+          <rect width="30" height="30" rx="8" fill="#1e2624"/>
+          <rect x="6" y="7" width="18" height="4" rx="2" fill="#3fa66b"/>
+          <rect x="6" y="13" width="13" height="4" rx="2" fill="#f0a202"/>
+          <rect x="6" y="19" width="8" height="4" rx="2" fill="#9aa6a1"/>
+        </svg>
+        <div class="nome">busca<span style="color:#f0a202">.</span>vagas<small>Tela de login</small></div>
+      </div>
+      <ul class="notas">
+        <li><b>Logo:</b> três barras em ranking (verde, laranja, cinza), como a nota das vagas ordenada.</li>
+        <li><b>Traço:</b> linha tracejada com uma marca laranja na ponta, como a régua de um quadro.</li>
+        <li><b>Clima:</b> moderno e direto, cantos bem arredondados, títulos pesados.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= B ================= -->
+  <section class="opcao op-b">
+    <div class="rotulo-opcao"><b>B · Andon</b><span>Outfit</span></div>
+    <div class="cab">
+      <div class="marca">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <circle cx="12.5" cy="12.5" r="9" fill="none" stroke="#fff" stroke-width="2.6"/>
+          <line x1="19.2" y1="19.2" x2="26" y2="26" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="12.5" cy="8.4" r="2.1" fill="#3fa66b"/>
+          <circle cx="12.5" cy="12.5" r="2.1" fill="#f0a202"/>
+          <circle cx="12.5" cy="16.6" r="2.1" fill="#9aa6a1"/>
+        </svg>
+        <span style="font-weight:600;font-size:18px">Busca Vagas</span>
+      </div>
+      <nav><b>Sugestões</b><span>Minhas vagas</span><span>Painel</span></nav>
+    </div>
+    <div class="corpo">
+      <h2 class="titulo-tela">Sugestões</h2>
+      <p class="sub">Busca de hoje às 7h em Gupy, Greenhouse e Ashby.</p>
+      <div class="lista">
+        <div class="grupo">Vale aplicar</div>
+        <div class="vaga">
+          <div class="nota">78<small>de 100</small></div>
+          <div><p class="cargo">Assistente de PCP</p><div class="fatos"><b>AZZAS 2154</b><span>Rio de Janeiro, híbrido</span></div></div>
+          <div class="barra"><i style="width:40%;background:#1e2624"></i><i style="width:12%;background:#8fa09a"></i><i style="width:26%;background:#c3ccc7"></i></div>
+          <div class="acoes"><button class="btn p">Adicionar à lista</button><button class="btn">Descartar</button></div>
+        </div>
+        <div class="sep-b"></div>
+        <div class="vaga">
+          <div class="nota">72<small>de 100</small></div>
+          <div><p class="cargo">Analista de Automação Jr</p><div class="fatos"><b>Stone</b><span>Remoto (Brasil)</span></div></div>
+          <div class="acoes"><button class="btn p">Adicionar à lista</button><button class="btn">Descartar</button></div>
+        </div>
+      </div>
+      <div class="login">
+        <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+          <circle cx="12.5" cy="12.5" r="9" fill="none" stroke="#1e2624" stroke-width="2.6"/>
+          <line x1="19.2" y1="19.2" x2="26" y2="26" stroke="#1e2624" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="12.5" cy="8.4" r="2.1" fill="#3fa66b"/>
+          <circle cx="12.5" cy="12.5" r="2.1" fill="#f0a202"/>
+          <circle cx="12.5" cy="16.6" r="2.1" fill="#9aa6a1"/>
+        </svg>
+        <div class="nome">Busca Vagas<small>Tela de login</small></div>
+      </div>
+      <ul class="notas">
+        <li><b>Logo:</b> uma lupa cuja lente é uma luz de andon (verde, laranja, cinza): "busca" + "aderência".</li>
+        <li><b>Traço:</b> faixa cinza entre as vagas, como o espaço entre cartões num quadro.</li>
+        <li><b>Clima:</b> o mais suave e amigável, botões em pílula, cantos bem redondos.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= C ================= -->
+  <section class="opcao op-c">
+    <div class="rotulo-opcao"><b>C · Assinatura</b><span>Bricolage Grotesque + DM Sans</span></div>
+    <div class="cab">
+      <div class="marca">
+        <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <rect width="30" height="30" rx="9" fill="#f0a202"/>
+          <path d="M8 15.5 L13 20.5 L22.5 9.5" fill="none" stroke="#1e2624" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-weight:800;font-size:19px;letter-spacing:-.02em">Busca Vagas</span>
+      </div>
+      <nav><b>Sugestões</b><span>Minhas vagas</span><span>Painel</span></nav>
+    </div>
+    <div class="corpo">
+      <h2 class="titulo-tela">Sugestões</h2>
+      <p class="sub">Busca de hoje às 7h em Gupy, Greenhouse e Ashby.</p>
+      <div class="lista">
+        <div class="grupo">Vale aplicar</div>
+        <div class="vaga">
+          <div class="nota">78<small>de 100</small></div>
+          <div><p class="cargo">Assistente de PCP</p><div class="fatos"><b>AZZAS 2154</b><span>Rio de Janeiro, híbrido</span></div></div>
+          <div class="barra"><i style="width:40%;background:#1e2624"></i><i style="width:12%;background:#8fa09a"></i><i style="width:26%;background:#c3ccc7"></i></div>
+          <div class="acoes"><button class="btn p">Adicionar à lista</button><button class="btn">Descartar</button></div>
+        </div>
+        <div class="sep-c"></div>
+        <div class="vaga">
+          <div class="nota">72<small>de 100</small></div>
+          <div><p class="cargo">Analista de Automação Jr</p><div class="fatos"><b>Stone</b><span>Remoto (Brasil)</span></div></div>
+          <div class="acoes"><button class="btn p">Adicionar à lista</button><button class="btn">Descartar</button></div>
+        </div>
+      </div>
+      <div class="login">
+        <svg width="44" height="44" viewBox="0 0 30 30" aria-hidden="true">
+          <rect width="30" height="30" rx="9" fill="#f0a202"/>
+          <path d="M8 15.5 L13 20.5 L22.5 9.5" fill="none" stroke="#1e2624" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="nome">Busca Vagas<small>Tela de login</small></div>
+      </div>
+      <ul class="notas">
+        <li><b>Logo:</b> um "check" de vaga aprovada num selo laranja, simples e marcante.</li>
+        <li><b>Traço:</b> pontilhado com um "furo", como a picotagem de um ticket.</li>
+        <li><b>Clima:</b> títulos com personalidade (Bricolage) e texto bem legível (DM Sans).</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
