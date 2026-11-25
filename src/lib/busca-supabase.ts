@@ -59,8 +59,11 @@ function paraLinha(s: SugestaoNova) {
   };
 }
 
-/** Roda a busca completa usando o cliente dado (sessão do Luís ou chave de serviço). */
-export async function rodarBusca(supabase: SupabaseClient): Promise<ResumoExecucao[]> {
+/**
+ * Roda a busca usando o cliente dado (sessão do Luís ou chave de serviço).
+ * Sem `fontes`, usa todas; a rota do LinkedIn passa só as vagas lidas do e-mail.
+ */
+export async function rodarBusca(supabase: SupabaseClient, fontes: Adaptador[] = adaptadores()): Promise<ResumoExecucao[]> {
   const perfil = await carregarPerfil(supabase);
   const desde = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
 
@@ -74,7 +77,7 @@ export async function rodarBusca(supabase: SupabaseClient): Promise<ResumoExecuc
   ]);
 
   return executarBusca({
-    adaptadores: adaptadores(),
+    adaptadores: fontes,
     perfil,
     chavesExistentes: new Set([
       ...vagas.map((v) => v.chave_duplicidade).filter((c): c is string => Boolean(c)),
