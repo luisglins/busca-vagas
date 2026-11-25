@@ -36,7 +36,8 @@ export type IdCategoria =
   | "ia_baixo"
   | "ferramentas"
   | "contexto"
-  | "nivel";
+  | "nivel"
+  | "trainee";
 export interface Categoria {
   id: IdCategoria;
   peso: number;
@@ -61,6 +62,8 @@ export interface Perfil {
   empresasAshby: string[];
   empresasBloqueadas: string[];
   aceitarOutrasCidades: boolean;
+  /** Vagas de trainee valem em qualquer cidade (o Luís topa se mudar para um programa de trainee). */
+  traineeQualquerCidade: boolean;
   salarioMinimo: number | null;
   /** Palavras no título que eliminam a vaga (nível errado). */
   palavrasEliminatorias: string[];

@@ -18,6 +18,7 @@ const NOME_CATEGORIA: Record<IdCategoria, string> = {
   ferramentas: "ferramentas",
   contexto: "contexto",
   nivel: "nível de entrada",
+  trainee: "trainee",
 };
 
 const NOME_PENALIDADE: Record<IdPenalidade, string> = {
@@ -60,13 +61,16 @@ export function pontuar(vaga: VagaBruta, perfil: Perfil): Resultado {
   const remota = vaga.modalidade === "remoto" || vaga.modalidade === "remoto_internacional";
   if (!remota) {
     const noRJ = ehNoRJ(vaga);
-    if (noRJ === false && !perfil.aceitarOutrasCidades) return eliminar("fora do RJ");
+    const ehTrainee = contemPalavra(titulo, "trainee");
+    if (noRJ === false && ehTrainee && perfil.traineeQualquerCidade) {
+      motivos.push(`trainee em ${vaga.cidade ?? vaga.estado}`);
+    } else if (noRJ === false && !perfil.aceitarOutrasCidades) return eliminar("fora do RJ");
     if (noRJ === null) motivos.push("local não informado");
-    else if (noRJ) {
+    else if (noRJ === true) {
       if (vaga.modalidade === "presencial") motivos.push("RJ presencial");
       else if (vaga.modalidade === "hibrido") motivos.push("RJ híbrido");
       else motivos.push("RJ");
-    } else motivos.push(vaga.cidade ?? vaga.estado ?? "outra cidade");
+    } else if (!motivos.some((m) => m.startsWith("trainee em"))) motivos.push(vaga.cidade ?? vaga.estado ?? "outra cidade");
   } else if (vaga.modalidade === "remoto") {
     motivos.push("remoto");
   }

@@ -4,7 +4,7 @@ import { executarBusca, type SugestaoNova } from "./busca";
 import { ashby } from "./fontes/ashby";
 import { greenhouse } from "./fontes/greenhouse";
 import { gupy } from "./fontes/gupy";
-import { PERFIL_PADRAO } from "./perfil-padrao";
+import { completarPerfil, PERFIL_PADRAO } from "./perfil-padrao";
 import type { Perfil, ResumoExecucao } from "./tipos";
 
 export const ADAPTADORES = [gupy, greenhouse, ashby];
@@ -12,7 +12,7 @@ export const ADAPTADORES = [gupy, greenhouse, ashby];
 /** Perfil salvo em Configurações; na primeira vez grava o padrão. */
 export async function carregarPerfil(supabase: SupabaseClient): Promise<Perfil> {
   const { data } = await supabase.from("configuracoes").select("perfil").eq("id", 1).maybeSingle();
-  if (data?.perfil) return data.perfil as Perfil;
+  if (data?.perfil) return completarPerfil(data.perfil as Perfil);
   await supabase.from("configuracoes").upsert({ id: 1, perfil: PERFIL_PADRAO });
   return PERFIL_PADRAO;
 }

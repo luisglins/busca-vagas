@@ -108,6 +108,7 @@ export async function salvarConfiguracoes(_estado: EstadoConfig, form: FormData)
     empresasBloqueadas: linhas(form, "empresasBloqueadas"),
     palavrasEliminatorias: linhas(form, "palavrasEliminatorias"),
     aceitarOutrasCidades: form.get("aceitarOutrasCidades") === "on",
+    traineeQualquerCidade: form.get("traineeQualquerCidade") === "on",
     salarioMinimo,
     categorias,
     penalidades,

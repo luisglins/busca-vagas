@@ -17,7 +17,7 @@ interface VagaAshby {
 }
 
 // O Ashby não manda o nome da empresa; para as conhecidas usamos o nome certo.
-const NOMES: Record<string, string> = { openai: "OpenAI", elevenlabs: "ElevenLabs", harvey: "Harvey", cursor: "Cursor" };
+const NOMES: Record<string, string> = { openai: "OpenAI", elevenlabs: "ElevenLabs", harvey: "Harvey", cursor: "Cursor", decagon: "Decagon" };
 const nomeDaEmpresa = (slug: string) => NOMES[slug] ?? slug.charAt(0).toUpperCase() + slug.slice(1);
 
 function modalidade(v: VagaAshby): Modalidade {

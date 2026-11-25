@@ -12,6 +12,7 @@ const NOME_CATEGORIA: Record<IdCategoria, { nome: string; ajuda: string }> = {
   ferramentas: { nome: "Ferramentas e métodos", ajuda: "Lean, Six Sigma, Power BI, SQL, Python, Excel." },
   contexto: { nome: "Contexto", ajuda: "Indústria, manufatura, supply chain, inglês." },
   nivel: { nome: "Nível de entrada", ajuda: "Trainee, júnior, assistente." },
+  trainee: { nome: "Trainee", ajuda: "Programas de trainee: soma além do nível de entrada." },
 };
 
 const NOME_PENALIDADE: Record<IdPenalidade, { nome: string; ajuda: string }> = {
@@ -83,6 +84,10 @@ export function FormularioConfiguracoes({ perfil }: { perfil: Perfil }) {
           <label className="flex items-center gap-2 text-sm font-medium">
             <input type="checkbox" name="aceitarOutrasCidades" defaultChecked={perfil.aceitarOutrasCidades} className="size-4 accent-laranja" />
             Aceitar vagas presenciais em outras cidades
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input type="checkbox" name="traineeQualquerCidade" defaultChecked={perfil.traineeQualquerCidade} className="size-4 accent-laranja" />
+            Trainee vale em qualquer cidade
           </label>
           <label className="rotulo w-56">
             Salário mínimo (R$, opcional)

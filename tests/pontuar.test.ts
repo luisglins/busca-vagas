@@ -23,10 +23,10 @@ function vaga(campos: Partial<VagaBruta>): VagaBruta {
 const perfil: Perfil = PERFIL_PADRAO;
 
 describe("pontuar — vagas reais do teste das fontes", () => {
-  it("Farmacêutico Trainee não é eliminado, mas tem nota baixa", () => {
+  it("Farmacêutico Trainee não é eliminado, mas fica na faixa cinza (área errada)", () => {
     const r = pontuar(vaga({ cargo: "Farmacêutico Trainee | Quinta D'Or", empresa: "Rede D'Or" }), perfil);
     expect(r.eliminada).toBe(false);
-    expect(r.nota).toBeLessThan(20);
+    expect(r.nota).toBeLessThan(40);
   });
 
   it("Assistente de PCP no RJ híbrido tem nota alta na área de processos", () => {
@@ -180,5 +180,26 @@ describe("pontuar — regras gerais", () => {
   it("plural também conta: Programadoras recebe a penalidade de programação", () => {
     const r = pontuar(vaga({ cargo: "Mulheres Programadoras - Automação de Processos", modalidade: "remoto" }), perfil);
     expect(r.motivos.some((m) => m.startsWith("exige programação"))).toBe(true);
+  });
+
+  it("vaga de auxiliar é eliminada", () => {
+    const r = pontuar(vaga({ cargo: "Auxiliar de Produção" }), perfil);
+    expect(r.eliminada).toBe(true);
+  });
+});
+
+describe("pontuar — trainee", () => {
+  it("trainee em São Paulo não é eliminado e avisa a cidade", () => {
+    const r = pontuar(vaga({ cargo: "Programa de Trainee 2027 - Engenharia", cidade: "São Paulo", estado: "São Paulo" }), perfil);
+    expect(r.eliminada).toBe(false);
+    expect(r.motivos).toContain("trainee em São Paulo");
+  });
+  it("trainee recebe pontos do grupo trainee", () => {
+    const r = pontuar(vaga({ cargo: "Trainee de Operações" }), perfil);
+    expect(r.motivos.some((m) => m.startsWith("trainee (+"))).toBe(true);
+  });
+  it("com a opção desligada, trainee fora do RJ volta a ser eliminado", () => {
+    const r = pontuar(vaga({ cargo: "Trainee de Operações", cidade: "Curitiba" }), { ...perfil, traineeQualquerCidade: false });
+    expect(r.eliminada).toBe(true);
   });
 });
