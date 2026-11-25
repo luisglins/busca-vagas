@@ -33,3 +33,11 @@ export function followupsDaSemana<T extends { proximo_followup: string | null }>
     .filter((v) => v.proximo_followup !== null && v.proximo_followup <= domingo)
     .sort((a, b) => a.proximo_followup!.localeCompare(b.proximo_followup!));
 }
+
+/** Instante de N dias atrás, em ISO (para filtros "últimos 30 dias"). */
+export function isoDiasAtras(dias: number, agora: number = Date.now()): string {
+  return new Date(agora - dias * 24 * 60 * 60 * 1000).toISOString();
+}
+
+/** Momento atual em milissegundos (fora do componente, para o lint de pureza do React). */
+export const agoraMs = () => Date.now();

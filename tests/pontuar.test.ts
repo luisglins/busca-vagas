@@ -176,4 +176,9 @@ describe("pontuar — regras gerais", () => {
     );
     expect(vazia.nota).toBe(0);
   });
+
+  it("plural também conta: Programadoras recebe a penalidade de programação", () => {
+    const r = pontuar(vaga({ cargo: "Mulheres Programadoras - Automação de Processos", modalidade: "remoto" }), perfil);
+    expect(r.motivos.some((m) => m.startsWith("exige programação"))).toBe(true);
+  });
 });

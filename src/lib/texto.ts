@@ -11,13 +11,14 @@ export function normalizarTexto(s: string): string {
 }
 
 /**
- * Verdadeiro se `palavra` aparece inteira em `textoNormalizado`.
- * Ex.: "ia" casa em "analista de ia", mas não em "farmacia".
+ * Verdadeiro se `palavra` aparece inteira em `textoNormalizado`, aceitando plural com "s" ou "es".
+ * Ex.: "ia" casa em "analista de ia", mas não em "farmacia"; "programadora" casa em "programadoras".
  */
 export function contemPalavra(textoNormalizado: string, palavra: string): boolean {
   const alvo = normalizarTexto(palavra);
   if (!alvo) return false;
-  return ` ${textoNormalizado} `.includes(` ${alvo} `);
+  const texto = ` ${textoNormalizado} `;
+  return [alvo, `${alvo}s`, `${alvo}es`].some((forma) => texto.includes(` ${forma} `));
 }
 
 /** Chave para detectar a mesma vaga vinda de fontes diferentes. */

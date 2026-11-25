@@ -18,9 +18,10 @@ export const PERFIL_PADRAO: Perfil = {
     "automação de processos",
     "inteligência artificial",
   ],
-  // Preenchidas e conferidas na etapa dos adaptadores (Tarefa 10).
-  empresasGreenhouse: [],
-  empresasAshby: [],
+  // Conferidas em 25/11/2026: empresas com vagas no Brasil nessas plataformas.
+  empresasGreenhouse: ["stone", "quintoandar", "vtex", "ebanx", "wildlifestudios", "gympass"],
+  // Ashby: empresas de IA com vagas no Brasil / América Latina.
+  empresasAshby: ["openai", "elevenlabs", "harvey", "cursor"],
   empresasBloqueadas: [],
   aceitarOutrasCidades: false,
   salarioMinimo: null,

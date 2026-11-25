@@ -54,7 +54,7 @@ export function pontuar(vaga: VagaBruta, perfil: Perfil): Resultado {
   }
   const nivelErrado = perfil.palavrasEliminatorias.find((p) => contemPalavra(titulo, p));
   if (nivelErrado) return eliminar(`nível: ${nivelErrado}`);
-  if (vaga.modalidade === "exterior") return eliminar("remoto só para outro país");
+  if (vaga.modalidade === "exterior") return eliminar("fora do Brasil");
 
   const motivos: string[] = [];
   const remota = vaga.modalidade === "remoto" || vaga.modalidade === "remoto_internacional";

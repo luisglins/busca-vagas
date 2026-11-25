@@ -25,6 +25,8 @@ export interface VagaBruta {
   descricao: string;
   salario?: string;
   publicadaEm?: string;
+  /** Prazo de inscrição (ISO), quando a fonte informa. */
+  prazo?: string;
 }
 
 export type IdCategoria =

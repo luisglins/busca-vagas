@@ -1,0 +1,170 @@
+{
+ "jobs": [
+  {
+   "id": "5db54c88-2ff4-4a2e-98e2-68439d59e3df",
+   "title": "Applied AI Architect (Brazil)",
+   "department": "Go To Market",
+   "team": "Technical Success",
+   "employmentType": "FullTime",
+   "location": "São Paulo",
+   "shouldDisplayCompensationOnJobPostings": false,
+   "secondaryLocations": [],
+   "publishedAt": "2026-10-13T14:56:29.144+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Hybrid",
+   "address": {
+    "postalAddress": {
+     "addressRegion": "Brazil",
+     "addressCountry": "Brazil",
+     "addressLocality": "Sao Paulo"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/openai/5db54c88-2ff4-4a2e-98e2-68439d59e3df",
+   "applyUrl": "https://jobs.ashbyhq.com/openai/5db54c88-2ff4-4a2e-98e2-68439d59e3df/application",
+   "descriptionHtml": "<h2><strong>About the Team</strong></h2><p style=\"min-height:1.5em\">The AI Architect team partners with organizations to turn OpenAI's most capable models into meaningful, real-world impact. We work with customers across industries and digital-native businesses to identify where AI can create value, design secure and scalable solutions, and help those solutions move from early exploration into sustained production adoption. The team brings together technical strategy, customer partnership, and practical deployment expertise, working closely with Sales, Product, Engineering, Research, and specialist delivery teams.</p><p style=\"min-height:1.5em\"></p><h2><strong>About the Role</strong></h2><p style=\"min-height:1.5em\">As an AI Architect, you will be the senior technical owner for a named portfolio of customers and the primary technical counterpart to their leadership teams. You will act as the “CTO of your book of business”, shaping each customer's AI strategy and guiding their journey from pre-sales discovery and solution evaluation through deployment, adoption, and measurable business impact.</p><p style=\"min-height:1.5em\"></p><p style=\"min-height:1.5em\">You will own the technical account plan across ChatGPT Enterprise, the OpenAI API, Codex, and other agentic AI solutions. In partnership with the Account Director, you will translate business priorities into a focused use-case portfolio, an actionable adoption roadmap, and a clear path to durable customer value and growth. The",
+   "descriptionPlain": "ABOUT THE TEAM\n\nThe AI Architect team partners with organizations to turn OpenAI's most capable models into meaningful, real-world impact. We work with customers across industries and digital-native businesses to identify where AI can create value, design secure and scalable solutions, and help those solutions move from early exploration into sustained production adoption. The team brings together technical strategy, customer partnership, and practical deployment expertise, working closely with Sales, Product, Engineering, Research, and specialist delivery teams.\n\n\n\n\nABOUT THE ROLE\n\nAs an AI Architect, you will be the senior technical owner for a named portfolio of customers and the primary technical counterpart to their leadership teams. You will act as the “CTO of your book of business”, shaping each customer's AI strategy and guiding their journey from pre-sales discovery and solution evaluation through deployment, adoption, and measurable business impact.\n\n\n\nYou will own the technical account plan across ChatGPT Enterprise, the OpenAI API, Codex, and other agentic AI solutions. In partnership with the Account Director, you will translate business priorities into a focused use-case portfolio, an actionable adoption roadmap, and a clear path to durable customer value and growth. The Account Director owns commercial strategy; you own the technical strategy, customer journey, and path to production value.\n\n\n\nYou will remain accountable for the technical outcome while bringing",
+   "compensation": {
+    "compensationTierSummary": null,
+    "scrapeableCompensationSalarySummary": null,
+    "compensationTiers": [],
+    "summaryComponents": []
+   }
+  },
+  {
+   "id": "0ed5f6c7-3977-4da9-9961-202fe76de456",
+   "title": "Applied AI Engineer, Digital Natives",
+   "department": "Go To Market",
+   "team": "Technical Success",
+   "employmentType": "FullTime",
+   "location": "São Paulo",
+   "shouldDisplayCompensationOnJobPostings": false,
+   "secondaryLocations": [],
+   "publishedAt": "2026-10-23T17:25:44.476+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Hybrid",
+   "address": {
+    "postalAddress": {
+     "addressRegion": "Brazil",
+     "addressCountry": "Brazil",
+     "addressLocality": "Sao Paulo"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/openai/0ed5f6c7-3977-4da9-9961-202fe76de456",
+   "applyUrl": "https://jobs.ashbyhq.com/openai/0ed5f6c7-3977-4da9-9961-202fe76de456/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\"><br /><strong>About the team</strong></p><p style=\"min-height:1.5em\">The Applied AI Engineering team is responsible for ensuring the safe and effective deployment of generative AI applications for developers and enterprises. We act as a trusted advisor and thought partner for our API customers, working to build an effective backlog of frontier AI use cases for their industry and drive them to production through strong technical guidance.</p><p style=\"min-height:1.5em\">As an Applied AI Engineer in the Digital Native segment, you’ll work with industry-leading technology companies like Stripe, Uber, and Reddit to bring new AI capabilities into the products their customers use every day. You’ll partner directly with experienced product and engineering teams to turn frontier model capabilities into new features and agentic experiences. The work combines rapid experimentation with the demands of established products: complex systems, real users, and high expectations for quality and performance. Lessons from these deployments inform OpenAI’s product and research teams.<br /><br /><strong>About the role</strong></p><p style=\"min-height:1.5em\">You will combine deep technical judgment, hands-on engineering, and customer leadership to take ambitious ideas from use-case selection and architecture through prototyping, evaluation, production launch, and scale. You will write and debug code, build evaluation systems, resolve complex integrations, and guide decis",
+   "descriptionPlain": "\nAbout the team\n\nThe Applied AI Engineering team is responsible for ensuring the safe and effective deployment of generative AI applications for developers and enterprises. We act as a trusted advisor and thought partner for our API customers, working to build an effective backlog of frontier AI use cases for their industry and drive them to production through strong technical guidance.\n\nAs an Applied AI Engineer in the Digital Native segment, you’ll work with industry-leading technology companies like Stripe, Uber, and Reddit to bring new AI capabilities into the products their customers use every day. You’ll partner directly with experienced product and engineering teams to turn frontier model capabilities into new features and agentic experiences. The work combines rapid experimentation with the demands of established products: complex systems, real users, and high expectations for quality and performance. Lessons from these deployments inform OpenAI’s product and research teams.\n\nAbout the role\n\nYou will combine deep technical judgment, hands-on engineering, and customer leadership to take ambitious ideas from use-case selection and architecture through prototyping, evaluation, production launch, and scale. You will write and debug code, build evaluation systems, resolve complex integrations, and guide decisions involving model behavior, reliability, latency, cost, safety, security, governance, and operational readiness. Success is measured by production systems, sustaine",
+   "compensation": {
+    "compensationTierSummary": null,
+    "scrapeableCompensationSalarySummary": null,
+    "compensationTiers": [],
+    "summaryComponents": []
+   }
+  },
+  {
+   "id": "7a6d066c-f863-41ed-8f6c-f6dddd1be4aa",
+   "title": "Integrated Marketing Manager - LATAM",
+   "department": "Marketing",
+   "team": "Marketing",
+   "employmentType": "FullTime",
+   "location": "São Paulo",
+   "shouldDisplayCompensationOnJobPostings": false,
+   "secondaryLocations": [],
+   "publishedAt": "2026-09-14T19:18:48.423+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Hybrid",
+   "address": {
+    "postalAddress": {
+     "addressRegion": "Brazil",
+     "addressCountry": "Brazil",
+     "addressLocality": "Sao Paulo"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/openai/7a6d066c-f863-41ed-8f6c-f6dddd1be4aa",
+   "applyUrl": "https://jobs.ashbyhq.com/openai/7a6d066c-f863-41ed-8f6c-f6dddd1be4aa/application",
+   "descriptionHtml": "<p style=\"min-height:1.5em\"><strong>About the Team</strong></p><p style=\"min-height:1.5em\">OpenAI’s LATAM Marketing team helps people understand how AI can benefit their lives and put that value into practice. We connect global product innovation with local consumer needs, culture and behavior across Brazil and Spanish-speaking Latin America, contributing to OpenAI’s mission of ensuring that artificial general intelligence benefits all of humanity.</p><p style=\"min-height:1.5em\">We bring together strategy and creativity across integrated campaigns, product launches, creators, social, partnerships and cultural experiences. Working with global and local cross-functional teams, we make AI’s everyday usefulness tangible and relevant to people across the region.</p><p style=\"min-height:1.5em\"><strong>About the Role</strong></p><p style=\"min-height:1.5em\">We are looking for an experienced, hands-on Integrated Marketing Manager to lead consumer marketing programs across LATAM, with an immediate focus on Brazil and close collaboration across Spanish-speaking markets. This role is based in São Paulo, Brazil.</p><p style=\"min-height:1.5em\">You will turn consumer insight and product understanding into a clear strategy, a compelling creative idea and an integrated plan that delivers measurable results. You should be as comfortable exploring an AI product and writing a brief as aligning global stakeholders, guiding creative development and driving execution. Your work will help people dis",
+   "descriptionPlain": "About the Team\n\nOpenAI’s LATAM Marketing team helps people understand how AI can benefit their lives and put that value into practice. We connect global product innovation with local consumer needs, culture and behavior across Brazil and Spanish-speaking Latin America, contributing to OpenAI’s mission of ensuring that artificial general intelligence benefits all of humanity.\n\nWe bring together strategy and creativity across integrated campaigns, product launches, creators, social, partnerships and cultural experiences. Working with global and local cross-functional teams, we make AI’s everyday usefulness tangible and relevant to people across the region.\n\nAbout the Role\n\nWe are looking for an experienced, hands-on Integrated Marketing Manager to lead consumer marketing programs across LATAM, with an immediate focus on Brazil and close collaboration across Spanish-speaking markets. This role is based in São Paulo, Brazil.\n\nYou will turn consumer insight and product understanding into a clear strategy, a compelling creative idea and an integrated plan that delivers measurable results. You should be as comfortable exploring an AI product and writing a brief as aligning global stakeholders, guiding creative development and driving execution. Your work will help people discover useful applications of ChatGPT and build confidence in new capabilities. This role is based in Brazil; São Paulo, hybrid model.\n\nIn this role, you will:\n\n - Build consumer strategies from research, market s",
+   "compensation": {
+    "compensationTierSummary": null,
+    "scrapeableCompensationSalarySummary": null,
+    "compensationTiers": [],
+    "summaryComponents": []
+   }
+  },
+  {
+   "id": "8fb1615c-34bf-47c4-a1d1-b7b2f836bbd3",
+   "title": "Technical Program Manager, Compute Infrastructure",
+   "department": "Technical Program Management",
+   "team": "Technical Program Management",
+   "employmentType": "FullTime",
+   "location": "San Francisco",
+   "shouldDisplayCompensationOnJobPostings": true,
+   "secondaryLocations": [],
+   "publishedAt": "2026-11-05T02:20:02.702+00:00",
+   "isListed": true,
+   "isRemote": true,
+   "workplaceType": "Hybrid",
+   "address": {
+    "postalAddress": {
+     "addressRegion": "California",
+     "addressCountry": "United States",
+     "addressLocality": "San Francisco"
+    }
+   },
+   "jobUrl": "https://jobs.ashbyhq.com/openai/8fb1615c-34bf-47c4-a1d1-b7b2f836bbd3",
+   "applyUrl": "https://jobs.ashbyhq.com/openai/8fb1615c-34bf-47c4-a1d1-b7b2f836bbd3/application",
+   "descriptionHtml": "<h3><strong>About the Team</strong></h3><p style=\"min-height:1.5em\">The Compute Infrastructure team runs the GPU fleet and large-scale compute clusters that serve the models backing ChatGPT and the API, while also supporting training workloads for our next generation of models. We provide a unified platform for OpenAI teams to run production Applied AI and Research training workloads.</p><p style=\"min-height:1.5em\">Our work spans cloud providers, bare metal infrastructure, data centers, and the foundational services that make compute usable. We partner across Engineering, Research, Product, Capacity Planning, Finance, and Data Center Infrastructure to bring new capacity online and support OpenAI’s growing compute needs.</p><p style=\"min-height:1.5em\">We seek to learn from deployment and distribute the benefits of AI, while ensuring that this powerful tool is used responsibly and safely. Safety is more important to us than unfettered growth.</p><p style=\"min-height:1.5em\"></p><h3><strong>About the Role</strong></h3><p style=\"min-height:1.5em\">As a Technical Program Manager for Compute Infrastructure, you will own the supply signal for all GPUs entering our fleet: a reliable view of what capacity is arriving, where and when it will arrive, and when it is expected to become usable. You will own the roadmap, requirements, delivery, and adoption of the tools, data, and platform behind that signal, partnering with Engineering to build systems that support planning and execution acr",
+   "descriptionPlain": "ABOUT THE TEAM\n\nThe Compute Infrastructure team runs the GPU fleet and large-scale compute clusters that serve the models backing ChatGPT and the API, while also supporting training workloads for our next generation of models. We provide a unified platform for OpenAI teams to run production Applied AI and Research training workloads.\n\nOur work spans cloud providers, bare metal infrastructure, data centers, and the foundational services that make compute usable. We partner across Engineering, Research, Product, Capacity Planning, Finance, and Data Center Infrastructure to bring new capacity online and support OpenAI’s growing compute needs.\n\nWe seek to learn from deployment and distribute the benefits of AI, while ensuring that this powerful tool is used responsibly and safely. Safety is more important to us than unfettered growth.\n\n\n\n\nABOUT THE ROLE\n\nAs a Technical Program Manager for Compute Infrastructure, you will own the supply signal for all GPUs entering our fleet: a reliable view of what capacity is arriving, where and when it will arrive, and when it is expected to become usable. You will own the roadmap, requirements, delivery, and adoption of the tools, data, and platform behind that signal, partnering with Engineering to build systems that support planning and execution across OpenAI.\n\nYou will also lead programs that turn incoming supply into usable compute. Working across cloud providers, Data Center Infrastructure, and compute engineering teams, you will connect",
+   "compensation": {
+    "compensationTierSummary": "$207K – $285K • Offers Equity",
+    "scrapeableCompensationSalarySummary": "$207K - $285K",
+    "compensationTiers": [
+     {
+      "id": "0d6cf591-134b-4e0a-9f75-94d669550b3f",
+      "tierSummary": "$207K – $285K • Offers Equity",
+      "title": null,
+      "additionalInformation": null,
+      "components": [
+       {
+        "id": "2955e5fd-01ac-4311-8555-f1adc8f5446d",
+        "summary": "$207K – $285K",
+        "compensationType": "Salary",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": 207000,
+        "maxValue": 285000
+       },
+       {
+        "id": "9c400a38-e972-4714-8b75-8fb9fe57262c",
+        "summary": "Offers Equity",
+        "compensationType": "EquityCashValue",
+        "interval": "1 YEAR",
+        "currencyCode": "USD",
+        "minValue": null,
+        "maxValue": null
+       }
+      ]
+     }
+    ],
+    "summaryComponents": [
+     {
+      "compensationType": "Salary",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": 207000,
+      "maxValue": 285000
+     },
+     {
+      "compensationType": "EquityCashValue",
+      "interval": "1 YEAR",
+      "currencyCode": "USD",
+      "minValue": null,
+      "maxValue": null
+     }
+    ]
+   }
+  }
+ ]
+}
