@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Busca Vagas — protótipo visual</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif; }
+  .aba[aria-selected="true"] { color: #18181b; border-color: #0f766e; }
+</style>
+</head>
+<body class="bg-zinc-50 text-zinc-900">
+
+<!-- Aviso do protótipo -->
+<div class="bg-amber-50 border-b border-amber-200 text-amber-900 text-sm px-6 py-2">
+  Protótipo visual com vagas de exemplo. Clique no menu para trocar de tela.
+</div>
+
+<header class="bg-white border-b border-zinc-200">
+  <nav class="mx-auto max-w-6xl flex items-center gap-6 px-6 h-14 text-sm">
+    <span class="font-semibold text-base mr-4">Busca Vagas</span>
+    <button class="aba h-14 border-b-2 border-transparent text-zinc-500 hover:text-zinc-900" data-tela="sugestoes" aria-selected="true">Sugestões <span class="ml-1 text-xs text-teal-700 font-medium">12 novas</span></button>
+    <button class="aba h-14 border-b-2 border-transparent text-zinc-500 hover:text-zinc-900" data-tela="vagas">Minhas vagas</button>
+    <button class="aba h-14 border-b-2 border-transparent text-zinc-500 hover:text-zinc-900" data-tela="painel">Painel</button>
+    <button class="aba h-14 border-b-2 border-transparent text-zinc-500 hover:text-zinc-900" data-tela="curriculos">Currículos</button>
+    <span class="ml-auto flex items-center gap-5 text-zinc-500">
+      <a href="#" class="hover:text-zinc-900">Configurações</a>
+      <a href="#" class="hover:text-zinc-900">Sair</a>
+    </span>
+  </nav>
+</header>
+
+<main class="mx-auto max-w-6xl px-6 py-8">
+
+<!-- ======================= SUGESTÕES ======================= -->
+<section data-tela="sugestoes">
+  <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-2xl font-semibold">Sugestões</h1>
+      <p class="text-sm text-zinc-500 mt-1">Última busca hoje às 07:02 · Gupy, Greenhouse e Ashby · 38 vagas eliminadas pelos filtros</p>
+    </div>
+    <button class="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium hover:bg-zinc-100">Buscar agora</button>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-2 mb-5 text-sm">
+    <span class="text-zinc-500 mr-1">Área</span>
+    <button class="rounded-md bg-zinc-900 text-white px-3 py-1.5">Todas</button>
+    <button class="rounded-md border border-zinc-300 bg-white px-3 py-1.5 hover:bg-zinc-100">Processos</button>
+    <button class="rounded-md border border-zinc-300 bg-white px-3 py-1.5 hover:bg-zinc-100">IA</button>
+    <span class="text-zinc-500 ml-4 mr-1">Fonte</span>
+    <select class="rounded-md border border-zinc-300 bg-white px-2 py-1.5"><option>Todas</option><option>Gupy</option><option>Greenhouse</option><option>Ashby</option></select>
+  </div>
+
+  <ol class="flex flex-col gap-3">
+    <!-- cartão -->
+    <li class="bg-white border border-zinc-200 rounded-lg p-5 flex gap-5">
+      <div class="w-16 shrink-0 text-center">
+        <div class="text-3xl font-semibold text-emerald-700 tabular-nums">78</div>
+        <div class="text-xs text-zinc-500">de 100</div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-baseline gap-x-3">
+          <h2 class="font-semibold text-lg"><a href="#" class="hover:underline">Assistente de PCP</a></h2>
+          <span class="text-zinc-600">AZZAS 2154</span>
+        </div>
+        <p class="text-sm text-zinc-500 mt-0.5">Rio de Janeiro · híbrido · Gupy · publicada há 2 dias</p>
+        <p class="text-sm text-zinc-700 mt-3">processos (+40) · nível de entrada (+10) · ferramentas (+12) · contexto (+5) · RJ híbrido</p>
+      </div>
+      <div class="flex flex-col gap-2 shrink-0 w-44">
+        <button class="rounded-md bg-teal-700 text-white px-3 py-2 text-sm font-medium hover:bg-teal-800">Adicionar à lista</button>
+        <button class="rounded-md border border-zinc-300 px-3 py-2 text-sm hover:bg-zinc-100">Descartar</button>
+        <button class="text-xs text-zinc-500 hover:text-zinc-900 hover:underline">Não tenho interesse na empresa</button>
+      </div>
+    </li>
+
+    <li class="bg-white border border-zinc-200 rounded-lg p-5 flex gap-5">
+      <div class="w-16 shrink-0 text-center">
+        <div class="text-3xl font-semibold text-emerald-700 tabular-nums">72</div>
+        <div class="text-xs text-zinc-500">de 100</div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-baseline gap-x-3">
+          <h2 class="font-semibold text-lg"><a href="#" class="hover:underline">Analista de Automação de Processos Jr</a></h2>
+          <span class="text-zinc-600">Stone</span>
+        </div>
+        <p class="text-sm text-zinc-500 mt-0.5">Remoto (Brasil) · Greenhouse · publicada hoje · <span class="text-teal-800 font-medium">IA</span></p>
+        <p class="text-sm text-zinc-700 mt-3">IA aplicada (+40) · processos (+20) · nível de entrada (+10) · ferramentas (+12) · remoto</p>
+      </div>
+      <div class="flex flex-col gap-2 shrink-0 w-44">
+        <button class="rounded-md bg-teal-700 text-white px-3 py-2 text-sm font-medium hover:bg-teal-800">Adicionar à lista</button>
+        <button class="rounded-md border border-zinc-300 px-3 py-2 text-sm hover:bg-zinc-100">Descartar</button>
+        <button class="text-xs text-zinc-500 hover:text-zinc-900 hover:underline">Não tenho interesse na empresa</button>
+      </div>
+    </li>
+
+    <li class="bg-white border border-zinc-200 rounded-lg p-5 flex gap-5">
+      <div class="w-16 shrink-0 text-center">
+        <div class="text-3xl font-semibold text-amber-700 tabular-nums">50</div>
+        <div class="text-xs text-zinc-500">de 100</div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-baseline gap-x-3">
+          <h2 class="font-semibold text-lg"><a href="#" class="hover:underline">Analista de Operações de Monitoramento – PCP I</a></h2>
+          <span class="text-zinc-600">Light Soluções</span>
+        </div>
+        <p class="text-sm text-zinc-500 mt-0.5">Rio de Janeiro · presencial · Gupy · publicada há 5 dias</p>
+        <p class="text-sm text-zinc-700 mt-3">processos (+40) · nível de entrada (+10) · RJ presencial · <span class="text-red-700">pede experiência (−10)</span></p>
+      </div>
+      <div class="flex flex-col gap-2 shrink-0 w-44">
+        <button class="rounded-md bg-teal-700 text-white px-3 py-2 text-sm font-medium hover:bg-teal-800">Adicionar à lista</button>
+        <button class="rounded-md border border-zinc-300 px-3 py-2 text-sm hover:bg-zinc-100">Descartar</button>
+        <button class="text-xs text-zinc-500 hover:text-zinc-900 hover:underline">Não tenho interesse na empresa</button>
+      </div>
+    </li>
+
+    <li class="bg-white border border-zinc-200 rounded-lg p-5 flex gap-5">
+      <div class="w-16 shrink-0 text-center">
+        <div class="text-3xl font-semibold text-zinc-500 tabular-nums">35</div>
+        <div class="text-xs text-zinc-500">de 100</div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-baseline gap-x-3">
+          <h2 class="font-semibold text-lg"><a href="#" class="hover:underline">AI Operations Associate</a></h2>
+          <span class="text-zinc-600">Empresa de IA (exemplo)</span>
+        </div>
+        <p class="text-sm text-zinc-500 mt-0.5">Remoto LatAm · Ashby · publicada ontem · <span class="text-teal-800 font-medium">IA</span> · freelance/projeto</p>
+        <p class="text-sm text-zinc-700 mt-3">IA aplicada (+40) · <span class="text-red-700">remoto internacional (−5)</span></p>
+      </div>
+      <div class="flex flex-col gap-2 shrink-0 w-44">
+        <button class="rounded-md bg-teal-700 text-white px-3 py-2 text-sm font-medium hover:bg-teal-800">Adicionar à lista</button>
+        <button class="rounded-md border border-zinc-300 px-3 py-2 text-sm hover:bg-zinc-100">Descartar</button>
+        <button class="text-xs text-zinc-500 hover:text-zinc-900 hover:underline">Não tenho interesse na empresa</button>
+      </div>
+    </li>
+  </ol>
+  <p class="text-sm text-zinc-500 mt-6"><a href="#" class="underline hover:text-zinc-900">Ver as 38 vagas eliminadas</a> (estágio, sênior, fora do RJ…)</p>
+</section>
+
+<!-- ======================= MINHAS VAGAS ======================= -->
+<section data-tela="vagas" hidden>
+  <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-2xl font-semibold">Minhas vagas</h1>
+      <p class="text-sm text-zinc-500 mt-1">7 vagas acompanhadas</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium hover:bg-zinc-100">Importar CSV</button>
+      <button class="rounded-md bg-teal-700 text-white px-3 py-2 text-sm font-medium hover:bg-teal-800">Nova vaga</button>
+    </div>
+  </div>
+
+  <div class="bg-white border border-zinc-200 rounded-lg overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="text-left text-zinc-500 border-b border-zinc-200">
+        <tr>
+          <th class="font-medium px-4 py-3">Cargo / empresa</th>
+          <th class="font-medium px-4 py-3">Status</th>
+          <th class="font-medium px-4 py-3 text-right">Nota</th>
+          <th class="font-medium px-4 py-3">Currículo</th>
+          <th class="font-medium px-4 py-3">Follow-up</th>
+          <th class="font-medium px-4 py-3">Encontrada</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-zinc-100">
+        <tr class="hover:bg-zinc-50">
+          <td class="px-4 py-3"><a href="#" class="font-medium hover:underline">Assistente de PCP</a><div class="text-zinc-500">AZZAS 2154</div></td>
+          <td class="px-4 py-3"><select class="rounded-md border border-zinc-300 px-2 py-1"><option>Interessado</option><option selected>Apliquei</option><option>Entrevista</option><option>Recusado</option><option>Oferta</option></select></td>
+          <td class="px-4 py-3 text-right tabular-nums text-emerald-700 font-medium">78</td>
+          <td class="px-4 py-3 text-zinc-700">Processos v3</td>
+          <td class="px-4 py-3">02/12 <span class="text-zinc-500">(ter)</span></td>
+          <td class="px-4 py-3 text-zinc-500">24/11</td>
+        </tr>
+        <tr class="hover:bg-zinc-50">
+          <td class="px-4 py-3"><a href="#" class="font-medium hover:underline">Trainee de Operações</a><div class="text-zinc-500">Empresa X</div></td>
+          <td class="px-4 py-3"><select class="rounded-md border border-zinc-300 px-2 py-1"><option>Interessado</option><option>Apliquei</option><option selected>Entrevista</option><option>Recusado</option><option>Oferta</option></select></td>
+          <td class="px-4 py-3 text-right tabular-nums text-emerald-700 font-medium">70</td>
+          <td class="px-4 py-3 text-zinc-700">Processos v3</td>
+          <td class="px-4 py-3 text-red-700 font-medium">22/11 · atrasado</td>
+          <td class="px-4 py-3 text-zinc-500">10/11</td>
+        </tr>
+        <tr class="hover:bg-zinc-50">
+          <td class="px-4 py-3"><a href="#" class="font-medium hover:underline">Analista de Automação de Processos Jr</a><div class="text-zinc-500">Stone</div></td>
+          <td class="px-4 py-3"><select class="rounded-md border border-zinc-300 px-2 py-1"><option selected>Interessado</option><option>Apliquei</option><option>Entrevista</option><option>Recusado</option><option>Oferta</option></select></td>
+          <td class="px-4 py-3 text-right tabular-nums text-emerald-700 font-medium">72</td>
+          <td class="px-4 py-3 text-zinc-400">—</td>
+          <td class="px-4 py-3 text-zinc-400">—</td>
+          <td class="px-4 py-3 text-zinc-500">25/11</td>
+        </tr>
+        <tr class="hover:bg-zinc-50">
+          <td class="px-4 py-3"><a href="#" class="font-medium hover:underline">Analista de Qualidade Jr</a><div class="text-zinc-500">Empresa Y</div></td>
+          <td class="px-4 py-3"><select class="rounded-md border border-zinc-300 px-2 py-1"><option>Interessado</option><option>Apliquei</option><option>Entrevista</option><option selected>Recusado</option><option>Oferta</option></select></td>
+          <td class="px-4 py-3 text-right tabular-nums text-amber-700 font-medium">55</td>
+          <td class="px-4 py-3 text-zinc-700">Qualidade v1</td>
+          <td class="px-4 py-3 text-zinc-400">—</td>
+          <td class="px-4 py-3 text-zinc-500">01/11</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================= PAINEL ======================= -->
+<section data-tela="painel" hidden>
+  <h1 class="text-2xl font-semibold mb-6">Painel</h1>
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
+    <div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="text-sm text-zinc-500">Interessado</div><div class="text-3xl font-semibold tabular-nums mt-1">3</div></div>
+    <div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="text-sm text-zinc-500">Apliquei</div><div class="text-3xl font-semibold tabular-nums mt-1">2</div></div>
+    <div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="text-sm text-zinc-500">Entrevista</div><div class="text-3xl font-semibold tabular-nums mt-1">1</div></div>
+    <div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="text-sm text-zinc-500">Recusado</div><div class="text-3xl font-semibold tabular-nums mt-1">1</div></div>
+    <div class="bg-white border border-zinc-200 rounded-lg p-4"><div class="text-sm text-zinc-500">Oferta</div><div class="text-3xl font-semibold tabular-nums mt-1">0</div></div>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-2 bg-white border border-zinc-200 rounded-lg">
+      <h2 class="font-semibold px-5 pt-4 pb-3 border-b border-zinc-100">Follow-ups desta semana</h2>
+      <ul class="divide-y divide-zinc-100 text-sm">
+        <li class="px-5 py-3 flex justify-between gap-4"><span><a href="#" class="font-medium hover:underline">Trainee de Operações</a> · Empresa X · entrevista</span><span class="text-red-700 font-medium whitespace-nowrap">atrasado (22/11)</span></li>
+        <li class="px-5 py-3 flex justify-between gap-4"><span><a href="#" class="font-medium hover:underline">Analista de Processos</a> · Empresa Z · apliquei</span><span class="text-zinc-600 whitespace-nowrap">qui, 27/11</span></li>
+        <li class="px-5 py-3 flex justify-between gap-4"><span><a href="#" class="font-medium hover:underline">Assistente de PCP</a> · AZZAS 2154 · apliquei</span><span class="text-zinc-600 whitespace-nowrap">ter, 02/12</span></li>
+      </ul>
+    </div>
+    <div class="bg-white border border-zinc-200 rounded-lg p-5">
+      <h2 class="font-semibold">Hoje</h2>
+      <p class="text-4xl font-semibold tabular-nums mt-3">12</p>
+      <p class="text-sm text-zinc-500">sugestões novas</p>
+      <a href="#" class="inline-block mt-4 text-sm font-medium text-teal-700 hover:underline">Ver sugestões →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CURRÍCULOS ======================= -->
+<section data-tela="curriculos" hidden>
+  <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-semibold">Currículos</h1>
+    <button class="rounded-md bg-teal-700 text-white px-3 py-2 text-sm font-medium hover:bg-teal-800">Enviar nova versão (PDF)</button>
+  </div>
+  <div class="bg-white border border-zinc-200 rounded-lg divide-y divide-zinc-100 text-sm">
+    <div class="px-5 py-4 flex items-center justify-between gap-4">
+      <div><div class="font-medium">Processos v3</div><div class="text-zinc-500">enviado 20/11 · usado em 4 vagas</div></div>
+      <div class="flex gap-3"><a href="#" class="text-teal-700 font-medium hover:underline">Abrir</a><button class="text-zinc-500 hover:text-zinc-900">Excluir</button></div>
+    </div>
+    <div class="px-5 py-4 flex items-center justify-between gap-4">
+      <div><div class="font-medium">Qualidade v1</div><div class="text-zinc-500">enviado 01/11 · usado em 1 vaga</div></div>
+      <div class="flex gap-3"><a href="#" class="text-teal-700 font-medium hover:underline">Abrir</a><button class="text-zinc-500 hover:text-zinc-900">Excluir</button></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+  const abas = document.querySelectorAll(".aba");
+  abas.forEach((aba) =>
+    aba.addEventListener("click", () => {
+      abas.forEach((a) => a.setAttribute("aria-selected", String(a === aba)));
+      document.querySelectorAll("section[data-tela]").forEach((s) => {
+        s.hidden = s.dataset.tela !== aba.dataset.tela;
+      });
+    }),
+  );
+</script>
+</body>
+</html>
