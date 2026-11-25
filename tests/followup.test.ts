@@ -12,6 +12,7 @@ describe("proximoFollowup", () => {
     expect(proximoFollowup("recusado", "2026-11-24")).toBeNull();
     expect(proximoFollowup("oferta", "2026-11-24")).toBeNull();
     expect(proximoFollowup("interessado", "2026-11-24")).toBeNull();
+    expect(proximoFollowup("encerrada", "2026-11-24")).toBeNull();
   });
   it("vira o mês e o ano certo", () => {
     expect(proximoFollowup("apliquei", "2026-12-28")).toBe("2027-01-04");

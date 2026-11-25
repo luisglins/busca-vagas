@@ -8,7 +8,7 @@ import type { Perfil } from "@/lib/tipos";
 import { marcarPalavras, separarSecoes } from "@/lib/descricao";
 import { faixaDaNota, type Faixa } from "@/lib/vagas";
 import { linkDoCurriculo } from "./curriculos/acoes";
-import { adicionarSugestao, bloquearEmpresa, buscarAgora, candidatarSugestao, descartarSugestao } from "./sugestoes-acoes";
+import { adicionarSugestao, bloquearEmpresa, buscarAgora, candidatarSugestao, descartarSugestao, encerrarSugestao } from "./sugestoes-acoes";
 
 export interface Sugestao {
   id: string;
@@ -247,11 +247,11 @@ function Variacoes({ membros }: { membros: Sugestao[] }) {
 }
 
 /**
- * Painel "Candidatar": mostra o currículo indicado (dá para trocar), baixa o PDF e,
- * ao confirmar, abre o anúncio e registra a vaga como "Apliquei" com follow-up em 7 dias.
- * O envio em si o Luís faz no site da vaga (candidatura automática viola os termos dos sites).
+ * Depois do "Candidatar" (que já abriu o anúncio): pergunta como foi.
+ * "Sim, apliquei" registra em Minhas vagas com o currículo e follow-up em 7 dias;
+ * "Vaga encerrada" tira das sugestões. O envio em si o Luís faz no site da vaga.
  */
-function PainelCandidatura({ s, aoFechar }: { s: Sugestao; aoFechar: () => void }) {
+function PainelCandidatura({ s, ids, aoFechar }: { s: Sugestao; ids: string[]; aoFechar: () => void }) {
   const { curriculos, perfil } = useContext(ContextoCurriculos);
   const ranking = perfil ? compararCurriculos(curriculos, { cargo: s.cargo, descricao: s.descricao }, perfil, s.area) : [];
   const porNota = new Map(ranking.map((r) => [r.id, r.cobertura]));
@@ -265,16 +265,16 @@ function PainelCandidatura({ s, aoFechar }: { s: Sugestao; aoFechar: () => void 
     return (
       <div className="col-span-full mt-3 rounded-lg border border-verde/40 bg-verde-claro p-4 text-sm md:col-[2/4]">
         <p className="font-titulo text-lg font-bold">Candidatura registrada.</p>
-        <p className="text-aco">
-          A vaga foi para Minhas vagas como &quot;Apliquei&quot;, com o follow-up em 7 dias. Termine o envio na aba do anúncio.
-        </p>
+        <p className="text-aco">A vaga foi para Minhas vagas como &quot;Apliquei&quot;, com o currículo e o follow-up em 7 dias.</p>
       </div>
     );
   }
 
   return (
     <div className="col-span-full mt-3 flex flex-col gap-3 rounded-lg border border-junta bg-concreto/50 p-4 text-sm md:col-[2/4]">
-      <p className="font-titulo text-lg font-semibold">Candidatar</p>
+      <p className="font-titulo text-lg font-semibold">
+        {s.link ? "O anúncio abriu numa aba nova. Conseguiu se candidatar?" : "Este anúncio não tem link. Conseguiu se candidatar?"}
+      </p>
       {curriculos.length === 0 ? (
         <p className="text-aco">
           <Link href="/curriculos" className="underline">Envie um currículo</Link> para o site indicar qual mandar.
@@ -282,7 +282,7 @@ function PainelCandidatura({ s, aoFechar }: { s: Sugestao; aoFechar: () => void 
       ) : (
         <div className="flex flex-wrap items-end gap-3">
           <label className="rotulo">
-            Currículo para enviar
+            Currículo enviado
             <select value={escolhido} onChange={(e) => setEscolhido(e.target.value)} className="campo w-auto font-normal">
               {ordenados.map((c, i) => (
                 <option key={c.id} value={c.id}>
@@ -308,29 +308,25 @@ function PainelCandidatura({ s, aoFechar }: { s: Sugestao; aoFechar: () => void 
           </button>
         </div>
       )}
-      <ol className="list-decimal pl-5 text-aco">
-        <li>Baixe o currículo indicado (ou escolha outro).</li>
-        <li>Clique abaixo: o anúncio abre numa aba nova e a vaga vai para Minhas vagas como &quot;Apliquei&quot;.</li>
-        <li>Envie a candidatura no site da vaga.</li>
-      </ol>
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
           className="btn btn-principal"
           disabled={ocupado}
-          onClick={() => {
-            // Abre o anúncio já no clique (senão o navegador bloqueia a aba nova).
-            if (s.link) window.open(s.link, "_blank", "noopener");
+          onClick={() =>
             iniciar(async () => {
               const erro = await candidatarSugestao(s.id, escolhido || null);
               setResultado(erro ?? "ok");
-            });
-          }}
+            })
+          }
         >
-          {s.link ? "Abrir anúncio e marcar como Apliquei" : "Marcar como Apliquei"}
+          Sim, apliquei
+        </button>
+        <button type="button" className="btn" disabled={ocupado} onClick={() => iniciar(() => encerrarSugestao(ids))}>
+          {ids.length > 1 ? "Vagas encerradas" : "Vaga encerrada"}
         </button>
         <button type="button" className="btn-texto" onClick={aoFechar}>
-          Cancelar
+          Ainda não
         </button>
         {resultado && resultado !== "ok" && (
           <p role="alert" className="text-vermelho">
@@ -391,7 +387,16 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
           </button>
       </div>
       <div className="col-span-full mt-3 flex flex-wrap gap-2 md:col-auto md:mt-0 md:w-44 md:flex-col md:items-stretch">
-        <button type="button" className="btn btn-principal" disabled={ocupado} aria-expanded={candidatando} onClick={() => setCandidatando(!candidatando)}>
+        <button
+          type="button"
+          className="btn btn-principal"
+          disabled={ocupado}
+          onClick={() => {
+            // Abre o anúncio direto (no próprio clique, senão o navegador bloqueia a aba nova).
+            if (s.link) window.open(s.link, "_blank", "noopener");
+            setCandidatando(true);
+          }}
+        >
           Candidatar
         </button>
         <button type="button" className="btn" disabled={ocupado} onClick={() => iniciar(async () => setAviso(await adicionarSugestao(s.id)))}>
@@ -418,7 +423,7 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
           </p>
         )}
       </div>
-      {candidatando && <PainelCandidatura s={s} aoFechar={() => setCandidatando(false)} />}
+      {candidatando && <PainelCandidatura s={s} ids={[s.id]} aoFechar={() => setCandidatando(false)} />}
       {aberto && outras > 0 && <Variacoes membros={grupo.membros} />}
       {aberto && <Detalhes s={s} palavras={palavras} id={idDetalhes} agora={agora} />}
     </li>

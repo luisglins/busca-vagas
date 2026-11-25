@@ -33,8 +33,10 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
   validado com alertas reais anonimizados em `tests/fixtures/linkedin-alerta.txt`); o leitor de HTML é reserva.
 - Aba **LinkedIn** (`/linkedin`) separada das Sugestões (só sites): vagas do e-mail não têm descrição, então a nota usa
   só o nome da vaga, ampliada ×1,6 (`FATOR_SO_TITULO` em `pontuar.ts`).
-- Botão **Candidatar** (cartões das Sugestões e do LinkedIn): mostra o currículo indicado (desempate pela área da vaga),
-  baixa o PDF, abre o anúncio e registra a vaga como "Apliquei" com follow-up em 7 dias (`candidatarSugestao`). O envio é do Luís.
+- Botão **Candidatar** (Sugestões e LinkedIn): abre o anúncio direto e depois pergunta "Conseguiu se candidatar?":
+  "Sim, apliquei" (`candidatarSugestao`: Minhas vagas como Apliquei, currículo indicado com desempate pela área, follow-up 7 dias),
+  "Vaga encerrada" (`encerrarSugestao`) ou "Ainda não". O envio é do Luís.
+- Status **encerrada** ("Vaga encerrada") em Minhas vagas: a vaga fechou no site da empresa; o Painel conta à parte.
 - Candidatura automática foi descartada de propósito: viola os termos do LinkedIn/Gupy e piora a qualidade das candidaturas.
 - Vagas fora do Brasil são descartadas sem gravar; anúncios com mais de 90 dias são eliminados.
 - Sessão de login dura 400 dias (padrão do `@supabase/ssr`), renovada pelo `src/proxy.ts`.

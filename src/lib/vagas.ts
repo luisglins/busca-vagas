@@ -26,6 +26,7 @@ export const STATUS: { valor: Status; rotulo: string }[] = [
   { valor: "entrevista", rotulo: "Entrevista" },
   { valor: "recusado", rotulo: "Recusado" },
   { valor: "oferta", rotulo: "Oferta" },
+  { valor: "encerrada", rotulo: "Vaga encerrada" },
 ];
 
 export function ehStatus(valor: unknown): valor is Status {

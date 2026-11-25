@@ -9,6 +9,8 @@ export interface Fluxo {
   /** % de quem chegou numa etapa e passou para a seguinte (null se ninguém chegou) */
   passagens: (number | null)[];
   recusadas: { total: number; porEtapa: Record<Exclude<Etapa, "oferta">, number> };
+  /** vagas que fecharam no site da empresa (ficam fora do fluxo) */
+  encerradas: number;
 }
 
 /** Índice da etapa mais avançada pela qual a vaga passou (0 = interessado). */
@@ -34,5 +36,6 @@ export function calcularFluxo(vagas: { status: string; passou: string[] }[]): Fl
     porEtapa[etapa]++;
   }
 
-  return { etapas, passagens, recusadas: { total: recusadas.length, porEtapa } };
+  const encerradas = vagas.filter((v) => v.status === "encerrada").length;
+  return { etapas, passagens, recusadas: { total: recusadas.length, porEtapa }, encerradas };
 }

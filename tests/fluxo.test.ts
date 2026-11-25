@@ -29,4 +29,13 @@ describe("calcularFluxo", () => {
   it("sem vagas, taxas ficam nulas em vez de dividir por zero", () => {
     expect(calcularFluxo([]).passagens).toEqual([null, null, null]);
   });
+
+  it("conta as vagas encerradas à parte", () => {
+    const f = calcularFluxo([
+      { status: "encerrada", passou: ["interessado", "encerrada"] },
+      { status: "interessado", passou: ["interessado"] },
+    ]);
+    expect(f.encerradas).toBe(1);
+    expect(f.etapas[0].agora).toBe(1);
+  });
 });

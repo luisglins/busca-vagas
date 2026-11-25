@@ -1,6 +1,7 @@
 // Tipos compartilhados por todo o projeto.
 
-export type Status = "interessado" | "apliquei" | "entrevista" | "recusado" | "oferta";
+/** "encerrada" = a vaga fechou no site da empresa antes de dar tempo de se candidatar. */
+export type Status = "interessado" | "apliquei" | "entrevista" | "recusado" | "oferta" | "encerrada";
 export type Fonte = "gupy" | "greenhouse" | "ashby" | "jooble" | "linkedin" | "manual";
 export type Modalidade =
   | "presencial"

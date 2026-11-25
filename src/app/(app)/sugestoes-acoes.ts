@@ -86,6 +86,16 @@ export async function candidatarSugestao(id: string, curriculoId: string | null)
   return null;
 }
 
+/** "Vaga encerrada": fechou no site da empresa; sai das sugestões (fica no Histórico, com desfazer). */
+export async function encerrarSugestao(ids: string[]): Promise<void> {
+  const supabase = await criarClienteServidor();
+  await supabase
+    .from("sugestoes")
+    .update({ estado: "descartada", motivo_eliminacao: "vaga encerrada no site", decidido_em: new Date().toISOString() })
+    .in("id", ids);
+  refresh();
+}
+
 /** Descarta uma sugestão ou um grupo inteiro (ex.: o mesmo programa de trainee em várias cidades). */
 export async function descartarSugestao(ids: string[]): Promise<void> {
   const supabase = await criarClienteServidor();

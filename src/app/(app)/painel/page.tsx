@@ -75,6 +75,11 @@ export default async function Painel() {
             .
           </>
         )}
+        {fluxo.encerradas > 0 && (
+          <>
+            {" "}Vagas encerradas antes da candidatura: <strong className="num text-lg text-grafite">{fluxo.encerradas}</strong>.
+          </>
+        )}
       </p>
 
       <div className="mt-6 grid gap-5 md:grid-cols-[2fr_1fr]">
