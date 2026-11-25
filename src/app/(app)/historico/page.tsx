@@ -31,7 +31,7 @@ export default async function Historico() {
       </div>
 
       <div className="painel">
-        <h2 className="border-b border-junta px-5 pt-4 pb-3 font-cond text-[22px] font-semibold">Sugestões decididas</h2>
+        <h2 className="border-b border-junta px-5 pt-4 pb-3 font-titulo text-[22px] font-semibold">Sugestões decididas</h2>
         {decisoes.length === 0 ? (
           <p className="px-5 py-4 text-sm text-aco">Nada por aqui ainda. Quando você adicionar ou descartar uma sugestão, ela aparece nesta lista.</p>
         ) : (
@@ -57,7 +57,7 @@ export default async function Historico() {
       </div>
 
       <div className="painel mt-6">
-        <h2 className="border-b border-junta px-5 pt-4 pb-3 font-cond text-[22px] font-semibold">Empresas bloqueadas</h2>
+        <h2 className="border-b border-junta px-5 pt-4 pb-3 font-titulo text-[22px] font-semibold">Empresas bloqueadas</h2>
         {perfil.empresasBloqueadas.length === 0 ? (
           <p className="px-5 py-4 text-sm text-aco">Nenhuma empresa bloqueada.</p>
         ) : (

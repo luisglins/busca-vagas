@@ -35,7 +35,7 @@ function Lista({ nome, valor, linhas = 4, rotulo, ajuda }: { nome: string; valor
 function Bloco({ titulo, descricao, children }: { titulo: string; descricao: string; children: React.ReactNode }) {
   return (
     <section className="painel p-5">
-      <h2 className="font-cond text-[22px] font-semibold">{titulo}</h2>
+      <h2 className="font-titulo text-[22px] font-semibold">{titulo}</h2>
       <p className="mb-4 text-sm text-aco">{descricao}</p>
       {children}
     </section>

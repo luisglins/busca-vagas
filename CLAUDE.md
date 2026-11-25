@@ -33,13 +33,14 @@ Node.js 26. Next 16 tem mudanças em relação a versões antigas: consulte `nod
 - **Nunca** automatizar acesso ao LinkedIn com a conta do Luís (viola termos, arrisca a conta).
 - Nota de aderência = função pura `pontuar(vaga, perfil)` com motivos explicados; palavras-chave em PT e EN.
 - Adzuna, Careerjet, Remotive descartadas.
+- **Nada pago**: o Luís recusou qualquer serviço pago, mesmo centavos (ex.: IA de currículo pela API). Só planos grátis.
 - Luís pediu menos perguntas (2026-11-25): Claude decide o que é técnico e só pede o que exige conta/senha dele.
   Por isso as etapas 3, 4 e 9 vieram antes da 2, e o SQL foi aplicado direto pelo Claude.
 
 ## Visual
 
 Direção "gestão à vista" (chão de fábrica): cores do andon só para informar, barra de composição da nota como elemento marcante,
-IBM Plex Sans + Plex Sans Condensed. Detalhes em [docs/design-visual.md](docs/design-visual.md); referência em `docs/prototipo/index.html`.
+Bricolage Grotesque (títulos) + DM Sans (texto), logo de barras, nome da vaga com marca-texto (`.titulo-vaga`). Detalhes em [docs/design-visual.md](docs/design-visual.md); referência em `docs/prototipo/index.html`.
 Use as skills `frontend-design` e `anti-slop` ao criar telas.
 
 ## Convenções

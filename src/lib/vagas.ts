@@ -47,6 +47,12 @@ export const COR_DA_FAIXA: Record<Faixa, string> = {
   cinza: "text-cinza-nota",
 };
 
+/** Cor do marca-texto do nome da vaga (classe definida em globals.css). */
+export function marcaDaNota(nota: number | null): string {
+  if (nota === null) return "marca-amarela";
+  return { verde: "marca-verde", amarela: "marca-amarela", cinza: "marca-cinza" }[faixaDaNota(nota)];
+}
+
 /** "2026-11-24" → "24/11" */
 export function dataCurta(data: string): string {
   const [, mes, dia] = data.split("-");

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
-import { COR_DA_FAIXA, STATUS, dataCurta, faixaDaNota, type Vaga } from "@/lib/vagas";
+import { COR_DA_FAIXA, STATUS, dataCurta, faixaDaNota, marcaDaNota, type Vaga } from "@/lib/vagas";
 import { SeletorStatus } from "../seletor-status";
 import { FormularioVaga } from "./formulario";
 
@@ -26,7 +26,7 @@ export default async function DetalheVaga({ params }: PageProps<"/vagas/[id]">) 
 
       <div className="mt-3 mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="titulo-tela">{vaga.cargo}</h1>
+          <h1 className="leading-tight"><span className={`titulo-vaga text-[34px] ${marcaDaNota(vaga.nota_aderencia)}`}>{vaga.cargo}</span></h1>
           <p className="mt-2 text-aco">
             <span className="font-medium text-grafite">{vaga.empresa}</span>
             {vaga.local && <span className="ml-4">{vaga.local}</span>}
@@ -49,7 +49,7 @@ export default async function DetalheVaga({ params }: PageProps<"/vagas/[id]">) 
 
         <aside className="flex flex-col gap-6">
           <div className="painel p-5">
-            <h2 className="font-cond text-[22px] font-semibold">Nota de aderência</h2>
+            <h2 className="font-titulo text-[22px] font-semibold">Nota de aderência</h2>
             {vaga.nota_aderencia === null ? (
               <p className="mt-2 text-sm text-aco">Sem nota.</p>
             ) : (
@@ -72,7 +72,7 @@ export default async function DetalheVaga({ params }: PageProps<"/vagas/[id]">) 
           </div>
 
           <div className="painel p-5">
-            <h2 className="font-cond text-[22px] font-semibold">Histórico</h2>
+            <h2 className="font-titulo text-[22px] font-semibold">Histórico</h2>
             {!historico || historico.length === 0 ? (
               <p className="mt-2 text-sm text-aco">O status ainda não mudou.</p>
             ) : (

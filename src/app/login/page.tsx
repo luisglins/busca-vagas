@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Logo } from "@/components/logo";
 import { entrar } from "./acoes";
 
 export default function Login() {
@@ -9,9 +10,8 @@ export default function Login() {
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-6 py-24">
       <div>
-        <h1 className="titulo-tela flex items-center gap-3">
-          <span aria-hidden="true" className="inline-block size-4 bg-laranja" />
-          Busca Vagas
+        <h1 className="text-[38px] leading-none">
+          <Logo tamanho={48} fundo="#1e2624" />
         </h1>
         <p className="mt-2 text-aco">Entre para ver suas vagas.</p>
       </div>

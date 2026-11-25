@@ -40,10 +40,10 @@ const FONTES = [
   { id: "ashby", nome: "Ashby" },
 ];
 
-const FAIXAS: { id: Faixa; titulo: string; lampada: string; luz: string; cor: string; fundo: string; barra: string }[] = [
-  { id: "verde", titulo: "Vale aplicar", lampada: "Vale aplicar, nota 70 ou mais", luz: "bg-verde-luz", cor: "text-verde", fundo: "bg-verde-claro", barra: "before:bg-verde" },
-  { id: "amarela", titulo: "Avalie antes de aplicar", lampada: "Avalie, nota de 40 a 69", luz: "bg-laranja", cor: "text-laranja-escuro", fundo: "bg-[#fdf3e1]", barra: "before:bg-laranja-escuro" },
-  { id: "cinza", titulo: "Pouco aderente", lampada: "Pouco aderente, abaixo de 40", luz: "bg-[#9aa6a1]", cor: "text-cinza-nota", fundo: "bg-[#f1f3f1]", barra: "before:bg-cinza-nota" },
+const FAIXAS: { id: Faixa; titulo: string; lampada: string; luz: string; cor: string; fundo: string; barra: string; marca: string }[] = [
+  { id: "verde", titulo: "Vale aplicar", lampada: "Vale aplicar, nota 70 ou mais", luz: "bg-verde-luz", cor: "text-verde", fundo: "bg-verde-claro", barra: "before:bg-verde", marca: "marca-verde" },
+  { id: "amarela", titulo: "Avalie antes de aplicar", lampada: "Avalie, nota de 40 a 69", luz: "bg-laranja", cor: "text-laranja-escuro", fundo: "bg-[#fdf3e1]", barra: "before:bg-laranja-escuro", marca: "marca-amarela" },
+  { id: "cinza", titulo: "Pouco aderente", lampada: "Pouco aderente, abaixo de 40", luz: "bg-[#9aa6a1]", cor: "text-cinza-nota", fundo: "bg-[#f1f3f1]", barra: "before:bg-cinza-nota", marca: "marca-cinza" },
 ];
 
 const MODALIDADE: Record<string, string> = {
@@ -151,7 +151,7 @@ function Detalhes({ s, palavras, id, agora }: { s: Sugestao; palavras: string[];
         <div className="grid gap-6 md:col-span-2 md:grid-cols-2">
           {mostrar.map((secao, i) => (
             <div key={i}>
-              <h4 className="mb-2 font-cond text-lg font-semibold">{secao.titulo ?? "Sobre a vaga"}</h4>
+              <h4 className="mb-2 font-titulo text-lg font-semibold">{secao.titulo ?? "Sobre a vaga"}</h4>
               <ul className="list-disc space-y-1 pl-4">
                 {secao.itens.slice(0, MAX_ITENS).map((item, j) => (
                   <li key={j} className="max-w-[60ch]">
@@ -215,15 +215,15 @@ function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: s
 
   return (
     <li
-      className={`relative grid grid-cols-[52px_1fr] gap-x-5 gap-y-1 py-5 pr-5 pl-[26px] before:absolute before:inset-y-0 before:left-0 before:w-1.5 md:grid-cols-[64px_1fr_auto] ${faixa.barra} ${ocupado ? "opacity-60" : ""}`}
+      className={`relative grid grid-cols-[52px_1fr] gap-x-5 gap-y-1 border-y border-junta bg-chapa py-5 pr-5 pl-[26px] first:border-t-0 before:absolute before:inset-y-0 before:left-0 before:w-1.5 md:grid-cols-[64px_1fr_auto] ${faixa.barra} ${ocupado ? "opacity-60" : ""}`}
     >
       <div className={`num text-[40px] leading-none font-semibold ${faixa.cor}`}>
         {s.nota}
         <small className="mt-1 block font-sans text-xs font-normal text-aco">de 100</small>
       </div>
       <div className="min-w-0">
-        <h3 className="text-lg leading-snug font-semibold">{s.cargo}</h3>
-        <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm text-aco">
+        <h3 className="leading-snug"><span className={`titulo-vaga ${faixa.marca}`}>{s.cargo}</span></h3>
+        <div className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-aco">
           <span className="font-medium text-grafite">{s.empresa}</span>
           {local && <span>{local}</span>}
           <span>
@@ -341,7 +341,7 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
       </div>
 
       {/* Quadro de controle */}
-      <div className="rounded-t-md bg-grafite px-5 pt-4 text-[#e9ece9]" aria-label="Filtros das sugestões">
+      <div className="rounded-t-xl bg-grafite px-5 pt-4 text-[#e9ece9]" aria-label="Filtros das sugestões">
         <div className="grid gap-2.5 md:grid-cols-3">
           {FAIXAS.map((f) => {
             const ligada = faixasLigadas.has(f.id);
@@ -351,7 +351,7 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
                 type="button"
                 aria-pressed={ligada}
                 onClick={() => alternar(faixasLigadas, f.id, setFaixas)}
-                className={`grid cursor-pointer grid-cols-[auto_1fr] items-center gap-x-3 rounded border border-grafite-3 bg-grafite-2 px-3.5 py-2.5 text-left hover:border-[#6b7a75] ${ligada ? "" : "opacity-45"}`}
+                className={`grid cursor-pointer grid-cols-[auto_1fr] items-center gap-x-3 rounded-lg border border-grafite-3 bg-grafite-2 px-3.5 py-2.5 text-left hover:border-[#6b7a75] ${ligada ? "" : "opacity-45"}`}
               >
                 <span aria-hidden="true" className={`row-span-2 size-3.5 rounded-full ${ligada ? `${f.luz} ring-4 ring-white/10` : "bg-[#56625e]"}`} />
                 <span className="num text-[28px] leading-none font-semibold">{totalPorFaixa(f.id)}</span>
@@ -381,7 +381,7 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
             <select
               value={ordem}
               onChange={(e) => setOrdem(e.target.value as "nota" | "data")}
-              className="rounded border border-grafite-3 bg-grafite-2 px-2 py-1.5"
+              className="rounded-lg border border-grafite-3 bg-grafite-2 px-2 py-1.5"
             >
               <option value="nota">maior nota</option>
               <option value="data">mais recentes</option>
@@ -394,16 +394,16 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
       </div>
 
       {/* Lista agrupada por faixa */}
-      <div className="rounded-b-md border border-t-0 border-junta bg-chapa">
+      <div className="overflow-hidden rounded-b-xl border border-t-0 border-junta bg-chapa">
         {FAIXAS.filter((f) => faixasLigadas.has(f.id) && porFaixa[f.id].length > 0).map((f) => (
           <section key={f.id} className="border-t border-junta first:border-t-0">
-            <h2 className={`flex items-baseline gap-2.5 border-b border-junta px-5 py-3 font-cond text-lg font-semibold ${f.cor} ${f.fundo}`}>
+            <h2 className={`flex items-baseline gap-2.5 border-b border-junta px-5 py-3 font-titulo text-lg font-semibold ${f.cor} ${f.fundo}`}>
               {f.titulo}
               <small className="font-sans text-[13px] font-normal text-aco">
                 {porFaixa[f.id].length} {porFaixa[f.id].length === 1 ? "vaga" : "vagas"}
               </small>
             </h2>
-            <ol className="divide-y divide-junta-leve">
+            <ol className="flex flex-col gap-2.5 bg-concreto">
               {porFaixa[f.id].map((s) => (
                 <LinhaSugestao key={s.id} s={s} palavras={palavras} faixa={f} agora={agora} />
               ))}
@@ -428,7 +428,7 @@ function Chave({ ligada, onClick, rotulo, n }: { ligada: boolean; onClick: () =>
       type="button"
       aria-pressed={ligada}
       onClick={onClick}
-      className={`cursor-pointer rounded border px-2.5 py-1 text-[13px] ${
+      className={`cursor-pointer rounded-full border px-3 py-1 text-[13px] ${
         ligada ? "border-laranja bg-laranja text-grafite" : "border-grafite-3 hover:border-[#8d9a95]"
       }`}
     >

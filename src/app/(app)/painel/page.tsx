@@ -79,7 +79,7 @@ export default async function Painel() {
 
       <div className="mt-6 grid gap-5 md:grid-cols-[2fr_1fr]">
         <div className="painel">
-          <h2 className="border-b border-junta px-5 pt-4 pb-3 font-cond text-[22px] font-semibold">Follow-ups desta semana</h2>
+          <h2 className="border-b border-junta px-5 pt-4 pb-3 font-titulo text-[22px] font-semibold">Follow-ups desta semana</h2>
           {followups.length === 0 ? (
             <p className="px-5 py-4 text-sm text-aco">Nada para cobrar esta semana.</p>
           ) : (
@@ -103,7 +103,7 @@ export default async function Painel() {
           )}
         </div>
         <div className="painel">
-          <h2 className="border-b border-junta px-5 pt-4 pb-3 font-cond text-[22px] font-semibold">Hoje</h2>
+          <h2 className="border-b border-junta px-5 pt-4 pb-3 font-titulo text-[22px] font-semibold">Hoje</h2>
           <div className="px-5 py-4">
             <div className="num text-[56px] leading-none font-semibold">{novasHoje ?? 0}</div>
             <p className="mt-1 text-sm text-aco">sugestões novas</p>

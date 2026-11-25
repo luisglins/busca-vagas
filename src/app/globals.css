@@ -23,8 +23,8 @@
   --color-seg-ferr: #8fa09a;
   --color-seg-ctx: #c3ccc7;
 
-  --font-sans: var(--font-plex), system-ui, sans-serif;
-  --font-cond: var(--font-plex-cond), "Arial Narrow", sans-serif;
+  --font-sans: var(--fonte-texto), system-ui, sans-serif;
+  --font-titulo: var(--fonte-titulo), system-ui, sans-serif;
 }
 
 body {
@@ -43,14 +43,15 @@ body {
 /* Componentes reutilizados nas telas */
 @layer components {
   .titulo-tela {
-    font-family: var(--font-cond);
-    font-weight: 600;
-    font-size: 40px;
+    font-family: var(--font-titulo);
+    font-weight: 800;
+    font-size: 42px;
     line-height: 1;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 96;
   }
   .num {
-    font-family: var(--font-cond);
+    font-family: var(--font-titulo);
     font-variant-numeric: tabular-nums;
   }
   .btn {
@@ -61,7 +62,7 @@ body {
     font-weight: 500;
     font-size: 14px;
     line-height: 1;
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 10px 14px;
     border: 1px solid var(--color-junta);
     background: var(--color-chapa);
@@ -77,12 +78,38 @@ body {
   .campo {
     font: inherit;
     border: 1px solid var(--color-junta);
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 8px 10px;
     background: var(--color-chapa);
     width: 100%;
   }
   .campo:focus { border-color: var(--color-aco); outline: none; box-shadow: 0 0 0 2px var(--color-laranja-claro); }
   .rotulo { display: flex; flex-direction: column; gap: 4px; font-size: 14px; font-weight: 500; }
-  .painel { background: var(--color-chapa); border: 1px solid var(--color-junta); border-radius: 6px; }
+  .painel { background: var(--color-chapa); border: 1px solid var(--color-junta); border-radius: 12px; }
+
+  /* Nome da vaga: Bricolage pesada com um traço de marca-texto na cor da faixa da nota.
+     --marca muda por faixa (verde, laranja, cinza); no hover o traço sobe e cobre mais a palavra. */
+  .titulo-vaga {
+    --marca: var(--color-laranja-claro);
+    font-family: var(--font-titulo);
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 48;
+    background-image: linear-gradient(transparent 52%, var(--marca) 52%, var(--marca) 94%, transparent 94%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0 2px;
+    transition: background-image 0.2s;
+  }
+  a.titulo-vaga:hover, .titulo-vaga:hover {
+    background-image: linear-gradient(transparent 30%, var(--marca) 30%, var(--marca) 92%, transparent 92%);
+  }
+  .marca-verde { --marca: #b9dfc6; }
+  .marca-amarela { --marca: #fbd88a; }
+  .marca-cinza { --marca: #dde3df; }
+  @media (prefers-reduced-motion: reduce) { .titulo-vaga { transition: none; } }
 }

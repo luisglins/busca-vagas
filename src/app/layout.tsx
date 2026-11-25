@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const plex = IBM_Plex_Sans({
-  variable: "--font-plex",
+// Títulos e números: Bricolage Grotesque (personalidade). Texto: DM Sans (leitura fácil).
+const fonteTitulo = Bricolage_Grotesque({
+  variable: "--fonte-titulo",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "variable",
+  axes: ["opsz", "wdth"],
 });
 
-const plexCond = IBM_Plex_Sans_Condensed({
-  variable: "--font-plex-cond",
+const fonteTexto = DM_Sans({
+  variable: "--fonte-texto",
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${plex.variable} ${plexCond.variable} h-full antialiased`}>
+    <html lang="pt-BR" className={`${fonteTitulo.variable} ${fonteTexto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

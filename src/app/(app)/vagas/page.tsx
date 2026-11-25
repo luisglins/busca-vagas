@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { hojeEmSaoPaulo } from "@/lib/followup";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
-import { COR_DA_FAIXA, dataComDia, dataCurta, faixaDaNota, type Vaga } from "@/lib/vagas";
+import { COR_DA_FAIXA, dataComDia, dataCurta, faixaDaNota, marcaDaNota, type Vaga } from "@/lib/vagas";
 import { CabecalhoComNovaVaga } from "./nova-vaga";
 import { SeletorStatus } from "./seletor-status";
 
@@ -64,10 +64,10 @@ export default async function MinhasVagas() {
                 return (
                   <tr key={v.id} className="border-b border-junta-leve align-top last:border-0">
                     <td className="px-4 py-3">
-                      <Link href={`/vagas/${v.id}`} className="font-semibold hover:underline">
+                      <Link href={`/vagas/${v.id}`} className={`titulo-vaga text-[17px] ${marcaDaNota(v.nota_aderencia)}`}>
                         {v.cargo}
                       </Link>
-                      <div className="text-aco">{v.empresa}</div>
+                      <div className="mt-0.5 text-aco">{v.empresa}</div>
                     </td>
                     <td className="px-4 py-3">
                       <SeletorStatus id={v.id} status={v.status} rotulo={v.cargo} />
