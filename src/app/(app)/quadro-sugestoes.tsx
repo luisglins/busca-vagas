@@ -92,10 +92,10 @@ const FONTES = [
   { id: "ashby", nome: "Ashby" },
 ];
 
-const FAIXAS: { id: Faixa; titulo: string; lampada: string; luz: string; cor: string; fundo: string; barra: string; marca: string }[] = [
-  { id: "verde", titulo: "Vale aplicar", lampada: "Vale aplicar, nota 70 ou mais", luz: "bg-verde-luz", cor: "text-verde", fundo: "bg-verde-claro", barra: "before:bg-verde", marca: "marca-verde" },
-  { id: "amarela", titulo: "Avalie antes de aplicar", lampada: "Avalie, nota de 40 a 69", luz: "bg-laranja", cor: "text-laranja-escuro", fundo: "bg-[#eadcc2]", barra: "before:bg-laranja-escuro", marca: "marca-amarela" },
-  { id: "cinza", titulo: "Pouco aderente", lampada: "Pouco aderente, abaixo de 40", luz: "bg-[#9aa6a1]", cor: "text-cinza-nota", fundo: "bg-[#d9ded8]", barra: "before:bg-cinza-nota", marca: "marca-cinza" },
+const FAIXAS: { id: Faixa; titulo: string; lampada: string; luz: string; cor: string; fundo: string; barra: string; marca: string; degrade: string }[] = [
+  { id: "verde", titulo: "Vale aplicar", lampada: "Vale aplicar, nota 70 ou mais", luz: "bg-verde-luz", cor: "text-verde", fundo: "bg-verde-claro", barra: "before:bg-verde", marca: "marca-verde", degrade: "degrade-verde" },
+  { id: "amarela", titulo: "Avalie antes de aplicar", lampada: "Avalie, nota de 40 a 69", luz: "bg-laranja", cor: "text-laranja-escuro", fundo: "bg-[#eadcc2]", barra: "before:bg-laranja-escuro", marca: "marca-amarela", degrade: "degrade-amarela" },
+  { id: "cinza", titulo: "Pouco aderente", lampada: "Pouco aderente, abaixo de 40", luz: "bg-[#9aa6a1]", cor: "text-cinza-nota", fundo: "bg-[#d9ded8]", barra: "before:bg-cinza-nota", marca: "marca-cinza", degrade: "degrade-cinza" },
 ];
 
 const MODALIDADE: Record<string, string> = {
@@ -270,7 +270,7 @@ function LinhaSugestao({ s, palavras, faixa, agora }: { s: Sugestao; palavras: s
 
   return (
     <li
-      className={`relative grid grid-cols-[52px_1fr] gap-x-5 gap-y-1 border-y border-junta bg-chapa py-5 pr-5 pl-[26px] first:border-t-0 before:absolute before:inset-y-0 before:left-0 before:w-1.5 md:grid-cols-[64px_1fr_auto] ${faixa.barra} ${ocupado ? "opacity-60" : ""}`}
+      className={`relative grid grid-cols-[52px_1fr] gap-x-5 gap-y-1 border-y border-junta py-5 pr-5 pl-[26px] first:border-t-0 before:absolute before:inset-y-0 before:left-0 before:w-1.5 md:grid-cols-[64px_1fr_auto] ${faixa.barra} ${faixa.degrade} ${ocupado ? "opacity-60" : ""}`}
     >
       <div className={`num text-[40px] leading-none font-semibold ${faixa.cor}`}>
         {s.nota}

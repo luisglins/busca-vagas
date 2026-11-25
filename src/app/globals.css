@@ -116,4 +116,9 @@ body {
   .marca-verde { --marca: #2f8f57; }
   .marca-amarela { --marca: #e89a00; }
   .marca-cinza { --marca: #8c9892; }
+
+  /* Fundo de cada vaga: neutro em cima e, do meio para baixo, um degradê leve na cor da faixa. */
+  .degrade-verde { background: linear-gradient(180deg, var(--color-chapa) 45%, color-mix(in srgb, #2f8f57 16%, var(--color-chapa)) 100%); }
+  .degrade-amarela { background: linear-gradient(180deg, var(--color-chapa) 45%, color-mix(in srgb, #e89a00 17%, var(--color-chapa)) 100%); }
+  .degrade-cinza { background: linear-gradient(180deg, var(--color-chapa) 45%, color-mix(in srgb, #8c9892 15%, var(--color-chapa)) 100%); }
 }
