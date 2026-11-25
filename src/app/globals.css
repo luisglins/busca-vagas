@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Paleta "gestão à vista" — ver docs/design-visual.md */
+@theme {
+  --color-grafite: #1e2624;
+  --color-grafite-2: #2a3431;
+  --color-grafite-3: #4a5753;
+  --color-aco: #51646c;
+  --color-aco-claro: #b9c2be;
+  --color-concreto: #f3f4f1;
+  --color-chapa: #ffffff;
+  --color-junta: #d6dbd7;
+  --color-junta-leve: #eceeec;
+  --color-laranja: #f0a202;
+  --color-laranja-forte: #e0960a;
+  --color-laranja-escuro: #c46a00;
+  --color-laranja-claro: #fde9c2;
+  --color-verde: #1f6b43;
+  --color-verde-luz: #3fa66b;
+  --color-verde-claro: #e3efe7;
+  --color-vermelho: #b3261e;
+  --color-cinza-nota: #7d8a84;
+  --color-seg-ferr: #8fa09a;
+  --color-seg-ctx: #c3ccc7;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-plex), system-ui, sans-serif;
+  --font-cond: var(--font-plex-cond), "Arial Narrow", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-concreto);
+  color: var(--color-grafite);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-laranja);
+  outline-offset: 2px;
+}
+
+/* Componentes reutilizados nas telas */
+@layer components {
+  .titulo-tela {
+    font-family: var(--font-cond);
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .num {
+    font-family: var(--font-cond);
+    font-variant-numeric: tabular-nums;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 4px;
+    padding: 10px 14px;
+    border: 1px solid var(--color-junta);
+    background: var(--color-chapa);
+    color: var(--color-grafite);
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--color-aco); }
+  .btn:disabled { opacity: 0.6; cursor: default; }
+  .btn-principal { background: var(--color-laranja); border-color: var(--color-laranja-forte); }
+  .btn-principal:hover { background: var(--color-laranja-forte); border-color: var(--color-laranja-escuro); }
+  .btn-texto { background: none; border: 0; padding: 6px 0; font-size: 13px; color: var(--color-aco); cursor: pointer; }
+  .btn-texto:hover { color: var(--color-grafite); text-decoration: underline; }
+  .campo {
+    font: inherit;
+    border: 1px solid var(--color-junta);
+    border-radius: 4px;
+    padding: 8px 10px;
+    background: var(--color-chapa);
+    width: 100%;
+  }
+  .campo:focus { border-color: var(--color-aco); outline: none; box-shadow: 0 0 0 2px var(--color-laranja-claro); }
+  .rotulo { display: flex; flex-direction: column; gap: 4px; font-size: 14px; font-weight: 500; }
+  .painel { background: var(--color-chapa); border: 1px solid var(--color-junta); border-radius: 6px; }
 }
