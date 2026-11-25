@@ -25,14 +25,14 @@ export async function adicionarSugestao(id: string): Promise<string | null> {
     chave_duplicidade: s.chave_duplicidade,
   });
   if (error) return "Não foi possível adicionar. Tente de novo.";
-  await supabase.from("sugestoes").update({ estado: "adicionada" }).eq("id", id);
+  await supabase.from("sugestoes").update({ estado: "adicionada", decidido_em: new Date().toISOString() }).eq("id", id);
   refresh();
   return null;
 }
 
 export async function descartarSugestao(id: string): Promise<void> {
   const supabase = await criarClienteServidor();
-  await supabase.from("sugestoes").update({ estado: "descartada" }).eq("id", id);
+  await supabase.from("sugestoes").update({ estado: "descartada", decidido_em: new Date().toISOString() }).eq("id", id);
   refresh();
 }
 
@@ -48,7 +48,7 @@ export async function bloquearEmpresa(empresa: string): Promise<void> {
   }
   await supabase
     .from("sugestoes")
-    .update({ estado: "eliminada", motivo_eliminacao: "empresa bloqueada" })
+    .update({ estado: "eliminada", motivo_eliminacao: "empresa bloqueada", decidido_em: new Date().toISOString() })
     .eq("empresa", empresa)
     .eq("estado", "nova");
   refresh();

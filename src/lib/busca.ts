@@ -25,7 +25,7 @@ export interface DepsBusca {
 const LIMITE_DIAS_ANUNCIO = 90;
 
 /** Nota da vaga, eliminando anúncios antigos demais (ex.: "banco de talentos" de quase um ano atrás). */
-function avaliar(vaga: VagaBruta, perfil: Perfil, agora: number): Resultado {
+export function avaliar(vaga: VagaBruta, perfil: Perfil, agora: number): Resultado {
   const resultado = pontuar(vaga, perfil);
   if (resultado.eliminada || !vaga.publicadaEm) return resultado;
   const dias = (agora - new Date(vaga.publicadaEm).getTime()) / 86_400_000;

@@ -53,7 +53,7 @@ export function pontuar(vaga: VagaBruta, perfil: Perfil): Resultado {
     return eliminar("empresa bloqueada");
   }
   const nivelErrado = perfil.palavrasEliminatorias.find((p) => contemPalavra(titulo, p));
-  if (nivelErrado) return eliminar(`nível: ${nivelErrado}`);
+  if (nivelErrado) return eliminar(`título com "${nivelErrado}"`);
   if (vaga.modalidade === "exterior") return eliminar("fora do Brasil");
 
   const motivos: string[] = [];

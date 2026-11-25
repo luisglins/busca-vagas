@@ -52,7 +52,7 @@ describe("pontuar — vagas reais do teste das fontes", () => {
       perfil,
     );
     expect(r.eliminada).toBe(true);
-    expect(r.motivoEliminacao?.startsWith("nível")).toBe(true);
+    expect(r.motivoEliminacao).toBe('título com "sênior"');
   });
 
   it("estágio é eliminado", () => {

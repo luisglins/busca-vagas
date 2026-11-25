@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { composicaoDaNota, marcarPalavras, separarSecoes } from "@/lib/descricao";
 import { faixaDaNota, type Faixa } from "@/lib/vagas";
@@ -322,6 +323,10 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
           )}
         </div>
         <div className="flex flex-col items-end gap-1">
+          <div className="flex gap-2">
+          <Link href="/historico" className="btn">
+            Histórico
+          </Link>
           <button
             type="button"
             className="btn"
@@ -330,6 +335,7 @@ export function QuadroSugestoes({ sugestoes, palavras, textoUltimaBusca, falhas,
           >
             {buscando ? "Buscando vagas…" : "Buscar agora"}
           </button>
+          </div>
           {resultadoBusca && !buscando && <p className="text-[13px] text-aco" aria-live="polite">Busca concluída: {resultadoBusca}</p>}
         </div>
       </div>
