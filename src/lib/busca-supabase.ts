@@ -3,11 +3,19 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { executarBusca, type SugestaoNova } from "./busca";
 import { ashby } from "./fontes/ashby";
 import { greenhouse } from "./fontes/greenhouse";
+import type { Adaptador } from "./fontes/comum";
 import { gupy } from "./fontes/gupy";
+import { criarJooble } from "./fontes/jooble";
 import { completarPerfil, PERFIL_PADRAO } from "./perfil-padrao";
 import type { Perfil, ResumoExecucao } from "./tipos";
 
-export const ADAPTADORES = [gupy, greenhouse, ashby];
+/** Fontes da busca. A Jooble só entra se houver chave (JOOBLE_API_KEY; host em JOOBLE_HOST, padrão br.jooble.org). */
+export function adaptadores(): Adaptador[] {
+  const lista: Adaptador[] = [gupy, greenhouse, ashby];
+  const chaveJooble = process.env.JOOBLE_API_KEY;
+  if (chaveJooble) lista.push(criarJooble(chaveJooble, process.env.JOOBLE_HOST || "br.jooble.org"));
+  return lista;
+}
 
 /** Perfil salvo em Configurações; na primeira vez grava o padrão. */
 export async function carregarPerfil(supabase: SupabaseClient): Promise<Perfil> {
@@ -66,7 +74,7 @@ export async function rodarBusca(supabase: SupabaseClient): Promise<ResumoExecuc
   ]);
 
   return executarBusca({
-    adaptadores: ADAPTADORES,
+    adaptadores: adaptadores(),
     perfil,
     chavesExistentes: new Set([
       ...vagas.map((v) => v.chave_duplicidade).filter((c): c is string => Boolean(c)),

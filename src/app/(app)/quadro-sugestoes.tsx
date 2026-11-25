@@ -91,6 +91,8 @@ const FONTES = [
   { id: "gupy", nome: "Gupy" },
   { id: "greenhouse", nome: "Greenhouse" },
   { id: "ashby", nome: "Ashby" },
+  { id: "jooble", nome: "Jooble" },
+  { id: "linkedin", nome: "LinkedIn" },
 ];
 
 const FAIXAS: { id: Faixa; titulo: string; lampada: string; luz: string; cor: string; fundo: string; barra: string; marca: string; degrade: string }[] = [

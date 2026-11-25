@@ -3,7 +3,7 @@ import { agoraMs, isoDiasAtras } from "@/lib/followup";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { QuadroSugestoes, type Sugestao } from "./quadro-sugestoes";
 
-const NOME_FONTE: Record<string, string> = { gupy: "Gupy", greenhouse: "Greenhouse", ashby: "Ashby" };
+const NOME_FONTE: Record<string, string> = { gupy: "Gupy", greenhouse: "Greenhouse", ashby: "Ashby", jooble: "Jooble", linkedin: "LinkedIn" };
 
 export default async function Sugestoes() {
   const supabase = await criarClienteServidor();
