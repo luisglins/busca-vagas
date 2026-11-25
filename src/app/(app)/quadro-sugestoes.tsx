@@ -7,7 +7,8 @@ import { compararCurriculos } from "@/lib/curriculo";
 import type { Perfil } from "@/lib/tipos";
 import { marcarPalavras, separarSecoes } from "@/lib/descricao";
 import { faixaDaNota, type Faixa } from "@/lib/vagas";
-import { adicionarSugestao, bloquearEmpresa, buscarAgora, descartarSugestao } from "./sugestoes-acoes";
+import { linkDoCurriculo } from "./curriculos/acoes";
+import { adicionarSugestao, bloquearEmpresa, buscarAgora, candidatarSugestao, descartarSugestao } from "./sugestoes-acoes";
 
 export interface Sugestao {
   id: string;
@@ -50,7 +51,7 @@ function CurriculoIndicado({ s }: { s: Sugestao }) {
       </p>
     );
   }
-  const ranking = compararCurriculos(curriculos, { cargo: s.cargo, descricao: s.descricao }, perfil);
+  const ranking = compararCurriculos(curriculos, { cargo: s.cargo, descricao: s.descricao }, perfil, s.area);
   if (ranking.length === 0) return <p className="text-[13px] text-aco">Esta vaga não tem palavras do seu perfil para comparar com os currículos.</p>;
   const melhor = ranking[0];
   return (
@@ -245,9 +246,106 @@ function Variacoes({ membros }: { membros: Sugestao[] }) {
   );
 }
 
+/**
+ * Painel "Candidatar": mostra o currículo indicado (dá para trocar), baixa o PDF e,
+ * ao confirmar, abre o anúncio e registra a vaga como "Apliquei" com follow-up em 7 dias.
+ * O envio em si o Luís faz no site da vaga (candidatura automática viola os termos dos sites).
+ */
+function PainelCandidatura({ s, aoFechar }: { s: Sugestao; aoFechar: () => void }) {
+  const { curriculos, perfil } = useContext(ContextoCurriculos);
+  const ranking = perfil ? compararCurriculos(curriculos, { cargo: s.cargo, descricao: s.descricao }, perfil, s.area) : [];
+  const porNota = new Map(ranking.map((r) => [r.id, r.cobertura]));
+  // Mesma ordem do ranking (que já desempata pela área); currículos sem texto vão para o fim.
+  const ordenados = [...ranking.map((r) => curriculos.find((c) => c.id === r.id)!), ...curriculos.filter((c) => !porNota.has(c.id))];
+  const [escolhido, setEscolhido] = useState<string>(ordenados[0]?.id ?? "");
+  const [ocupado, iniciar] = useTransition();
+  const [resultado, setResultado] = useState<string | null>(null);
+
+  if (resultado === "ok") {
+    return (
+      <div className="col-span-full mt-3 rounded-lg border border-verde/40 bg-verde-claro p-4 text-sm md:col-[2/4]">
+        <p className="font-titulo text-lg font-bold">Candidatura registrada.</p>
+        <p className="text-aco">
+          A vaga foi para Minhas vagas como &quot;Apliquei&quot;, com o follow-up em 7 dias. Termine o envio na aba do anúncio.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="col-span-full mt-3 flex flex-col gap-3 rounded-lg border border-junta bg-concreto/50 p-4 text-sm md:col-[2/4]">
+      <p className="font-titulo text-lg font-semibold">Candidatar</p>
+      {curriculos.length === 0 ? (
+        <p className="text-aco">
+          <Link href="/curriculos" className="underline">Envie um currículo</Link> para o site indicar qual mandar.
+        </p>
+      ) : (
+        <div className="flex flex-wrap items-end gap-3">
+          <label className="rotulo">
+            Currículo para enviar
+            <select value={escolhido} onChange={(e) => setEscolhido(e.target.value)} className="campo w-auto font-normal">
+              {ordenados.map((c, i) => (
+                <option key={c.id} value={c.id}>
+                  {c.nome}
+                  {porNota.has(c.id) ? ` (${porNota.get(c.id)}% das palavras da vaga)` : ""}
+                  {i === 0 && porNota.has(c.id) ? " · indicado" : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            className="btn"
+            disabled={!escolhido || ocupado}
+            onClick={() =>
+              iniciar(async () => {
+                const url = await linkDoCurriculo(escolhido);
+                if (url) window.open(url, "_blank", "noopener");
+              })
+            }
+          >
+            Baixar o PDF
+          </button>
+        </div>
+      )}
+      <ol className="list-decimal pl-5 text-aco">
+        <li>Baixe o currículo indicado (ou escolha outro).</li>
+        <li>Clique abaixo: o anúncio abre numa aba nova e a vaga vai para Minhas vagas como &quot;Apliquei&quot;.</li>
+        <li>Envie a candidatura no site da vaga.</li>
+      </ol>
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          className="btn btn-principal"
+          disabled={ocupado}
+          onClick={() => {
+            // Abre o anúncio já no clique (senão o navegador bloqueia a aba nova).
+            if (s.link) window.open(s.link, "_blank", "noopener");
+            iniciar(async () => {
+              const erro = await candidatarSugestao(s.id, escolhido || null);
+              setResultado(erro ?? "ok");
+            });
+          }}
+        >
+          {s.link ? "Abrir anúncio e marcar como Apliquei" : "Marcar como Apliquei"}
+        </button>
+        <button type="button" className="btn-texto" onClick={aoFechar}>
+          Cancelar
+        </button>
+        {resultado && resultado !== "ok" && (
+          <p role="alert" className="text-vermelho">
+            {resultado}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugestao>; palavras: string[]; faixa: (typeof FAIXAS)[number]; agora: number }) {
   const s = grupo.principal;
   const outras = grupo.membros.length - 1;
+  const [candidatando, setCandidatando] = useState(false);
   const [aberto, setAberto] = useState(false);
   const [ocupado, iniciar] = useTransition();
   const [aviso, setAviso] = useState<string | null>(null);
@@ -293,13 +391,11 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
           </button>
       </div>
       <div className="col-span-full mt-3 flex flex-wrap gap-2 md:col-auto md:mt-0 md:w-44 md:flex-col md:items-stretch">
-        <button
-          type="button"
-          className="btn btn-principal"
-          disabled={ocupado}
-          onClick={() => iniciar(async () => setAviso(await adicionarSugestao(s.id)))}
-        >
-          Adicionar à lista
+        <button type="button" className="btn btn-principal" disabled={ocupado} aria-expanded={candidatando} onClick={() => setCandidatando(!candidatando)}>
+          Candidatar
+        </button>
+        <button type="button" className="btn" disabled={ocupado} onClick={() => iniciar(async () => setAviso(await adicionarSugestao(s.id)))}>
+          Salvar para depois
         </button>
         <button type="button" className="btn" disabled={ocupado} onClick={() => iniciar(() => descartarSugestao(grupo.membros.map((m) => m.id)))}>
           {outras > 0 ? "Descartar grupo" : "Descartar"}
@@ -322,6 +418,7 @@ function LinhaSugestao({ grupo, palavras, faixa, agora }: { grupo: Grupo<Sugesta
           </p>
         )}
       </div>
+      {candidatando && <PainelCandidatura s={s} aoFechar={() => setCandidatando(false)} />}
       {aberto && outras > 0 && <Variacoes membros={grupo.membros} />}
       {aberto && <Detalhes s={s} palavras={palavras} id={idDetalhes} agora={agora} />}
     </li>

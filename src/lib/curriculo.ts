@@ -32,11 +32,24 @@ export function palavrasDaVaga(vaga: { cargo: string; descricao: string | null }
   return palavras.filter((_, i) => !normal.some((outra, j) => j !== i && outra.length > normal[i].length && outra.includes(normal[i])));
 }
 
+// No empate, o nome do currículo que lembra a área da vaga desempata (ex.: "Processos" para vaga de processos).
+const NOMES_DA_AREA: Record<string, string[]> = {
+  processos: ["process", "produc", "operac", "pcp", "qualidade", "logistic"],
+  ia: ["dados", "data", "ia", "ai", "bi", "analytics"],
+};
+
+function combinaComArea(nome: string, area?: string | null): boolean {
+  if (!area) return false;
+  const n = normalizarTexto(nome);
+  return (NOMES_DA_AREA[area] ?? []).some((p) => n.split(" ").some((palavra) => palavra.startsWith(p)));
+}
+
 /** Compara cada currículo (que tenha texto) com a vaga; o mais aderente vem primeiro. */
 export function compararCurriculos(
   curriculos: { id: string; nome: string; texto: string | null }[],
   vaga: { cargo: string; descricao: string | null },
   perfil: Perfil,
+  area?: string | null,
 ): AderenciaCurriculo[] {
   const palavras = palavrasDaVaga(vaga, perfil);
   if (palavras.length === 0) return [];
@@ -54,5 +67,5 @@ export function compararCurriculos(
         faltando: palavras.filter((p) => !encontradas.includes(p)),
       };
     })
-    .sort((a, b) => b.cobertura - a.cobertura);
+    .sort((a, b) => b.cobertura - a.cobertura || Number(combinaComArea(b.nome, area)) - Number(combinaComArea(a.nome, area)));
 }

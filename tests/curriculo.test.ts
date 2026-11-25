@@ -45,4 +45,14 @@ describe("compararCurriculos", () => {
   it("vaga sem nenhuma palavra do perfil não gera comparação", () => {
     expect(compararCurriculos(cvs, { cargo: "Motorista", descricao: "CNH D" }, PERFIL_PADRAO)).toEqual([]);
   });
+
+  it("no empate, prefere o currículo cujo nome combina com a área da vaga", () => {
+    const iguais = [
+      { id: "d", nome: "Dados", texto: "PCP Excel Power BI SQL Lean inglês" },
+      { id: "p", nome: "Processos", texto: "PCP Excel Power BI SQL Lean inglês" },
+      { id: "g", nome: "Geral", texto: "PCP Excel Power BI SQL Lean inglês" },
+    ];
+    expect(compararCurriculos(iguais, vaga, PERFIL_PADRAO, "processos")[0].id).toBe("p");
+    expect(compararCurriculos(iguais, vaga, PERFIL_PADRAO, "ia")[0].id).toBe("d");
+  });
 });
